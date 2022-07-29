@@ -7,6 +7,7 @@ import (
 	"github.com/gorilla/mux"
 	"net/http"
 	"net/smtp"
+	"strconv"
 	"strings"
 	"sync"
 )
@@ -56,7 +57,7 @@ func (server *Server) rate() http.HandlerFunc {
 
 		writer.Header().Set("Content-Type", "application/json")
 
-		err = json.NewEncoder(writer).Encode(btcRate)
+		err = json.NewEncoder(writer).Encode(json.Number(getFormattedCurrency(btcRate)))
 
 		if err != nil {
 			http.Error(writer, err.Error(), http.StatusBadRequest)
@@ -65,11 +66,11 @@ func (server *Server) rate() http.HandlerFunc {
 	}
 }
 
-func (server *Server) getBTCRate(currency string) (string, error) {
+func (server *Server) getBTCRate(currency string) (float64, error) {
 	response, err := http.Get(fmt.Sprintf("https://api.binance.com/api/v3/ticker/price?symbol=BTC%s", currency))
 
 	if err != nil {
-		return "", err
+		return 0, err
 	}
 
 	var btcRate struct {
@@ -79,10 +80,10 @@ func (server *Server) getBTCRate(currency string) (string, error) {
 	err = json.NewDecoder(response.Body).Decode(&btcRate)
 
 	if err != nil {
-		return "", err
+		return 0, err
 	}
 
-	return btcRate.Price, nil
+	return strconv.ParseFloat(btcRate.Price, 64)
 }
 
 func (server *Server) subscribe() http.HandlerFunc {
@@ -139,7 +140,7 @@ func (server *Server) sendEmails() http.HandlerFunc {
 
 		for _, email := range server.emails {
 			go func(email string, mutex *sync.Mutex) {
-				if err = internal.SendEmail(server.Auth, server.email, email, subject, rate); err != nil {
+				if err = internal.SendEmail(server.Auth, server.email, email, subject, getFormattedCurrency(rate)); err != nil {
 					mutex.Lock()
 					unsentEmails = append(unsentEmails, email)
 					mutex.Unlock()
@@ -156,4 +157,8 @@ func (server *Server) sendEmails() http.HandlerFunc {
 			return
 		}
 	}
+}
+
+func getFormattedCurrency(btcRate float64) string {
+	return fmt.Sprintf("%.2f", btcRate)
 }
