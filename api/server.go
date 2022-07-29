@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gorilla/mux"
+	"html/template"
 	"log"
 	"net/http"
 	"net/smtp"
@@ -25,16 +26,20 @@ type UnsentEmailsJSON struct {
 type Server struct {
 	*mux.Router
 	smtp.Auth
-	email  string
-	emails []string
+	email    string
+	emails   []string
+	template *template.Template
 }
 
 func NewServer(email, password string) *Server {
+	functionMap := template.FuncMap{"add": func(x, y int) int { return x + y }}
+
 	server := &Server{
-		Router: mux.NewRouter(),
-		Auth:   internal.NewLoginAuth(email, password),
-		email:  email,
-		emails: []string{},
+		Router:   mux.NewRouter(),
+		Auth:     internal.NewLoginAuth(email, password),
+		email:    email,
+		emails:   []string{},
+		template: template.Must(template.New("").Funcs(functionMap).ParseGlob("./templates/*.gohtml")),
 	}
 
 	if _, err := os.Stat(dataFolder); errors.Is(err, os.ErrNotExist) {
@@ -52,9 +57,14 @@ func NewServer(email, password string) *Server {
 }
 
 func (server *Server) routes() {
+	server.HandleFunc("/", server.index()).Methods("GET")
 	server.HandleFunc("/api/rate", server.rate()).Methods("GET")
 	server.HandleFunc("/api/subscribe", server.subscribe()).Methods("POST")
 	server.HandleFunc("/api/sendEmails", server.sendEmails()).Methods("POST")
+	server.HandleFunc("/subscribe", server.webSubscribe()).Methods("POST")
+	server.HandleFunc("/sendEmails", server.webSendEmails()).Methods("POST")
+
+	http.Handle("/", server)
 }
 
 func (server *Server) rate() http.HandlerFunc {
@@ -100,22 +110,24 @@ func (server *Server) subscribe() http.HandlerFunc {
 			http.Error(writer, email+" is already subscribed!", http.StatusConflict)
 			return
 		} else {
-			server.handleNewSubscriber(writer, email, err)
+			if server.handleNewSubscriber(writer, email, err) != nil {
+				http.Error(writer, err.Error(), http.StatusInternalServerError)
+			}
 		}
 	}
 }
 
-func (server *Server) handleNewSubscriber(writer http.ResponseWriter, email string, err error) {
+func (server *Server) handleNewSubscriber(writer http.ResponseWriter, email string, err error) error {
 	err = server.addNewEmail(email, err)
 
 	if err != nil {
-		http.Error(writer, err.Error(), http.StatusInternalServerError)
+		return err
 	}
 
 	_, err = writer.Write([]byte(email + " has been added successfully!"))
 
 	if err != nil {
-		http.Error(writer, err.Error(), http.StatusInternalServerError)
+		return err
 	}
 
 	go func() {
@@ -126,6 +138,8 @@ func (server *Server) handleNewSubscriber(writer http.ResponseWriter, email stri
 			log.Printf(err.Error())
 		}
 	}()
+
+	return nil
 }
 
 func (server *Server) addNewEmail(email string, err error) error {
@@ -143,26 +157,11 @@ func (server *Server) addNewEmail(email string, err error) error {
 
 func (server *Server) sendEmails() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
-		subject := "BTC to UAH"
-		rate, err := server.getBTCRate("UAH")
-		body := fmt.Sprintf("Current exchange rate:\n 1 BTC = %s UAH", getFormattedCurrency(rate))
+		err, unsentEmails := server.startSendingEmails()
 
 		if err != nil {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
 			return
-		}
-
-		unsentEmails := []string{}
-		var mutex sync.Mutex
-
-		for _, email := range server.emails {
-			go func(email, subject, body string, mutex *sync.Mutex) {
-				if err = server.sendEmail(email, subject, body); err != nil {
-					mutex.Lock()
-					unsentEmails = append(unsentEmails, email)
-					mutex.Unlock()
-				}
-			}(email, subject, body, &mutex)
 		}
 
 		writer.Header().Set("Content-Type", "application/json")
@@ -174,6 +173,32 @@ func (server *Server) sendEmails() http.HandlerFunc {
 			return
 		}
 	}
+}
+
+func (server *Server) startSendingEmails() (error, []string) {
+	subject := "BTC to UAH"
+	rate, err := server.getBTCRate("UAH")
+	body := fmt.Sprintf("Current exchange rate:\n 1 BTC = %s UAH", getFormattedCurrency(rate))
+
+	unsentEmails := []string{}
+
+	if err != nil {
+		return err, unsentEmails
+	}
+
+	var mutex sync.Mutex
+
+	for _, email := range server.emails {
+		go func(email, subject, body string, mutex *sync.Mutex) {
+			if sendErr := server.sendEmail(email, subject, body); sendErr != nil {
+				mutex.Lock()
+				unsentEmails = append(unsentEmails, email)
+				mutex.Unlock()
+			}
+		}(email, subject, body, &mutex)
+	}
+
+	return err, unsentEmails
 }
 
 func (server *Server) getBTCRate(currency string) (float64, error) {
@@ -198,6 +223,58 @@ func (server *Server) getBTCRate(currency string) (float64, error) {
 
 func (server *Server) sendEmail(email, subject, body string) error {
 	return internal.SendEmail(server.Auth, server.email, email, subject, body)
+}
+
+func (server *Server) index() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		rate, _ := server.getBTCRate("UAH")
+
+		server.template.ExecuteTemplate(writer, "index.gohtml", struct {
+			Rate   string
+			Emails []string
+		}{getFormattedCurrency(rate), server.emails})
+	}
+}
+
+func (server *Server) webSubscribe() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		err := request.ParseForm()
+
+		if err != nil {
+			//http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		writer.Header().Set("Content-Type", "application/json")
+
+		email := request.Form.Get("email")
+		email = strings.TrimSpace(email)
+
+		if !internal.ValidateEmail(email) {
+			//http.Error(writer, "Invalid email!", http.StatusBadRequest)
+			return
+		}
+
+		if internal.BinarySearch(server.emails, email) {
+			//http.Error(writer, email+" is already subscribed!", http.StatusConflict)
+			return
+		} else {
+			if server.handleNewSubscriber(writer, email, err) != nil {
+				//http.Error(writer, err.Error(), http.StatusInternalServerError)
+			}
+		}
+	}
+}
+
+func (server *Server) webSendEmails() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		err, _ := server.startSendingEmails()
+
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
 }
 
 func getFormattedCurrency(btcRate float64) string {

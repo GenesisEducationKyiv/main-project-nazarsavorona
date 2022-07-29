@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>BTC Rate Check Service</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+</head>
+<body>
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+        <span class="navbar-brand mb-0 h1">BTC Rate Check Service</span>
+    </div>
+</nav>
+
+<div class="container mt-2">
+    <div class="row">
+        <h2 style="text-align: center">1 BTC = {{.Rate}} UAH</h2>
+
+        <div class="col-lg">
+            <form action="/subscribe" method="post" class="mb-3">
+                <label for="emailInput" class="form-label">E-mail</label>
+                <div class="input-group">
+                    <input type="text" name="email" id="emailInput" placeholder="Your email" class="form-control">
+                    <button type="submit" class="btn btn-primary">Subscribe</button>
+                </div>
+                <div id="emailNote" class="form-text">You will be receiving BTC to UAH rate exchanges updates.</div>
+            </form>
+
+            <form action="/sendEmails" method="post" class="mb-3">
+                <div class="input-group">
+                    <span class="input-group-text col">Notify everyone about current exchange rate!</span>
+                    <button type="submit" class="btn btn-primary col">Send Emails</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-lg">
+            <table class="table table-dark table-striped table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col" style="text-align: center">Subscribed e-mail address</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{if .Emails}}
+                    {{range $index, $email := .Emails }}
+                        <tr>
+                            <th scope="row">{{add $index 1}}</th>
+                            <td>{{$email}}</td>
+                        </tr>
+                    {{end}}
+                {{else}}
+                    <tr>
+                        <th colspan="2" style="text-align: center">No one has subscribed yet!</th>
+                    </tr>
+                {{end}}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+        crossorigin="anonymous"></script>
+</body>
+</html>
