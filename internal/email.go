@@ -2,7 +2,9 @@ package internal
 
 import (
 	"errors"
+	"net/mail"
 	"net/smtp"
+	"strings"
 )
 
 type LoginAuth struct {
@@ -32,9 +34,16 @@ func (a *LoginAuth) Next(fromServer []byte, more bool) ([]byte, error) {
 }
 
 func SendEmail(auth smtp.Auth, fromEmail string, toEmail string, subject string, body string) error {
-	msg := []byte("To: " + toEmail + "\r\n" +
-		"Subject: " + subject + "\r\n" +
-		"\r\n" + body + "\r\n")
+	body = strings.ReplaceAll(body, "\n", "<br>")
 
-	return smtp.SendMail("smtp.gmail.com:587", auth, fromEmail, []string{toEmail}, msg)
+	message := []byte("Subject: " + subject + "\n" +
+		"MIME-version: 1.0;\nContent-Type: text/html; charset=\"UTF-8\";\n\n" +
+		"<html><body><h3>" + body + "</h3></body></html>")
+
+	return smtp.SendMail("smtp.gmail.com:587", auth, fromEmail, []string{toEmail}, message)
+}
+
+func ValidateEmail(email string) bool {
+	_, err := mail.ParseAddress(email)
+	return err == nil
 }

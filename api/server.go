@@ -66,26 +66,6 @@ func (server *Server) rate() http.HandlerFunc {
 	}
 }
 
-func (server *Server) getBTCRate(currency string) (float64, error) {
-	response, err := http.Get(fmt.Sprintf("https://api.binance.com/api/v3/ticker/price?symbol=BTC%s", currency))
-
-	if err != nil {
-		return 0, err
-	}
-
-	var btcRate struct {
-		Price string `json:"price"`
-	}
-
-	err = json.NewDecoder(response.Body).Decode(&btcRate)
-
-	if err != nil {
-		return 0, err
-	}
-
-	return strconv.ParseFloat(btcRate.Price, 64)
-}
-
 func (server *Server) subscribe() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		err := request.ParseForm()
@@ -99,6 +79,11 @@ func (server *Server) subscribe() http.HandlerFunc {
 
 		email := request.Form.Get("email")
 		email = strings.TrimSpace(email)
+
+		if !internal.ValidateEmail(email) {
+			http.Error(writer, "Invalid email!", http.StatusBadRequest)
+			return
+		}
 
 		if internal.BinarySearch(server.emails, email) {
 			http.Error(writer, email+" is already subscribed!", http.StatusConflict)
@@ -121,6 +106,13 @@ func (server *Server) subscribe() http.HandlerFunc {
 				http.Error(writer, err.Error(), http.StatusInternalServerError)
 				return
 			}
+
+			err = server.sendEmail(email, "Thank You for subscription!",
+				"You will be receiving information about BTC to UAH exchange rates from now on.\n\nStay tuned!")
+			if err != nil {
+				http.Error(writer, err.Error(), http.StatusInternalServerError)
+				return
+			}
 		}
 	}
 }
@@ -129,6 +121,7 @@ func (server *Server) sendEmails() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		subject := "BTC to UAH"
 		rate, err := server.getBTCRate("UAH")
+		body := fmt.Sprintf("Current exchange rate:\n 1 BTC = %s UAH", getFormattedCurrency(rate))
 
 		if err != nil {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
@@ -139,13 +132,13 @@ func (server *Server) sendEmails() http.HandlerFunc {
 		var mutex sync.Mutex
 
 		for _, email := range server.emails {
-			go func(email string, mutex *sync.Mutex) {
-				if err = internal.SendEmail(server.Auth, server.email, email, subject, getFormattedCurrency(rate)); err != nil {
+			go func(email, subject, body string, mutex *sync.Mutex) {
+				if err = server.sendEmail(email, subject, body); err != nil {
 					mutex.Lock()
 					unsentEmails = append(unsentEmails, email)
 					mutex.Unlock()
 				}
-			}(email, &mutex)
+			}(email, subject, body, &mutex)
 		}
 
 		writer.Header().Set("Content-Type", "application/json")
@@ -157,6 +150,30 @@ func (server *Server) sendEmails() http.HandlerFunc {
 			return
 		}
 	}
+}
+
+func (server *Server) getBTCRate(currency string) (float64, error) {
+	response, err := http.Get(fmt.Sprintf("https://api.binance.com/api/v3/ticker/price?symbol=BTC%s", currency))
+
+	if err != nil {
+		return 0, err
+	}
+
+	var btcRate struct {
+		Price string `json:"price"`
+	}
+
+	err = json.NewDecoder(response.Body).Decode(&btcRate)
+
+	if err != nil {
+		return 0, err
+	}
+
+	return strconv.ParseFloat(btcRate.Price, 64)
+}
+
+func (server *Server) sendEmail(email, subject, body string) error {
+	return internal.SendEmail(server.Auth, server.email, email, subject, body)
 }
 
 func getFormattedCurrency(btcRate float64) string {
