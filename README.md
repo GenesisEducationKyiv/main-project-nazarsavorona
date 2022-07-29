@@ -69,7 +69,7 @@ docker run -p 8081:8081 btc-rate-check-service
 Now you can reach an API using [`http://localhost:8081/api`](http://localhost:8081/api)
 or [`http://127.0.0.1:8081/api`](http://127.0.0.1:8081/api).
 
-- Using a deployed Heroku app
+- Heroku
 
-You can reach an API
-using [`https://btc-rate-check-service.herokuapp.com/api`](https://btc-rate-check-service.herokuapp.com/api).
+  - API [`https://btc-rate-check-service.herokuapp.com/api`](https://btc-rate-check-service.herokuapp.com/api).
+  - Web app [`https://btc-rate-check-service.herokuapp.com/`](https://btc-rate-check-service.herokuapp.com/).
