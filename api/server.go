@@ -3,15 +3,19 @@ package api
 import (
 	"BTCRateCheckService/internal"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/gorilla/mux"
+	"log"
 	"net/http"
 	"net/smtp"
+	"os"
 	"strconv"
 	"strings"
 	"sync"
 )
 
+const dataFolder = "./resources"
 const dataPath = "./resources/emails.dat"
 
 type UnsentEmailsJSON struct {
@@ -31,6 +35,13 @@ func NewServer(email, password string) *Server {
 		Auth:   internal.NewLoginAuth(email, password),
 		email:  email,
 		emails: []string{},
+	}
+
+	if _, err := os.Stat(dataFolder); errors.Is(err, os.ErrNotExist) {
+		err = os.Mkdir(dataFolder, os.ModePerm)
+		if err != nil {
+			log.Println(err.Error())
+		}
 	}
 
 	server.emails, _ = internal.ReadLines(dataPath)
@@ -89,32 +100,45 @@ func (server *Server) subscribe() http.HandlerFunc {
 			http.Error(writer, email+" is already subscribed!", http.StatusConflict)
 			return
 		} else {
-			server.emails = internal.InsertSorted(server.emails, email)
-
-			err = internal.WriteLines(server.emails, dataPath)
-
-			if err != nil {
-				http.Error(writer, err.Error(), http.StatusInternalServerError)
-				return
-			}
-
-			writer.WriteHeader(http.StatusOK)
-
-			_, err = writer.Write([]byte(email + " has been added successfully!"))
-
-			if err != nil {
-				http.Error(writer, err.Error(), http.StatusInternalServerError)
-				return
-			}
-
-			err = server.sendEmail(email, "Thank You for subscription!",
-				"You will be receiving information about BTC to UAH exchange rates from now on.\n\nStay tuned!")
-			if err != nil {
-				http.Error(writer, err.Error(), http.StatusInternalServerError)
-				return
-			}
+			server.handleNewSubscriber(writer, email, err)
 		}
 	}
+}
+
+func (server *Server) handleNewSubscriber(writer http.ResponseWriter, email string, err error) {
+	err = server.addNewEmail(email, err)
+
+	if err != nil {
+		http.Error(writer, err.Error(), http.StatusInternalServerError)
+	}
+
+	_, err = writer.Write([]byte(email + " has been added successfully!"))
+
+	if err != nil {
+		http.Error(writer, err.Error(), http.StatusInternalServerError)
+	}
+
+	go func() {
+		err = server.sendEmail(email, "Thank You for subscription!",
+			"You will be receiving information about BTC to UAH exchange rates from now on.\n\nStay tuned!")
+
+		if err != nil {
+			log.Printf(err.Error())
+		}
+	}()
+}
+
+func (server *Server) addNewEmail(email string, err error) error {
+	var mutex sync.Mutex
+
+	mutex.Lock()
+
+	server.emails = internal.InsertSorted(server.emails, email)
+	err = internal.WriteLines(server.emails, dataPath)
+
+	mutex.Unlock()
+
+	return err
 }
 
 func (server *Server) sendEmails() http.HandlerFunc {
