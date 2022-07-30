@@ -110,21 +110,21 @@ func (server *Server) subscribe() http.HandlerFunc {
 			http.Error(writer, email+" is already subscribed!", http.StatusConflict)
 			return
 		} else {
-			if server.handleNewSubscriber(writer, email, err) != nil {
+			if server.handleNewSubscriber(email, err) == nil {
+				_, err = writer.Write([]byte(email + " has been added successfully!"))
+
+				if err != nil {
+					http.Error(writer, err.Error(), http.StatusInternalServerError)
+				}
+			} else {
 				http.Error(writer, err.Error(), http.StatusInternalServerError)
 			}
 		}
 	}
 }
 
-func (server *Server) handleNewSubscriber(writer http.ResponseWriter, email string, err error) error {
+func (server *Server) handleNewSubscriber(email string, err error) error {
 	err = server.addNewEmail(email, err)
-
-	if err != nil {
-		return err
-	}
-
-	_, err = writer.Write([]byte(email + " has been added successfully!"))
 
 	if err != nil {
 		return err
@@ -229,10 +229,15 @@ func (server *Server) index() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		rate, _ := server.getBTCRate("UAH")
 
-		server.template.ExecuteTemplate(writer, "index.gohtml", struct {
+		err := server.template.ExecuteTemplate(writer, "index.gohtml", struct {
 			Rate   string
 			Emails []string
 		}{getFormattedCurrency(rate), server.emails})
+
+		if err != nil {
+			http.Redirect(writer, request, "/", http.StatusInternalServerError)
+			return
+		}
 	}
 }
 
@@ -241,28 +246,29 @@ func (server *Server) webSubscribe() http.HandlerFunc {
 		err := request.ParseForm()
 
 		if err != nil {
-			//http.Error(writer, err.Error(), http.StatusInternalServerError)
 			return
 		}
-
-		writer.Header().Set("Content-Type", "application/json")
 
 		email := request.Form.Get("email")
 		email = strings.TrimSpace(email)
 
 		if !internal.ValidateEmail(email) {
-			//http.Error(writer, "Invalid email!", http.StatusBadRequest)
+			http.Redirect(writer, request, "/", http.StatusBadRequest)
 			return
 		}
 
 		if internal.BinarySearch(server.emails, email) {
-			//http.Error(writer, email+" is already subscribed!", http.StatusConflict)
+			http.Redirect(writer, request, "/", http.StatusSeeOther)
 			return
 		} else {
-			if server.handleNewSubscriber(writer, email, err) != nil {
-				//http.Error(writer, err.Error(), http.StatusInternalServerError)
+			err = server.handleNewSubscriber(email, err)
+			if err != nil {
+				http.Redirect(writer, request, "/", http.StatusBadRequest)
+				return
 			}
 		}
+
+		http.Redirect(writer, request, "/", http.StatusSeeOther)
 	}
 }
 
@@ -271,9 +277,11 @@ func (server *Server) webSendEmails() http.HandlerFunc {
 		err, _ := server.startSendingEmails()
 
 		if err != nil {
-			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			http.Redirect(writer, request, "/", http.StatusInternalServerError)
 			return
 		}
+
+		http.Redirect(writer, request, "/", http.StatusSeeOther)
 	}
 }
 
