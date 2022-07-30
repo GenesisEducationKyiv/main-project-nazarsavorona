@@ -258,7 +258,7 @@ func (server *Server) webSubscribe() http.HandlerFunc {
 		}
 
 		if internal.BinarySearch(server.emails, email) {
-			http.Redirect(writer, request, "/", http.StatusSeeOther)
+			http.Redirect(writer, request, "/", http.StatusConflict)
 			return
 		} else {
 			err = server.handleNewSubscriber(email, err)
