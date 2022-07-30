@@ -60,7 +60,8 @@
                 <label for="sendEmailsGroup" class="form-label">Send Letters</label>
                 <div class="input-group" id="sendEmailsGroup">
                     <span class="input-group-text col-6 col-sm" style="white-space: normal">Notify everyone about current exchange rate!</span>
-                    <button type="submit" class="btn btn-primary col-6 col-sm-auto">Send Emails</button>
+                    <button type="submit" class="btn btn-primary col-6 col-sm-auto" id="sendEmailsButton" {{if not .Emails}} disabled {{end}}>Send Emails
+                    </button>
                 </div>
             </form>
         </div>
@@ -116,9 +117,10 @@
             })
     })()
 
-    let emailInput = document.getElementById("emailInput")
-    let emailInputParent = emailInput.parentNode
-    let subscribeButton = document.getElementById("subscribeButton")
+    const emailInput = document.getElementById("emailInput")
+    const emailInputParent = emailInput.parentNode
+    const subscribeButton = document.getElementById("subscribeButton")
+    const sendEmailsButton = document.getElementById("sendEmailsButton")
 
     function verifyEmail() {
         if (emailInput.value === "") {
@@ -130,7 +132,7 @@
 
             subscribeButton.disabled = true
 
-            return
+            return false
         }
 
         if (emailInput.checkValidity()) {
@@ -141,6 +143,8 @@
 
             emailInputParent.classList.remove("is-invalid")
             subscribeButton.disabled = false
+
+            return true
         } else {
             emailInput.classList.add("is-invalid")
             emailInput.classList.remove("is-valid")
@@ -149,6 +153,8 @@
             emailInputParent.classList.remove("is-valid")
 
             subscribeButton.disabled = true
+
+            return false
         }
     }
 
@@ -158,7 +164,15 @@
 
     subscribeButton.addEventListener("click", () => {
         if (!subscribeButton.disabled) {
-            verifyEmail()
+            if (verifyEmail()) {
+                alert("Subscription request has been successfully sent!")
+            }
+        }
+    })
+
+    sendEmailsButton.addEventListener("click", () => {
+        if (!sendEmailsButton.disabled) {
+            alert("Request for sending e-mails has been successfully sent!")
         }
     })
 
