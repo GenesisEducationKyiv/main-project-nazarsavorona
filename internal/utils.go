@@ -17,16 +17,16 @@ func InsertSorted(strings []string, toInsert string) []string {
 	return strings
 }
 
-func BinarySearch(strings []string, target string) bool {
+func ContainsBinarySearch(strings []string, target string) bool {
 	mid := len(strings) / 2
 
 	switch {
 	case len(strings) == 0:
 		return false
 	case strings[mid] > target:
-		return BinarySearch(strings[:mid], target)
+		return ContainsBinarySearch(strings[:mid], target)
 	case strings[mid] < target:
-		return BinarySearch(strings[mid+1:], target)
+		return ContainsBinarySearch(strings[mid+1:], target)
 	default:
 		return true
 	}
@@ -52,7 +52,7 @@ func ReadLines(path string) ([]string, error) {
 	return lines, scanner.Err()
 }
 
-func WriteLines(lines []string, path string) error {
+func WriteLines(path string, lines []string) error {
 	file, err := os.Create(path)
 
 	if err != nil {

@@ -16,32 +16,29 @@
 <body>
 <nav class="navbar navbar-dark bg-dark">
     <div class="container-fluid">
-        <span class="navbar-brand mb-0 h1">BTC Rate Check Service</span>
+        <a href="/" class="navbar-brand mb-0 h1">BTC Rate Check Service</a>
 
-        <form action="/" method="get" class="d-none d-md-flex align-items-center">
+        <div class="d-none d-md-flex align-items-center">
             <div class="h6 text-white m-0 me-3">Current Exchange Rate: 1 BTC = {{.Rate}} UAH</div>
-            <button type="submit" class="btn btn-outline-success" id="refreshButton">Refresh</button>
-        </form>
+            <a class="btn btn-outline-success" href="/" role="button">Refresh</a>
+        </div>
     </div>
 </nav>
 
 <div class="container mt-2">
-    <form action="/" method="get" class="row d-md-none">
-        <div class="col-12 col-sm">
+    <div class="row d-md-none mb-3">
+        <div class="col">
             <h2 style="text-align: center">Current Exchange Rate</h2>
             <h2 style="text-align: center">1 BTC = {{.Rate}} UAH</h2>
+            <a class="btn btn-outline-primary d-block" href="/" role="button">Refresh</a>
         </div>
-
-        <div class="col d-grid">
-            <button type="submit" class="btn btn-outline-primary" id="refreshButton">Refresh</button>
-        </div>
-    </form>
+    </div>
     <div class="row">
         <div class="col-lg">
             <form action="/subscribe" method="post" class="needs-validation mb-3">
                 <label for="emailInput" class="form-label">E-mail Subscription</label>
                 <div class="input-group">
-                    <input type="email" name="email" id="emailInput" placeholder="Your email"
+                    <input type="email" name="email" id="emailInput" placeholder="Your e-mail"
                            class="form-control" maxlength="50"
                            required>
                     <button type="submit" class="btn btn-primary" id="subscribeButton" disabled>Subscribe</button>
@@ -60,7 +57,8 @@
                 <label for="sendEmailsGroup" class="form-label">Send Letters</label>
                 <div class="input-group" id="sendEmailsGroup">
                     <span class="input-group-text col-6 col-sm" style="white-space: normal">Notify everyone about current exchange rate!</span>
-                    <button type="submit" class="btn btn-primary col-6 col-sm-auto" id="sendEmailsButton" {{if not .Emails}} disabled {{end}}>Send Emails
+                    <button type="submit" class="btn btn-primary col-6 col-sm-auto"
+                            id="sendEmailsButton" {{if not .Emails}} disabled {{end}}>Send Emails
                     </button>
                 </div>
             </form>

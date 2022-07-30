@@ -24,8 +24,8 @@ type UnsentEmailsJSON struct {
 }
 
 type Server struct {
-	*mux.Router
-	smtp.Auth
+	Router   *mux.Router
+	auth     smtp.Auth
 	email    string
 	emails   []string
 	template *template.Template
@@ -36,7 +36,7 @@ func NewServer(email, password string) *Server {
 
 	server := &Server{
 		Router:   mux.NewRouter(),
-		Auth:     internal.NewLoginAuth(email, password),
+		auth:     internal.NewLoginAuth(email, password),
 		email:    email,
 		emails:   []string{},
 		template: template.Must(template.New("").Funcs(functionMap).ParseGlob("./templates/*.gohtml")),
@@ -57,14 +57,14 @@ func NewServer(email, password string) *Server {
 }
 
 func (server *Server) routes() {
-	server.HandleFunc("/", server.index()).Methods("GET")
-	server.HandleFunc("/api/rate", server.rate()).Methods("GET")
-	server.HandleFunc("/api/subscribe", server.subscribe()).Methods("POST")
-	server.HandleFunc("/api/sendEmails", server.sendEmails()).Methods("POST")
-	server.HandleFunc("/subscribe", server.webSubscribe()).Methods("POST")
-	server.HandleFunc("/sendEmails", server.webSendEmails()).Methods("POST")
+	server.Router.HandleFunc("/", server.index()).Methods("GET")
+	server.Router.HandleFunc("/api/rate", server.rate()).Methods("GET")
+	server.Router.HandleFunc("/api/subscribe", server.subscribe()).Methods("POST")
+	server.Router.HandleFunc("/api/sendEmails", server.sendEmails()).Methods("POST")
+	server.Router.HandleFunc("/subscribe", server.webSubscribe()).Methods("POST")
+	server.Router.HandleFunc("/sendEmails", server.webSendEmails()).Methods("POST")
 
-	http.Handle("/", server)
+	http.Handle("/", server.Router)
 }
 
 func (server *Server) rate() http.HandlerFunc {
@@ -106,11 +106,11 @@ func (server *Server) subscribe() http.HandlerFunc {
 			return
 		}
 
-		if internal.BinarySearch(server.emails, email) {
+		if internal.ContainsBinarySearch(server.emails, email) {
 			http.Error(writer, email+" is already subscribed!", http.StatusConflict)
 			return
 		} else {
-			if server.handleNewSubscriber(email, err) == nil {
+			if server.handleNewSubscriber(email) == nil {
 				_, err = writer.Write([]byte(email + " has been added successfully!"))
 
 				if err != nil {
@@ -123,8 +123,8 @@ func (server *Server) subscribe() http.HandlerFunc {
 	}
 }
 
-func (server *Server) handleNewSubscriber(email string, err error) error {
-	err = server.addNewEmail(email, err)
+func (server *Server) handleNewSubscriber(email string) error {
+	err := server.addNewEmail(email)
 
 	if err != nil {
 		return err
@@ -142,13 +142,13 @@ func (server *Server) handleNewSubscriber(email string, err error) error {
 	return nil
 }
 
-func (server *Server) addNewEmail(email string, err error) error {
+func (server *Server) addNewEmail(email string) error {
 	var mutex sync.Mutex
 
 	mutex.Lock()
 
 	server.emails = internal.InsertSorted(server.emails, email)
-	err = internal.WriteLines(server.emails, dataPath)
+	err := internal.WriteLines(dataPath, server.emails)
 
 	mutex.Unlock()
 
@@ -157,7 +157,7 @@ func (server *Server) addNewEmail(email string, err error) error {
 
 func (server *Server) sendEmails() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
-		err, unsentEmails := server.startSendingEmails()
+		unsentEmails, err := server.startSendingEmails()
 
 		if err != nil {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
@@ -175,7 +175,7 @@ func (server *Server) sendEmails() http.HandlerFunc {
 	}
 }
 
-func (server *Server) startSendingEmails() (error, []string) {
+func (server *Server) startSendingEmails() ([]string, error) {
 	subject := "BTC to UAH"
 	rate, err := server.getBTCRate("UAH")
 	body := fmt.Sprintf("Current exchange rate:\n 1 BTC = %s UAH", getFormattedCurrency(rate))
@@ -183,7 +183,7 @@ func (server *Server) startSendingEmails() (error, []string) {
 	unsentEmails := []string{}
 
 	if err != nil {
-		return err, unsentEmails
+		return unsentEmails, err
 	}
 
 	var mutex sync.Mutex
@@ -192,13 +192,14 @@ func (server *Server) startSendingEmails() (error, []string) {
 		go func(email, subject, body string, mutex *sync.Mutex) {
 			if sendErr := server.sendEmail(email, subject, body); sendErr != nil {
 				mutex.Lock()
+				defer mutex.Unlock()
+
 				unsentEmails = append(unsentEmails, email)
-				mutex.Unlock()
 			}
 		}(email, subject, body, &mutex)
 	}
 
-	return err, unsentEmails
+	return unsentEmails, err
 }
 
 func (server *Server) getBTCRate(currency string) (float64, error) {
@@ -222,21 +223,22 @@ func (server *Server) getBTCRate(currency string) (float64, error) {
 }
 
 func (server *Server) sendEmail(email, subject, body string) error {
-	return internal.SendEmail(server.Auth, server.email, email, subject, body)
+	return internal.SendEmail(server.auth, server.email, email, subject, body)
 }
 
 func (server *Server) index() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		rate, _ := server.getBTCRate("UAH")
 
-		err := server.template.ExecuteTemplate(writer, "index.gohtml", struct {
+		indexData := struct {
 			Rate   string
 			Emails []string
-		}{getFormattedCurrency(rate), server.emails})
+		}{getFormattedCurrency(rate), server.emails}
+
+		err := server.template.ExecuteTemplate(writer, "index.gohtml", indexData)
 
 		if err != nil {
 			http.Redirect(writer, request, "/", http.StatusInternalServerError)
-			return
 		}
 	}
 }
@@ -257,11 +259,11 @@ func (server *Server) webSubscribe() http.HandlerFunc {
 			return
 		}
 
-		if internal.BinarySearch(server.emails, email) {
+		if internal.ContainsBinarySearch(server.emails, email) {
 			http.Redirect(writer, request, "/", http.StatusConflict)
 			return
 		} else {
-			err = server.handleNewSubscriber(email, err)
+			err = server.handleNewSubscriber(email)
 			if err != nil {
 				http.Redirect(writer, request, "/", http.StatusBadRequest)
 				return
@@ -274,7 +276,7 @@ func (server *Server) webSubscribe() http.HandlerFunc {
 
 func (server *Server) webSendEmails() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
-		err, _ := server.startSendingEmails()
+		_, err := server.startSendingEmails()
 
 		if err != nil {
 			http.Redirect(writer, request, "/", http.StatusInternalServerError)
