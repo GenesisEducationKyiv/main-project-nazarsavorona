@@ -4,33 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"sort"
 )
-
-func InsertSorted(strings []string, toInsert string) []string {
-	i := sort.SearchStrings(strings, toInsert)
-
-	strings = append(strings, "")
-	copy(strings[i+1:], strings[i:])
-	strings[i] = toInsert
-
-	return strings
-}
-
-func ContainsBinarySearch(strings []string, target string) bool {
-	mid := len(strings) / 2
-
-	switch {
-	case len(strings) == 0:
-		return false
-	case strings[mid] > target:
-		return ContainsBinarySearch(strings[:mid], target)
-	case strings[mid] < target:
-		return ContainsBinarySearch(strings[mid+1:], target)
-	default:
-		return true
-	}
-}
 
 func ReadLines(path string) ([]string, error) {
 	file, err := os.Open(path)

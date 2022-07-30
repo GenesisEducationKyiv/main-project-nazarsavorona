@@ -14,6 +14,7 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"time"
 )
 
 const dataFolder = "./resources"
@@ -24,11 +25,13 @@ type UnsentEmailsJSON struct {
 }
 
 type Server struct {
-	Router   *mux.Router
-	auth     smtp.Auth
-	email    string
-	emails   []string
-	template *template.Template
+	Router          *mux.Router
+	auth            smtp.Auth
+	email           string
+	emails          map[string]bool
+	btcRate         float64
+	lastTimeRequest time.Time
+	template        *template.Template
 }
 
 func NewServer(email, password string) *Server {
@@ -38,7 +41,7 @@ func NewServer(email, password string) *Server {
 		Router:   mux.NewRouter(),
 		auth:     internal.NewLoginAuth(email, password),
 		email:    email,
-		emails:   []string{},
+		emails:   map[string]bool{},
 		template: template.Must(template.New("").Funcs(functionMap).ParseGlob("./templates/*.gohtml")),
 	}
 
@@ -49,11 +52,29 @@ func NewServer(email, password string) *Server {
 		}
 	}
 
-	server.emails, _ = internal.ReadLines(dataPath)
+	server.readEmailsFromFile()
 
 	server.routes()
 
+	var err error = nil
+
+	server.btcRate, err = server.getBTCRate("UAH")
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	server.lastTimeRequest = time.Now()
+
 	return server
+}
+
+func (server *Server) readEmailsFromFile() {
+	emailList, _ := internal.ReadLines(dataPath)
+
+	for _, currentEmail := range emailList {
+		server.emails[currentEmail] = true
+	}
 }
 
 func (server *Server) routes() {
@@ -69,11 +90,20 @@ func (server *Server) routes() {
 
 func (server *Server) rate() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
-		btcRate, err := server.getBTCRate("UAH")
+		btcRate := 0.0
+		var err error = nil
 
-		if err != nil {
-			http.Error(writer, err.Error(), http.StatusBadRequest)
-			return
+		if time.Now().Sub(server.lastTimeRequest) <= time.Second*15 {
+			btcRate = server.btcRate
+		} else {
+			btcRate, err = server.getBTCRate("UAH")
+
+			if err != nil {
+				http.Error(writer, err.Error(), http.StatusBadRequest)
+				return
+			}
+
+			server.lastTimeRequest = time.Now()
 		}
 
 		writer.Header().Set("Content-Type", "application/json")
@@ -106,7 +136,7 @@ func (server *Server) subscribe() http.HandlerFunc {
 			return
 		}
 
-		if internal.ContainsBinarySearch(server.emails, email) {
+		if _, isPresent := server.emails[email]; isPresent {
 			http.Error(writer, email+" is already subscribed!", http.StatusConflict)
 			return
 		} else {
@@ -147,12 +177,26 @@ func (server *Server) addNewEmail(email string) error {
 
 	mutex.Lock()
 
-	server.emails = internal.InsertSorted(server.emails, email)
-	err := internal.WriteLines(dataPath, server.emails)
+	server.emails[email] = true
+
+	emailList := server.getEmailList()
+
+	err := internal.WriteLines(dataPath, emailList)
 
 	mutex.Unlock()
 
 	return err
+}
+
+func (server *Server) getEmailList() []string {
+	emailList := make([]string, len(server.emails))
+
+	i := 0
+	for k := range server.emails {
+		emailList[i] = k
+		i++
+	}
+	return emailList
 }
 
 func (server *Server) sendEmails() http.HandlerFunc {
@@ -187,9 +231,13 @@ func (server *Server) startSendingEmails() ([]string, error) {
 	}
 
 	var mutex sync.Mutex
+	var waitGroup sync.WaitGroup
 
-	for _, email := range server.emails {
+	for email := range server.emails {
+		waitGroup.Add(1)
 		go func(email, subject, body string, mutex *sync.Mutex) {
+			defer waitGroup.Done()
+
 			if sendErr := server.sendEmail(email, subject, body); sendErr != nil {
 				mutex.Lock()
 				defer mutex.Unlock()
@@ -198,6 +246,8 @@ func (server *Server) startSendingEmails() ([]string, error) {
 			}
 		}(email, subject, body, &mutex)
 	}
+
+	waitGroup.Wait()
 
 	return unsentEmails, err
 }
@@ -233,7 +283,7 @@ func (server *Server) index() http.HandlerFunc {
 		indexData := struct {
 			Rate   string
 			Emails []string
-		}{getFormattedCurrency(rate), server.emails}
+		}{getFormattedCurrency(rate), server.getEmailList()}
 
 		err := server.template.ExecuteTemplate(writer, "index.gohtml", indexData)
 
@@ -259,7 +309,7 @@ func (server *Server) webSubscribe() http.HandlerFunc {
 			return
 		}
 
-		if internal.ContainsBinarySearch(server.emails, email) {
+		if _, isPresent := server.emails[email]; isPresent {
 			http.Redirect(writer, request, "/", http.StatusConflict)
 			return
 		} else {
