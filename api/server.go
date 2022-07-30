@@ -79,6 +79,7 @@ func (server *Server) readEmailsFromFile() {
 
 func (server *Server) routes() {
 	server.Router.HandleFunc("/", server.index()).Methods("GET")
+	server.Router.HandleFunc("/conflict", server.conflict()).Methods("GET")
 	server.Router.HandleFunc("/api/rate", server.rate()).Methods("GET")
 	server.Router.HandleFunc("/api/subscribe", server.subscribe()).Methods("POST")
 	server.Router.HandleFunc("/api/sendEmails", server.sendEmails()).Methods("POST")
@@ -278,17 +279,26 @@ func (server *Server) sendEmail(email, subject, body string) error {
 
 func (server *Server) index() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
-		rate, _ := server.getBTCRate("UAH")
-
 		indexData := struct {
 			Rate   string
 			Emails []string
-		}{getFormattedCurrency(rate), server.getEmailList()}
+		}{getFormattedCurrency(server.btcRate), server.getEmailList()}
 
 		err := server.template.ExecuteTemplate(writer, "index.gohtml", indexData)
 
 		if err != nil {
 			http.Redirect(writer, request, "/", http.StatusInternalServerError)
+		}
+	}
+}
+
+func (server *Server) conflict() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		err := server.template.ExecuteTemplate(writer, "conflict.gohtml", nil)
+
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
 		}
 	}
 }
@@ -310,7 +320,7 @@ func (server *Server) webSubscribe() http.HandlerFunc {
 		}
 
 		if _, isPresent := server.emails[email]; isPresent {
-			http.Redirect(writer, request, "/", http.StatusConflict)
+			http.Redirect(writer, request, "/conflict", http.StatusSeeOther)
 			return
 		} else {
 			err = server.handleNewSubscriber(email)
