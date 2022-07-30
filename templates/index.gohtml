@@ -19,11 +19,12 @@
 
 <div class="container mt-2">
     <div class="row">
+        <h2 style="text-align: center">Current Exchange Rate</h2>
         <h2 style="text-align: center">1 BTC = {{.Rate}} UAH</h2>
 
         <div class="col-lg">
             <form action="/subscribe" method="post" class="mb-3">
-                <label for="emailInput" class="form-label">E-mail</label>
+                <label for="emailInput" class="form-label">E-mail Subscription</label>
                 <div class="input-group">
                     <input type="text" name="email" id="emailInput" placeholder="Your email" class="form-control">
                     <button type="submit" class="btn btn-primary">Subscribe</button>
@@ -32,35 +33,38 @@
             </form>
 
             <form action="/sendEmails" method="post" class="mb-3">
-                <div class="input-group">
-                    <span class="input-group-text col">Notify everyone about current exchange rate!</span>
-                    <button type="submit" class="btn btn-primary col">Send Emails</button>
+                <label for="sendEmailsGroup" class="form-label">Send Letters</label>
+                <div class="input-group" id="sendEmailsGroup">
+                    <span class="input-group-text col-6 col-sm" style="white-space: normal">Notify everyone about current exchange rate!</span>
+                    <button type="submit" class="btn btn-primary col-6 col-sm-auto">Send Emails</button>
                 </div>
             </form>
         </div>
         <div class="col-lg">
-            <table class="table table-dark table-striped table-hover">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col" style="text-align: center">Subscribed e-mail address</th>
-                </tr>
-                </thead>
-                <tbody>
+            <label for="subscribers" class="form-label">Subscribers</label>
+            <table class="table table-dark table-striped table-hover" id="subscribers">
                 {{if .Emails}}
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col" style="text-align: center">Subscribed e-mail address</th>
+                    </tr>
+                    </thead>
+                    <tbody>
                     {{range $index, $email := .Emails }}
                         <tr>
                             <th scope="row">{{add $index 1}}</th>
-                            <td>{{$email}}</td>
+                            <td style="text-align: center">{{$email}}</td>
                         </tr>
                     {{end}}
+                    </tbody>
                 {{else}}
+                    <thead>
                     <tr>
-                        <th colspan="2" style="text-align: center">No one has subscribed yet!</th>
+                        <th style="text-align: center">No one has subscribed yet!</th>
                     </tr>
+                    </thead>
                 {{end}}
-
-                </tbody>
             </table>
         </div>
     </div>
