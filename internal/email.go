@@ -37,6 +37,7 @@ func SendEmail(auth smtp.Auth, fromEmail string, toEmail string, subject string,
 	body = strings.ReplaceAll(body, "\n", "<br>")
 
 	message := []byte("Subject: " + subject + "\n" +
+		"To: " + toEmail + "\n" +
 		"MIME-version: 1.0;\nContent-Type: text/html; charset=\"UTF-8\";\n\n" +
 		"<html><body><h3>" + body + "</h3></body></html>")
 
