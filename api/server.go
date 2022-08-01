@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"net/smtp"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 	"sync"
@@ -109,7 +110,7 @@ func (server *Server) rate() http.HandlerFunc {
 
 		writer.Header().Set("Content-Type", "application/json")
 
-		err = json.NewEncoder(writer).Encode(json.Number(getFormattedCurrency(btcRate)))
+		err = json.NewEncoder(writer).Encode(getFormattedCurrency(btcRate))
 
 		if err != nil {
 			http.Error(writer, err.Error(), http.StatusBadRequest)
@@ -279,10 +280,13 @@ func (server *Server) sendEmail(email, subject, body string) error {
 
 func (server *Server) index() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
+		emails := server.getEmailList()
+		sort.Strings(emails)
+
 		indexData := struct {
 			Rate   string
 			Emails []string
-		}{getFormattedCurrency(server.btcRate), server.getEmailList()}
+		}{getFormattedCurrency(server.btcRate), emails}
 
 		err := server.template.ExecuteTemplate(writer, "index.gohtml", indexData)
 
