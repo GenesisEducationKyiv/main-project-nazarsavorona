@@ -319,7 +319,7 @@ func (server *Server) webSubscribe() http.HandlerFunc {
 		email = strings.TrimSpace(email)
 
 		if !internal.ValidateEmail(email) {
-			http.Redirect(writer, request, "/", http.StatusBadRequest)
+			http.Redirect(writer, request, "/", http.StatusSeeOther)
 			return
 		}
 
