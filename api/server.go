@@ -110,7 +110,7 @@ func (server *Server) rate() http.HandlerFunc {
 
 		writer.Header().Set("Content-Type", "application/json")
 
-		err = json.NewEncoder(writer).Encode(getFormattedCurrency(btcRate))
+		err = json.NewEncoder(writer).Encode(json.Number(getFormattedCurrency(btcRate)))
 
 		if err != nil {
 			http.Error(writer, err.Error(), http.StatusBadRequest)
