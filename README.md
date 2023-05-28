@@ -32,9 +32,7 @@ Additionally, sends a letter notifying that user will be receiving messages abou
 
 ```
 200: E-mail address is added
-400: Sent string is not an e-mail address
 409: Such an e-mail address already exists
-500: Other server errors
 ```
 
 ---
@@ -52,7 +50,6 @@ returns an e-mail addresses array if during sending a letter to them any error o
 
 ```
 200: E-mails are sent
-500: Other server errors
 ```
 
 ## Usage:
@@ -60,16 +57,14 @@ returns an e-mail addresses array if during sending a letter to them any error o
 - Locally
 
 ```
-git clone https://github.com/nazarsavorona/BTCRateCheckService.git
-cd .\BTCRateCheckService\
+git clone https://github.com/nazarsavorona/btc-rate-check-service.git
+cd .\btc-rate-check-service\
 docker build -t btc-rate-check-service .
 docker run -p 8081:8081 btc-rate-check-service
 ```
 
 Now you can reach an API using [`http://localhost:8081/api`](http://localhost:8081/api)
-or [`http://127.0.0.1:8081/api`](http://127.0.0.1:8081/api).
+or [`http://127.0.0.1:8081/api`](http://127.0.0.1:8081/api) and its web
+version [`http://localhost:8081`](http://localhost:8081).
 
-- Heroku
-
-  - API [`https://btc-rate-check-service.herokuapp.com/api`](https://btc-rate-check-service.herokuapp.com/api).
-  - Web app [`https://btc-rate-check-service.herokuapp.com/`](https://btc-rate-check-service.herokuapp.com/).
+- Deployed version `temporarily unavailable`
