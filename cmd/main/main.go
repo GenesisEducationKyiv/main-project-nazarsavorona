@@ -20,10 +20,19 @@ func main() {
 
 	log.Printf("Service listens port: %s", port)
 
+	// create resources dir if not exists
+	_, err := os.Stat("resources")
+	if os.IsNotExist(err) {
+		err = os.Mkdir("resources", 0777)
+		if err != nil {
+			log.Panicln(err.Error())
+		}
+	}
+
 	s := service.NewService(email, password, fromCurrency, toCurrency, file_database.NewFileDatabase(dbFilePath))
 	app := application.NewApplication(s)
 
-	err := app.Run(":" + port)
+	err = app.Run(":" + port)
 	if err != nil {
 		log.Panicln(err.Error())
 	}
