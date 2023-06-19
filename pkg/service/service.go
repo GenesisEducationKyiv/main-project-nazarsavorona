@@ -2,9 +2,11 @@ package service
 
 import (
 	"fmt"
-	"github.com/nazarsavorona/btc-rate-check-service/pkg/currency_getter"
-	"github.com/nazarsavorona/btc-rate-check-service/pkg/email"
 	"log"
+
+	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/email"
+
+	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/currency"
 )
 
 type Service struct {
@@ -13,7 +15,7 @@ type Service struct {
 
 	repository *email.Repository
 	mailSender *email.Sender
-	rateGetter *currency_getter.BinanceGetter
+	rateGetter *currency.BinanceGetter
 }
 
 func NewService(accountEmail, accountPassword, from, to string, db email.Database) *Service {
@@ -22,7 +24,7 @@ func NewService(accountEmail, accountPassword, from, to string, db email.Databas
 		toCurrency:   to,
 		repository:   email.NewRepository(db),
 		mailSender:   email.NewSender(accountEmail, accountPassword),
-		rateGetter:   currency_getter.NewGetter(from, to),
+		rateGetter:   currency.NewGetter(from, to),
 	}
 }
 

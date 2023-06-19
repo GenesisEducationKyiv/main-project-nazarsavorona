@@ -1,6 +1,7 @@
-package currency_getter
+package currency
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -23,12 +24,23 @@ func NewGetter(from, to string) *BinanceGetter {
 	}
 }
 
+const binanceAPIURL = "https://api.binance.com/api/v3/"
+
 func (g *BinanceGetter) GetRate() (float64, error) {
-	response, err := http.Get(fmt.Sprintf("https://api.binance.com/api/v3/ticker/price?symbol=%s%s", g.fromCurrency, g.toCurrency))
+	url := fmt.Sprintf("%sticker/price?symbol=%s%s", binanceAPIURL, g.fromCurrency, g.toCurrency)
+	req, err := http.NewRequestWithContext(context.Background(), http.MethodGet, url, nil)
 
 	if err != nil {
 		return 0, err
 	}
+
+	client := &http.Client{}
+	response, err := client.Do(req)
+	if err != nil {
+		return 0, err
+	}
+
+	defer response.Body.Close()
 
 	var r rate
 

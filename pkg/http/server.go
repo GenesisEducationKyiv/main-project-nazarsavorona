@@ -1,12 +1,14 @@
-package http_server
+package http
 
 import (
 	"fmt"
-	"github.com/labstack/echo/v4"
 	"html/template"
 	"net/http"
 	"sort"
 	"strings"
+
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 type service interface {
@@ -36,7 +38,7 @@ func NewServer(s service) *Server {
 		template: template.Must(template.New("").Funcs(functionMap).ParseGlob("./templates/*.gohtml")),
 	}
 
-	//e.Use(middleware.Recover(), middleware.Logger())
+	e.Use(middleware.Recover(), middleware.Logger())
 
 	server.routes()
 
@@ -74,30 +76,10 @@ func (s *Server) subscribe(c echo.Context) error {
 	return c.JSON(http.StatusOK, email)
 }
 
-//func (s *Server) handleNewSubscriber(email string) error {
-//	err := s.addNewEmail(email)
-//
-//	if err != nil {
-//		return err
-//	}
-//
-//	go func() {
-//		err = s.sendEmail(email, "Thank You for subscription!",
-//			"You will be receiving information about BTC to UAH exchange rates from now on.\n\nStay tuned!")
-//
-//		if err != nil {
-//			log.Printf(err.Error())
-//		}
-//	}()
-//
-//	return nil
-//}
-
 func (s *Server) sendEmails(c echo.Context) error {
 	_ = s.service.SendEmails()
 
 	return c.JSON(http.StatusOK, "Emails sent")
-
 }
 
 func (s *Server) Start(address string) error {
@@ -137,7 +119,6 @@ func (s *Server) webSubscribe(c echo.Context) error {
 	err := s.service.Subscribe(email)
 	if err != nil {
 		http.Redirect(c.Response().Writer, c.Request(), "/conflict", http.StatusSeeOther)
-		return nil
 	}
 
 	http.Redirect(c.Response().Writer, c.Request(), "/", http.StatusSeeOther)

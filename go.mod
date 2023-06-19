@@ -1,4 +1,4 @@
-module github.com/nazarsavorona/btc-rate-check-service
+module github.com/GenesisEducationKyiv/main-project-nazarsavorona
 
 go 1.20
 

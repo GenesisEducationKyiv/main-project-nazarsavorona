@@ -1,11 +1,14 @@
 package main
 
 import (
-	"github.com/nazarsavorona/btc-rate-check-service/pkg/application"
-	"github.com/nazarsavorona/btc-rate-check-service/pkg/file_database"
-	"github.com/nazarsavorona/btc-rate-check-service/pkg/service"
 	"log"
 	"os"
+
+	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/application"
+
+	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/database"
+
+	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/service"
 )
 
 func main() {
@@ -29,7 +32,7 @@ func main() {
 		}
 	}
 
-	s := service.NewService(email, password, fromCurrency, toCurrency, file_database.NewFileDatabase(dbFilePath))
+	s := service.NewService(email, password, fromCurrency, toCurrency, database.NewFileDatabase(dbFilePath))
 	app := application.NewApplication(s)
 
 	err = app.Run(":" + port)

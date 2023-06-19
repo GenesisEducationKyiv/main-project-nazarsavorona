@@ -1,4 +1,4 @@
-package file_database
+package database
 
 import (
 	"bufio"
@@ -11,6 +11,11 @@ type FileDatabase struct {
 }
 
 func NewFileDatabase(file string) *FileDatabase {
+	_, err := os.Create(file)
+	if err != nil {
+		return nil
+	}
+
 	return &FileDatabase{
 		file: file,
 	}
@@ -23,7 +28,7 @@ func (f *FileDatabase) AddNewEmail(email string) error {
 	}
 
 	defer func(file *os.File) {
-		err := file.Close()
+		err = file.Close()
 		if err != nil {
 			log.Println(err.Error())
 		}
@@ -40,11 +45,11 @@ func (f *FileDatabase) GetEmails() ([]string, error) {
 	file, err := os.Open(f.file)
 
 	if err != nil {
-		return []string{}, nil
+		return []string{}, err
 	}
 
 	defer func(file *os.File) {
-		err := file.Close()
+		err = file.Close()
 		if err != nil {
 			log.Println(err.Error())
 		}
