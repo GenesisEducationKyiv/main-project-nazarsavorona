@@ -23,6 +23,7 @@ ENV EMAIL your.email@example.com
 ENV EMAIL_PASSWORD your_password
 ENV FROM_CURRENCY BTC
 ENV TO_CURRENCY UAH
+ENV DB_FILE_FOLDER ./resources
 ENV DB_FILE_PATH ./resources/emails.dat
 
 CMD ["./service"]

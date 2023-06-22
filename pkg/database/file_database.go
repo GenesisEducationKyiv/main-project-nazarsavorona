@@ -10,8 +10,25 @@ type FileDatabase struct {
 	file string
 }
 
-func NewFileDatabase(file string) *FileDatabase {
-	_, err := os.Create(file)
+func createFolderIfNotExists(path string) error {
+	_, err := os.Stat(path)
+	if os.IsNotExist(err) {
+		err = os.Mkdir(path, 0777)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func NewFileDatabase(folder, file string) *FileDatabase {
+	err := createFolderIfNotExists(folder)
+	if err != nil {
+		return nil
+	}
+
+	_, err = os.Create(file)
 	if err != nil {
 		return nil
 	}

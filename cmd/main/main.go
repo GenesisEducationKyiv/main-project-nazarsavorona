@@ -19,23 +19,20 @@ func main() {
 	fromCurrency := os.Getenv("FROM_CURRENCY")
 	toCurrency := os.Getenv("TO_CURRENCY")
 
+	dbFileFolder := os.Getenv("DB_FILE_FOLDER")
 	dbFilePath := os.Getenv("DB_FILE_PATH")
+
+	db := database.NewFileDatabase(dbFileFolder, dbFilePath)
+	if db == nil {
+		log.Panicln("Error creating database")
+	}
+
+	s := service.NewService(email, password, fromCurrency, toCurrency, db)
+	app := application.NewApplication(s)
 
 	log.Printf("Service listens port: %s", port)
 
-	// create resources dir if not exists
-	_, err := os.Stat("resources")
-	if os.IsNotExist(err) {
-		err = os.Mkdir("resources", 0777)
-		if err != nil {
-			log.Panicln(err.Error())
-		}
-	}
-
-	s := service.NewService(email, password, fromCurrency, toCurrency, database.NewFileDatabase(dbFilePath))
-	app := application.NewApplication(s)
-
-	err = app.Run(":" + port)
+	err := app.Run(":" + port)
 	if err != nil {
 		log.Panicln(err.Error())
 	}
