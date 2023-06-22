@@ -2,7 +2,6 @@ package service
 
 import (
 	"fmt"
-	"log"
 
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/email"
 
@@ -57,15 +56,21 @@ func (s *Service) SendEmails() error {
 		return err
 	}
 
+	errs := make(chan error, len(emails))
+
 	for _, currentEmail := range emails {
 		go func(email string) {
-			err = s.mailSender.SendEmail(email,
+			errs <- s.mailSender.SendEmail(email,
 				fmt.Sprintf("%s rate", s.fromCurrency),
 				fmt.Sprintf("1 %s = %.2f %s", s.fromCurrency, rate, s.toCurrency))
-			if err != nil {
-				log.Println(err.Error())
-			}
 		}(currentEmail)
+	}
+
+	for i := 0; i < len(emails); i++ {
+		err = <-errs
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
