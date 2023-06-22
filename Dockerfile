@@ -19,8 +19,8 @@ COPY --from=builder /app/templates ./templates
 EXPOSE 8081
 
 ENV PORT 8081
-ENV EMAIL marvelous.mail.sender@gmail.com
-ENV EMAIL_PASSWORD yozphbhbcuyonhcx
+ENV EMAIL your.email@example.com
+ENV EMAIL_PASSWORD your_password
 ENV FROM_CURRENCY BTC
 ENV TO_CURRENCY UAH
 ENV DB_FILE_PATH ./resources/emails.dat
