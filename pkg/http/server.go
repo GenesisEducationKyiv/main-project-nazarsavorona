@@ -47,7 +47,7 @@ func NewServer(s service) *Server {
 
 func (s *Server) routes() {
 	s.router.GET("/api/rate", s.rate)
-	s.router.POST("/api/subscribe", s.subscribe)
+	s.router.POST("/api/subscribe", s.apiSubscribe)
 	s.router.POST("/api/sendEmails", s.sendEmails)
 
 	s.router.GET("/", s.index)
@@ -65,8 +65,8 @@ func (s *Server) rate(c echo.Context) error {
 	return c.JSON(http.StatusOK, rate)
 }
 
-func (s *Server) subscribe(c echo.Context) error {
-	email := c.FormValue("email")
+func (s *Server) apiSubscribe(c echo.Context) error {
+	email := getEmail(c)
 
 	err := s.service.Subscribe(email)
 	if err != nil {
@@ -113,8 +113,7 @@ func (s *Server) conflict(c echo.Context) error {
 }
 
 func (s *Server) webSubscribe(c echo.Context) error {
-	email := c.FormValue("email")
-	email = strings.TrimSpace(email)
+	email := getEmail(c)
 
 	err := s.service.Subscribe(email)
 	if err != nil {
@@ -134,4 +133,10 @@ func (s *Server) webSendEmails(c echo.Context) error {
 
 	http.Redirect(c.Response().Writer, c.Request(), "/", http.StatusSeeOther)
 	return nil
+}
+
+func getEmail(c echo.Context) string {
+	email := c.FormValue("email")
+
+	return strings.TrimSpace(email)
 }
