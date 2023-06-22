@@ -41,7 +41,7 @@ func NewFileDatabase(folder, file string) *FileDatabase {
 func (f *FileDatabase) AddNewEmail(email string) error {
 	file, err := os.OpenFile(f.file, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	defer func(file *os.File) {
@@ -52,7 +52,7 @@ func (f *FileDatabase) AddNewEmail(email string) error {
 	}(file)
 
 	if _, err = file.WriteString(email + "\n"); err != nil {
-		panic(err)
+		return err
 	}
 
 	return nil
