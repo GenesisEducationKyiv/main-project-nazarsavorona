@@ -6,14 +6,16 @@ import (
 )
 
 type Sender struct {
-	auth  smtp.Auth
-	email string
+	auth    smtp.Auth
+	email   string
+	hostURI string
 }
 
-func NewSender(email, password string) *Sender {
+func NewSender(hostURI, email, password string) *Sender {
 	return &Sender{
-		auth:  NewLoginAuth(email, password),
-		email: email,
+		auth:    NewLoginAuth(email, password),
+		email:   email,
+		hostURI: hostURI,
 	}
 }
 
@@ -25,5 +27,5 @@ func (s *Sender) SendEmail(toEmail string, subject string, body string) error {
 		"MIME-version: 1.0;\nContent-Type: text/html; charset=\"UTF-8\";\n\n" +
 		"<html><body><h3>" + body + "</h3></body></html>")
 
-	return smtp.SendMail("smtp.gmail.com:587", s.auth, s.email, []string{toEmail}, message)
+	return smtp.SendMail(s.hostURI, s.auth, s.email, []string{toEmail}, message)
 }

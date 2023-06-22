@@ -13,6 +13,7 @@ import (
 
 func main() {
 	port := os.Getenv("PORT")
+	emailHostURI := os.Getenv("EMAIL_HOST_URI")
 	email := os.Getenv("EMAIL")
 	password := os.Getenv("EMAIL_PASSWORD")
 
@@ -27,7 +28,7 @@ func main() {
 		log.Panicln("Error creating database")
 	}
 
-	s := service.NewService(email, password, fromCurrency, toCurrency, db)
+	s := service.NewService(emailHostURI, email, password, fromCurrency, toCurrency, db)
 	app := application.NewApplication(s)
 
 	log.Printf("Service listens port: %s", port)
