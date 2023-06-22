@@ -19,7 +19,8 @@ COPY --from=builder /app/templates ./templates
 EXPOSE 8081
 
 ENV PORT 8081
-ENV EMAIL_HOST_URI smtp.gmail.com:587
+ENV SMTP_HOST smtp.gmail.com
+ENV SMTP_PORT 587
 ENV EMAIL your.email@example.com
 ENV EMAIL_PASSWORD your_password
 ENV FROM_CURRENCY BTC

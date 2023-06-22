@@ -18,12 +18,12 @@ type Service struct {
 	rateGetter *currency.BinanceGetter
 }
 
-func NewService(emailHostURI, accountEmail, accountPassword, from, to string, db email.Database) *Service {
+func NewService(smtpHost, smtpPort, accountEmail, accountPassword, from, to string, db email.Database) *Service {
 	return &Service{
 		fromCurrency: from,
 		toCurrency:   to,
 		repository:   email.NewRepository(db),
-		mailSender:   email.NewSender(emailHostURI, accountEmail, accountPassword),
+		mailSender:   email.NewSender(smtpHost, smtpPort, accountEmail, accountPassword),
 		rateGetter:   currency.NewGetter(from, to),
 	}
 }

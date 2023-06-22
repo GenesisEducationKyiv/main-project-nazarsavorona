@@ -1,6 +1,7 @@
 package email
 
 import (
+	"fmt"
 	"net/smtp"
 	"strings"
 )
@@ -11,11 +12,11 @@ type Sender struct {
 	hostURI string
 }
 
-func NewSender(hostURI, email, password string) *Sender {
+func NewSender(smtpHost, smtpPort, email, password string) *Sender {
 	return &Sender{
-		auth:    NewLoginAuth(email, password),
+		auth:    smtp.PlainAuth("", email, password, smtpHost),
 		email:   email,
-		hostURI: hostURI,
+		hostURI: fmt.Sprintf("%s:%s", smtpHost, smtpPort),
 	}
 }
 
