@@ -1,6 +1,7 @@
 package http
 
 import (
+	"context"
 	"fmt"
 	"html/template"
 	"net/http"
@@ -13,9 +14,9 @@ import (
 
 type service interface {
 	Subscribe(email string) error
-	SendEmails() error
-	GetRate() (float64, error)
-	GetEmailList() []string
+	SendEmails(ctx context.Context) error
+	Rate(ctx context.Context) (float64, error)
+	EmailList() []string
 }
 
 type Server struct {
@@ -57,7 +58,7 @@ func (s *Server) routes() {
 }
 
 func (s *Server) rate(c echo.Context) error {
-	rate, err := s.service.GetRate()
+	rate, err := s.service.Rate(c.Request().Context())
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
@@ -77,7 +78,7 @@ func (s *Server) apiSubscribe(c echo.Context) error {
 }
 
 func (s *Server) sendEmails(c echo.Context) error {
-	_ = s.service.SendEmails()
+	_ = s.service.SendEmails(c.Request().Context())
 
 	return c.JSON(http.StatusOK, "Emails sent")
 }
@@ -87,10 +88,10 @@ func (s *Server) Start(address string) error {
 }
 
 func (s *Server) index(c echo.Context) error {
-	emails := s.service.GetEmailList()
+	emails := s.service.EmailList()
 	sort.Strings(emails)
 
-	rate, err := s.service.GetRate()
+	rate, err := s.service.Rate(c.Request().Context())
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
@@ -125,7 +126,7 @@ func (s *Server) webSubscribe(c echo.Context) error {
 }
 
 func (s *Server) webSendEmails(c echo.Context) error {
-	err := s.service.SendEmails()
+	err := s.service.SendEmails(c.Request().Context())
 	if err != nil {
 		http.Redirect(c.Response().Writer, c.Request(), "/", http.StatusBadRequest)
 		return err

@@ -1,11 +1,12 @@
 package service
 
 import (
+	"context"
 	"fmt"
 
-	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/email"
+	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/clients"
 
-	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/currency"
+	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/email"
 )
 
 type Service struct {
@@ -14,7 +15,7 @@ type Service struct {
 
 	repository *email.Repository
 	mailSender *email.Sender
-	rateGetter *currency.BinanceGetter
+	rateGetter *clients.BinanceClient
 }
 
 func NewService(smtpHost, smtpPort, accountEmail, accountPassword, from, to string, db email.Database) *Service {
@@ -23,7 +24,8 @@ func NewService(smtpHost, smtpPort, accountEmail, accountPassword, from, to stri
 		toCurrency:   to,
 		repository:   email.NewRepository(db),
 		mailSender:   email.NewSender(smtpHost, smtpPort, accountEmail, accountPassword),
-		rateGetter:   currency.NewGetter(from, to),
+		// TODO: consider where the api url should come from
+		rateGetter: clients.NewBinanceClient(from, to, "https://api.binance.com/api/v3/"),
 	}
 }
 
@@ -48,10 +50,10 @@ func (s *Service) Subscribe(email string) error {
 	return nil
 }
 
-func (s *Service) SendEmails() error {
+func (s *Service) SendEmails(ctx context.Context) error {
 	emails := s.repository.GetEmailList()
 
-	rate, err := s.GetRate()
+	rate, err := s.Rate(ctx)
 	if err != nil {
 		return err
 	}
@@ -76,10 +78,10 @@ func (s *Service) SendEmails() error {
 	return nil
 }
 
-func (s *Service) GetRate() (float64, error) {
-	return s.rateGetter.GetRate()
+func (s *Service) Rate(ctx context.Context) (float64, error) {
+	return s.rateGetter.Rate(ctx)
 }
 
-func (s *Service) GetEmailList() []string {
+func (s *Service) EmailList() []string {
 	return s.repository.GetEmailList()
 }
