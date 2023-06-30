@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"golang.org/x/sync/errgroup"
@@ -35,20 +36,16 @@ func NewService(from, to string,
 
 var ErrAlreadySubscribed = fmt.Errorf("email is already subscribed")
 
-func (s *Service) Subscribe(email string) error {
-	emails := s.repository.EmailList()
-	for _, currentEmail := range emails {
-		if currentEmail == email {
+func (s *Service) Subscribe(candidateEmail string) error {
+	err := s.repository.AddEmail(candidateEmail)
+	if err != nil {
+		if errors.Is(err, email.ErrAlreadyExists) {
 			return ErrAlreadySubscribed
 		}
-	}
-
-	err := s.repository.AddEmail(email)
-	if err != nil {
 		return err
 	}
 
-	err = s.mailSender.SendEmail(email, "Subscription", "You have successfully subscribed to the service")
+	err = s.mailSender.SendEmail(candidateEmail, "Subscription", "You have successfully subscribed to the service")
 	if err != nil {
 		return err
 	}
