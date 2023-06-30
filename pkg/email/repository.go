@@ -13,7 +13,7 @@ type Database interface {
 type Repository struct {
 	emails map[string]bool
 	db     Database
-	mutex  sync.Mutex
+	mutex  sync.RWMutex
 }
 
 func NewRepository(db Database) *Repository {
@@ -22,7 +22,7 @@ func NewRepository(db Database) *Repository {
 		db:     db,
 	}
 
-	err := r.getEmailsFromDatabase()
+	err := r.emailsFromDatabase()
 	if err != nil {
 		log.Println(err.Error())
 		return nil
@@ -31,7 +31,7 @@ func NewRepository(db Database) *Repository {
 	return r
 }
 
-func (r *Repository) AddNewEmail(email string) error {
+func (r *Repository) AddEmail(email string) error {
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 
@@ -45,9 +45,9 @@ func (r *Repository) AddNewEmail(email string) error {
 	return nil
 }
 
-func (r *Repository) GetEmailList() []string {
-	r.mutex.Lock()
-	defer r.mutex.Unlock()
+func (r *Repository) EmailList() []string {
+	r.mutex.RLock()
+	defer r.mutex.RUnlock()
 
 	emailList := make([]string, len(r.emails))
 
@@ -60,7 +60,10 @@ func (r *Repository) GetEmailList() []string {
 	return emailList
 }
 
-func (r *Repository) getEmailsFromDatabase() error {
+func (r *Repository) emailsFromDatabase() error {
+	r.mutex.Lock()
+	defer r.mutex.Unlock()
+
 	emailList, err := r.db.Emails()
 	if err != nil {
 		return err

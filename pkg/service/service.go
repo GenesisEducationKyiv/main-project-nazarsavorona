@@ -32,14 +32,14 @@ func NewService(from, to string,
 }
 
 func (s *Service) Subscribe(email string) error {
-	emails := s.repository.GetEmailList()
+	emails := s.repository.EmailList()
 	for _, currentEmail := range emails {
 		if currentEmail == email {
 			return fmt.Errorf("email %s is already subscribed", email)
 		}
 	}
 
-	err := s.repository.AddNewEmail(email)
+	err := s.repository.AddEmail(email)
 	if err != nil {
 		return err
 	}
@@ -53,7 +53,7 @@ func (s *Service) Subscribe(email string) error {
 }
 
 func (s *Service) SendEmails(ctx context.Context) error {
-	emails := s.repository.GetEmailList()
+	emails := s.repository.EmailList()
 
 	rate, err := s.Rate(ctx)
 	if err != nil {
@@ -85,5 +85,5 @@ func (s *Service) Rate(ctx context.Context) (float64, error) {
 }
 
 func (s *Service) EmailList() []string {
-	return s.repository.GetEmailList()
+	return s.repository.EmailList()
 }
