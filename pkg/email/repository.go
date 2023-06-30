@@ -22,7 +22,7 @@ func NewRepository(db Database) *Repository {
 		db:     db,
 	}
 
-	err := r.emailsFromDatabase()
+	err := r.fillEmailsFromDatabase()
 	if err != nil {
 		log.Println(err.Error())
 		return nil
@@ -60,7 +60,7 @@ func (r *Repository) EmailList() []string {
 	return emailList
 }
 
-func (r *Repository) emailsFromDatabase() error {
+func (r *Repository) fillEmailsFromDatabase() error {
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 
