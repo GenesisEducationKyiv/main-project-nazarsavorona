@@ -2,80 +2,42 @@ package database
 
 import (
 	"bufio"
-	"log"
+	"io"
 	"os"
 )
 
 type FileDatabase struct {
-	file string
+	file *os.File
 }
 
-func createFolderIfNotExists(path string) error {
-	_, err := os.Stat(path)
-	if os.IsNotExist(err) {
-		err = os.Mkdir(path, 0777)
-		if err != nil {
-			return err
-		}
-	}
-
-	return nil
-}
-
-func NewFileDatabase(folder, file string) *FileDatabase {
-	err := createFolderIfNotExists(folder)
-	if err != nil {
-		return nil
-	}
-
-	_, err = os.Create(file)
-	if err != nil {
-		return nil
-	}
-
+func NewFileDatabase(file *os.File) *FileDatabase {
 	return &FileDatabase{
 		file: file,
 	}
 }
 
-func (f *FileDatabase) AddNewEmail(email string) error {
-	file, err := os.OpenFile(f.file, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+func (f *FileDatabase) AddEmail(email string) error {
+	_, err := f.file.Seek(0, io.SeekEnd)
 	if err != nil {
 		return err
 	}
 
-	defer func(file *os.File) {
-		err = file.Close()
-		if err != nil {
-			log.Println(err.Error())
-		}
-	}(file)
-
-	if _, err = file.WriteString(email + "\n"); err != nil {
+	_, err = f.file.WriteString(email + "\n")
+	if err != nil {
 		return err
 	}
-
 	return nil
 }
 
-func (f *FileDatabase) GetEmails() ([]string, error) {
-	file, err := os.Open(f.file)
-
+func (f *FileDatabase) Emails() ([]string, error) {
+	_, err := f.file.Seek(0, io.SeekStart)
 	if err != nil {
-		return []string{}, err
+		return nil, err
 	}
 
-	defer func(file *os.File) {
-		err = file.Close()
-		if err != nil {
-			log.Println(err.Error())
-		}
-	}(file)
+	scanner := bufio.NewScanner(f.file)
 
 	var lines []string
-
-	scanner := bufio.NewScanner(file)
-
 	for scanner.Scan() {
 		lines = append(lines, scanner.Text())
 	}

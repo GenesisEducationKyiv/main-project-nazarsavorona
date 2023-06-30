@@ -6,8 +6,8 @@ import (
 )
 
 type Database interface {
-	AddNewEmail(email string) error
-	GetEmails() ([]string, error)
+	AddEmail(email string) error
+	Emails() ([]string, error)
 }
 
 type Repository struct {
@@ -35,7 +35,7 @@ func (r *Repository) AddNewEmail(email string) error {
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 
-	err := r.db.AddNewEmail(email)
+	err := r.db.AddEmail(email)
 	if err != nil {
 		return err
 	}
@@ -61,7 +61,7 @@ func (r *Repository) GetEmailList() []string {
 }
 
 func (r *Repository) getEmailsFromDatabase() error {
-	emailList, err := r.db.GetEmails()
+	emailList, err := r.db.Emails()
 	if err != nil {
 		return err
 	}

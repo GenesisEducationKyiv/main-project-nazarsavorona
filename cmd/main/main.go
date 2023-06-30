@@ -26,7 +26,17 @@ func main() {
 	dbFileFolder := os.Getenv("DB_FILE_FOLDER")
 	dbFilePath := os.Getenv("DB_FILE_PATH")
 
-	db := database.NewFileDatabase(dbFileFolder, dbFilePath)
+	err := os.MkdirAll(dbFileFolder, 0666)
+	if err != nil {
+		log.Panicln(err.Error())
+	}
+
+	file, err := os.OpenFile(dbFilePath, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	if err != nil {
+		log.Panicln(err.Error())
+	}
+
+	db := database.NewFileDatabase(file)
 	if db == nil {
 		log.Panicln("Error creating database")
 	}
@@ -36,7 +46,7 @@ func main() {
 
 	log.Printf("Service listens port: %s", port)
 
-	err := app.Run(":" + port)
+	err = app.Run(":" + port)
 	if err != nil {
 		log.Panicln(err.Error())
 	}
