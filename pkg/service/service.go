@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 
+	"golang.org/x/sync/errgroup"
+
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/clients"
 
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/email"
@@ -62,21 +64,21 @@ func (s *Service) SendEmails(ctx context.Context) error {
 		return err
 	}
 
-	errs := make(chan error, len(emails))
+	// since we want to try to send all emails, we don't want to stop on first error
+	group, _ := errgroup.WithContext(ctx)
 
 	for _, currentEmail := range emails {
-		go func(email string) {
-			errs <- s.mailSender.SendEmail(email,
+		currentEmail := currentEmail
+		group.Go(func() error {
+			return s.mailSender.SendEmail(currentEmail,
 				fmt.Sprintf("%s rate", s.fromCurrency),
 				fmt.Sprintf("1 %s = %.2f %s", s.fromCurrency, rate, s.toCurrency))
-		}(currentEmail)
+		})
 	}
 
-	for i := 0; i < len(emails); i++ {
-		err = <-errs
-		if err != nil {
-			return err
-		}
+	err = group.Wait()
+	if err != nil {
+		return err
 	}
 
 	return nil
