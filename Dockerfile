@@ -30,7 +30,7 @@ ENV FROM_CURRENCY BTC
 ENV TO_CURRENCY UAH
 
 ENV DB_FILE_FOLDER ./resources
-ENV DB_FILE_PATH ./resources/emails.dat
+ENV DB_FILE_NAME emails.dat
 
 ENV BINANCE_API_URL https://api.binance.com/api/v3/
 

@@ -28,7 +28,7 @@ func main() {
 	toCurrency := os.Getenv("TO_CURRENCY")
 
 	dbFileFolder := os.Getenv("DB_FILE_FOLDER")
-	dbFilePath := os.Getenv("DB_FILE_PATH")
+	dbFileName := os.Getenv("DB_FILE_NAME")
 
 	binanceURL := os.Getenv("BINANCE_API_URL")
 
@@ -37,7 +37,7 @@ func main() {
 		log.Panicln(err.Error())
 	}
 
-	file, err := os.OpenFile(dbFilePath, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	file, err := os.OpenFile(dbFileFolder+dbFileName, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 	if err != nil {
 		log.Panicln(err.Error())
 	}
