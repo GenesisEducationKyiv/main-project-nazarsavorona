@@ -31,11 +31,13 @@ func NewService(from, to string,
 	}
 }
 
+var ErrAlreadySubscribed = fmt.Errorf("email is already subscribed")
+
 func (s *Service) Subscribe(email string) error {
 	emails := s.repository.EmailList()
 	for _, currentEmail := range emails {
 		if currentEmail == email {
-			return fmt.Errorf("email %s is already subscribed", email)
+			return ErrAlreadySubscribed
 		}
 	}
 

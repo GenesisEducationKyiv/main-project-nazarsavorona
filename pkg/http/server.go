@@ -2,17 +2,20 @@ package http
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"html/template"
 	"net/http"
 	"sort"
 	"strings"
 
+	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/service"
+
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
 
-type service interface {
+type emailService interface {
 	Subscribe(email string) error
 	SendEmails(ctx context.Context) error
 	Rate(ctx context.Context) (float64, error)
@@ -21,12 +24,12 @@ type service interface {
 
 type Server struct {
 	router  *echo.Echo
-	service service
+	service emailService
 
 	template *template.Template
 }
 
-func NewServer(s service) *Server {
+func NewServer(s emailService) *Server {
 	functionMap := template.FuncMap{"add": func(x, y int) int { return x + y }}
 
 	e := echo.New()
@@ -71,6 +74,9 @@ func (s *Server) apiSubscribe(c echo.Context) error {
 
 	err := s.service.Subscribe(email)
 	if err != nil {
+		if errors.Is(err, service.ErrAlreadySubscribed) {
+			return c.JSON(http.StatusConflict, err.Error())
+		}
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
