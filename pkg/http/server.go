@@ -49,6 +49,10 @@ func NewServer(s emailService) *Server {
 	return server
 }
 
+func (s *Server) Start(address string) error {
+	return s.router.Start(address)
+}
+
 func (s *Server) routes() {
 	s.router.GET("/api/rate", s.rate)
 	s.router.POST("/api/subscribe", s.apiSubscribe)
@@ -58,39 +62,6 @@ func (s *Server) routes() {
 	s.router.POST("/subscribe", s.webSubscribe)
 	s.router.POST("/sendEmails", s.webSendEmails)
 	s.router.GET("/conflict", s.conflict)
-}
-
-func (s *Server) rate(c echo.Context) error {
-	rate, err := s.service.Rate(c.Request().Context())
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
-	}
-
-	return c.JSON(http.StatusOK, rate)
-}
-
-func (s *Server) apiSubscribe(c echo.Context) error {
-	email := getEmail(c)
-
-	err := s.service.Subscribe(email)
-	if err != nil {
-		if errors.Is(err, service.ErrAlreadySubscribed) {
-			return c.JSON(http.StatusConflict, err.Error())
-		}
-		return c.JSON(http.StatusBadRequest, err.Error())
-	}
-
-	return c.JSON(http.StatusOK, email)
-}
-
-func (s *Server) sendEmails(c echo.Context) error {
-	_ = s.service.SendEmails(c.Request().Context())
-
-	return c.JSON(http.StatusOK, "Emails sent")
-}
-
-func (s *Server) Start(address string) error {
-	return s.router.Start(address)
 }
 
 func (s *Server) index(c echo.Context) error {
@@ -120,11 +91,15 @@ func (s *Server) conflict(c echo.Context) error {
 }
 
 func (s *Server) webSubscribe(c echo.Context) error {
-	email := getEmail(c)
+	email := extractEmail(c)
 
 	err := s.service.Subscribe(email)
 	if err != nil {
-		http.Redirect(c.Response().Writer, c.Request(), "/conflict", http.StatusSeeOther)
+		if errors.Is(err, service.ErrAlreadySubscribed) {
+			http.Redirect(c.Response().Writer, c.Request(), "/conflict", http.StatusSeeOther)
+			return nil
+		}
+		http.Redirect(c.Response().Writer, c.Request(), "/", http.StatusBadRequest)
 	}
 
 	http.Redirect(c.Response().Writer, c.Request(), "/", http.StatusSeeOther)
@@ -142,7 +117,36 @@ func (s *Server) webSendEmails(c echo.Context) error {
 	return nil
 }
 
-func getEmail(c echo.Context) string {
+func (s *Server) rate(c echo.Context) error {
+	rate, err := s.service.Rate(c.Request().Context())
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	return c.JSON(http.StatusOK, rate)
+}
+
+func (s *Server) apiSubscribe(c echo.Context) error {
+	email := extractEmail(c)
+
+	err := s.service.Subscribe(email)
+	if err != nil {
+		if errors.Is(err, service.ErrAlreadySubscribed) {
+			return c.JSON(http.StatusConflict, err.Error())
+		}
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	return c.JSON(http.StatusOK, email)
+}
+
+func (s *Server) sendEmails(c echo.Context) error {
+	_ = s.service.SendEmails(c.Request().Context())
+
+	return c.JSON(http.StatusOK, "Emails sent")
+}
+
+func extractEmail(c echo.Context) string {
 	email := c.FormValue("email")
 
 	return strings.TrimSpace(email)
