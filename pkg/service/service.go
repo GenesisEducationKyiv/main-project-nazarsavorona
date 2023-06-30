@@ -18,14 +18,16 @@ type Service struct {
 	rateGetter *clients.BinanceClient
 }
 
-func NewService(smtpHost, smtpPort, accountEmail, accountPassword, from, to string, db email.Database) *Service {
+func NewService(from, to string,
+	repository *email.Repository,
+	mailSender *email.Sender,
+	rateGetter *clients.BinanceClient) *Service {
 	return &Service{
 		fromCurrency: from,
 		toCurrency:   to,
-		repository:   email.NewRepository(db),
-		mailSender:   email.NewSender(smtpHost, smtpPort, accountEmail, accountPassword),
-		// TODO: consider where the api url should come from
-		rateGetter: clients.NewBinanceClient(from, to, "https://api.binance.com/api/v3/"),
+		repository:   repository,
+		mailSender:   mailSender,
+		rateGetter:   rateGetter,
 	}
 }
 

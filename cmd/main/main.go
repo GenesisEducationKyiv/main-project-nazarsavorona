@@ -4,6 +4,10 @@ import (
 	"log"
 	"os"
 
+	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/email"
+
+	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/clients"
+
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/application"
 
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/database"
@@ -17,14 +21,16 @@ func main() {
 	smtpHost := os.Getenv("SMTP_HOST")
 	smtpPort := os.Getenv("SMTP_PORT")
 
-	email := os.Getenv("EMAIL")
-	password := os.Getenv("EMAIL_PASSWORD")
+	senderEmail := os.Getenv("EMAIL")
+	senderPassword := os.Getenv("EMAIL_PASSWORD")
 
 	fromCurrency := os.Getenv("FROM_CURRENCY")
 	toCurrency := os.Getenv("TO_CURRENCY")
 
 	dbFileFolder := os.Getenv("DB_FILE_FOLDER")
 	dbFilePath := os.Getenv("DB_FILE_PATH")
+
+	binanceURL := os.Getenv("BINANCE_API_URL")
 
 	err := os.MkdirAll(dbFileFolder, 0666)
 	if err != nil {
@@ -41,7 +47,11 @@ func main() {
 		log.Panicln("Error creating database")
 	}
 
-	s := service.NewService(smtpHost, smtpPort, email, password, fromCurrency, toCurrency, db)
+	repository := email.NewRepository(db)
+	mailSender := email.NewSender(smtpHost, smtpPort, senderEmail, senderPassword)
+	rateGetter := clients.NewBinanceClient(fromCurrency, toCurrency, binanceURL)
+
+	s := service.NewService(fromCurrency, toCurrency, repository, mailSender, rateGetter)
 	app := application.NewApplication(s)
 
 	log.Printf("Service listens port: %s", port)
