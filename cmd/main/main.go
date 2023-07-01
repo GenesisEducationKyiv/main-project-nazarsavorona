@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"net/smtp"
 	"os"
 
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/email"
@@ -48,7 +49,7 @@ func main() {
 	}
 
 	repository := email.NewRepository(db)
-	mailSender := email.NewSender(smtpHost, smtpPort, senderEmail, senderPassword)
+	mailSender := email.NewSender(smtpHost, smtpPort, senderEmail, senderPassword, smtp.SendMail)
 	rateGetter := clients.NewBinanceClient(fromCurrency, toCurrency, binanceURL)
 
 	s := service.NewService(fromCurrency, toCurrency, repository, mailSender, rateGetter)
