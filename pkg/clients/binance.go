@@ -9,11 +9,15 @@ import (
 )
 
 type (
+	HTTPClient interface {
+		Do(*http.Request) (*http.Response, error)
+	}
+
 	BinanceClient struct {
 		apiURL       string
 		fromCurrency string
 		toCurrency   string
-		client       *http.Client
+		client       HTTPClient
 	}
 
 	rate struct {
@@ -21,12 +25,12 @@ type (
 	}
 )
 
-func NewBinanceClient(from, to, apiURL string) *BinanceClient {
+func NewBinanceClient(from, to, apiURL string, client HTTPClient) *BinanceClient {
 	return &BinanceClient{
 		apiURL:       apiURL,
 		fromCurrency: from,
 		toCurrency:   to,
-		client:       &http.Client{},
+		client:       client,
 	}
 }
 

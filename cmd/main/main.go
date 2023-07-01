@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"net/http"
 	"net/smtp"
 	"os"
 
@@ -50,7 +51,7 @@ func main() {
 
 	repository := email.NewRepository(db)
 	mailSender := email.NewSender(smtpHost, smtpPort, senderEmail, senderPassword, smtp.SendMail)
-	rateGetter := clients.NewBinanceClient(fromCurrency, toCurrency, binanceURL)
+	rateGetter := clients.NewBinanceClient(fromCurrency, toCurrency, binanceURL, &http.Client{})
 
 	s := service.NewService(fromCurrency, toCurrency, repository, mailSender, rateGetter)
 	app := application.NewApplication(s)
