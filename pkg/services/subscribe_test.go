@@ -2,10 +2,12 @@ package services_test
 
 import (
 	"errors"
-	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/email"
-	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/services"
-	"github.com/stretchr/testify/require"
 	"testing"
+
+	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/email"
+	"github.com/stretchr/testify/require"
+
+	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/services"
 )
 
 type testEmailRepository struct {

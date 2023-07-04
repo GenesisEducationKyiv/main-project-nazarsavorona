@@ -3,13 +3,14 @@ package services_test
 import (
 	"context"
 	"errors"
-	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/models"
-	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/services"
-	"github.com/stretchr/testify/require"
 	"testing"
+
+	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/models"
+	"github.com/stretchr/testify/require"
+
+	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/services"
 )
 
-// implement RateGetter interface
 type testRateGetter struct {
 	rate *models.Rate
 	err  error

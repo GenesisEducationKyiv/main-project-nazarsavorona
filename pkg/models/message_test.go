@@ -1,9 +1,10 @@
 package models_test
 
 import (
+	"testing"
+
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/models"
 	"github.com/stretchr/testify/require"
-	"testing"
 )
 
 func TestNewMessage(t *testing.T) {

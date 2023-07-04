@@ -106,11 +106,6 @@ func (s *Server) conflict(c echo.Context) error {
 	return s.template.ExecuteTemplate(c.Response().Writer, "conflict.gohtml", nil)
 }
 
-var greetingsMessage = &models.Message{
-	Subject: "Subscription",
-	Body:    "You have successfully subscribed to the service",
-}
-
 func (s *Server) webSubscribe(c echo.Context) error {
 	email := extractEmail(c)
 
@@ -123,7 +118,10 @@ func (s *Server) webSubscribe(c echo.Context) error {
 		http.Redirect(c.Response().Writer, c.Request(), "/", http.StatusBadRequest)
 	}
 
-	err = s.emailService.SendEmails(c.Request().Context(), []string{email}, greetingsMessage)
+	err = s.emailService.SendEmails(c.Request().Context(), []string{email}, &models.Message{
+		Subject: "Subscription",
+		Body:    "You have successfully subscribed to the service",
+	})
 	if err != nil {
 		http.Redirect(c.Response().Writer, c.Request(), "/", http.StatusBadRequest)
 		return err
@@ -170,7 +168,10 @@ func (s *Server) apiSubscribe(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	err = s.emailService.SendEmails(c.Request().Context(), []string{email}, greetingsMessage)
+	err = s.emailService.SendEmails(c.Request().Context(), []string{email}, &models.Message{
+		Subject: "Subscription",
+		Body:    "You have successfully subscribed to the service",
+	})
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
