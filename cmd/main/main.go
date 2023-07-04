@@ -6,15 +6,15 @@ import (
 	"net/smtp"
 	"os"
 
+	server "github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/http"
+
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/email"
 
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/clients"
 
-	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/application"
-
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/database"
 
-	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/service"
+	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/services"
 )
 
 func main() {
@@ -53,12 +53,15 @@ func main() {
 	mailSender := email.NewSender(smtpHost, smtpPort, senderEmail, senderPassword, smtp.SendMail)
 	rateGetter := clients.NewBinanceClient(fromCurrency, toCurrency, binanceURL, &http.Client{})
 
-	s := service.NewService(fromCurrency, toCurrency, repository, mailSender, rateGetter)
-	app := application.NewApplication(s)
+	subscribeService := services.NewSubscribeService(repository)
+	rateService := services.NewRateService(rateGetter)
+	emailService := services.NewEmailService(mailSender)
+
+	s := server.NewServer(emailService, rateService, subscribeService)
 
 	log.Printf("Service listens port: %s", port)
 
-	err = app.Run(":" + port)
+	err = s.Start(":" + port)
 	if err != nil {
 		log.Panicln(err.Error())
 	}

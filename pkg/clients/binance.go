@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+
+	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/models"
 )
 
 type (
@@ -20,7 +22,7 @@ type (
 		client       HTTPClient
 	}
 
-	rate struct {
+	rateDTO struct {
 		Price string `json:"price"`
 	}
 )
@@ -34,28 +36,37 @@ func NewBinanceClient(from, to, apiURL string, client HTTPClient) *BinanceClient
 	}
 }
 
-func (g *BinanceClient) Rate(ctx context.Context) (float64, error) {
+func (g *BinanceClient) Rate(ctx context.Context) (*models.Rate, error) {
 	url := fmt.Sprintf("%sticker/price?symbol=%s%s", g.apiURL, g.fromCurrency, g.toCurrency)
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 
 	response, err := g.client.Do(req)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 
 	defer response.Body.Close()
 
-	var r rate
+	var r rateDTO
 
 	err = json.NewDecoder(response.Body).Decode(&r)
 
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 
-	return strconv.ParseFloat(r.Price, 64)
+	price, err := strconv.ParseFloat(r.Price, 64)
+	if err != nil {
+		return nil, err
+	}
+
+	return &models.Rate{
+		From: g.fromCurrency,
+		To:   g.toCurrency,
+		Rate: price,
+	}, nil
 }

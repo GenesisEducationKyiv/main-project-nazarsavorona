@@ -12,6 +12,8 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/clients"
+
+	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/models"
 )
 
 type mockClient struct{}
@@ -45,13 +47,13 @@ func TestBinanceClient_Rate(t *testing.T) {
 		name    string
 		input   string
 		client  clients.HTTPClient
-		want    float64
+		want    *models.Rate
 		wantErr require.ErrorAssertionFunc
 	}{
 		{
 			name:    "success",
 			client:  &mockClient{},
-			want:    testValue,
+			want:    &models.Rate{Rate: testValue},
 			wantErr: require.NoError,
 		},
 	}

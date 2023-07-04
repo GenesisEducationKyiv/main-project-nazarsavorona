@@ -9,35 +9,51 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/service"
+	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/models"
+
+	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/services"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
 
 type emailService interface {
+	SendEmails(context.Context, []string, *models.Message) error
+}
+
+type rateService interface {
+	Rate(ctx context.Context) (*models.Rate, error)
+}
+
+type subscribeService interface {
 	Subscribe(email string) error
-	SendEmails(ctx context.Context) error
-	Rate(ctx context.Context) (float64, error)
 	EmailList() []string
 }
 
 type Server struct {
-	router  *echo.Echo
-	service emailService
+	router *echo.Echo
+
+	emailService     emailService
+	rateService      rateService
+	subscribeService subscribeService
 
 	template *template.Template
 }
 
-func NewServer(s emailService) *Server {
+func NewServer(emailService emailService,
+	rateService rateService,
+	subscribeService subscribeService) *Server {
 	functionMap := template.FuncMap{"add": func(x, y int) int { return x + y }}
 
 	e := echo.New()
 	e.HideBanner = true
 
 	server := &Server{
-		router:  e,
-		service: s,
+		router: e,
+
+		emailService:     emailService,
+		rateService:      rateService,
+		subscribeService: subscribeService,
 
 		template: template.Must(template.New("").Funcs(functionMap).ParseGlob("./templates/*.gohtml")),
 	}
@@ -65,10 +81,10 @@ func (s *Server) routes() {
 }
 
 func (s *Server) index(c echo.Context) error {
-	emails := s.service.EmailList()
+	emails := s.subscribeService.EmailList()
 	sort.Strings(emails)
 
-	rate, err := s.service.Rate(c.Request().Context())
+	r, err := s.rateService.Rate(c.Request().Context())
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
@@ -76,7 +92,7 @@ func (s *Server) index(c echo.Context) error {
 	indexData := struct {
 		Rate   string
 		Emails []string
-	}{fmt.Sprintf("%.2f", rate), emails}
+	}{fmt.Sprintf("%.2f", r.Rate), emails}
 
 	err = s.template.ExecuteTemplate(c.Response().Writer, "index.gohtml", indexData)
 	if err != nil {
@@ -90,16 +106,27 @@ func (s *Server) conflict(c echo.Context) error {
 	return s.template.ExecuteTemplate(c.Response().Writer, "conflict.gohtml", nil)
 }
 
+var greetingsMessage = &models.Message{
+	Subject: "Subscription",
+	Body:    "You have successfully subscribed to the service",
+}
+
 func (s *Server) webSubscribe(c echo.Context) error {
 	email := extractEmail(c)
 
-	err := s.service.Subscribe(email)
+	err := s.subscribeService.Subscribe(email)
 	if err != nil {
-		if errors.Is(err, service.ErrAlreadySubscribed) {
+		if errors.Is(err, services.ErrAlreadySubscribed) {
 			http.Redirect(c.Response().Writer, c.Request(), "/conflict", http.StatusSeeOther)
 			return nil
 		}
 		http.Redirect(c.Response().Writer, c.Request(), "/", http.StatusBadRequest)
+	}
+
+	err = s.emailService.SendEmails(c.Request().Context(), []string{email}, greetingsMessage)
+	if err != nil {
+		http.Redirect(c.Response().Writer, c.Request(), "/", http.StatusBadRequest)
+		return err
 	}
 
 	http.Redirect(c.Response().Writer, c.Request(), "/", http.StatusSeeOther)
@@ -107,7 +134,13 @@ func (s *Server) webSubscribe(c echo.Context) error {
 }
 
 func (s *Server) webSendEmails(c echo.Context) error {
-	err := s.service.SendEmails(c.Request().Context())
+	r, err := s.rateService.Rate(c.Request().Context())
+	if err != nil {
+		http.Redirect(c.Response().Writer, c.Request(), "/", http.StatusBadRequest)
+		return err
+	}
+
+	err = s.emailService.SendEmails(c.Request().Context(), s.subscribeService.EmailList(), models.NewMessage(r))
 	if err != nil {
 		http.Redirect(c.Response().Writer, c.Request(), "/", http.StatusBadRequest)
 		return err
@@ -118,22 +151,27 @@ func (s *Server) webSendEmails(c echo.Context) error {
 }
 
 func (s *Server) rate(c echo.Context) error {
-	rate, err := s.service.Rate(c.Request().Context())
+	r, err := s.rateService.Rate(c.Request().Context())
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	return c.JSON(http.StatusOK, rate)
+	return c.JSON(http.StatusOK, r.Rate)
 }
 
 func (s *Server) apiSubscribe(c echo.Context) error {
 	email := extractEmail(c)
 
-	err := s.service.Subscribe(email)
+	err := s.subscribeService.Subscribe(email)
 	if err != nil {
-		if errors.Is(err, service.ErrAlreadySubscribed) {
+		if errors.Is(err, services.ErrAlreadySubscribed) {
 			return c.JSON(http.StatusConflict, err.Error())
 		}
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	err = s.emailService.SendEmails(c.Request().Context(), []string{email}, greetingsMessage)
+	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
@@ -141,7 +179,15 @@ func (s *Server) apiSubscribe(c echo.Context) error {
 }
 
 func (s *Server) sendEmails(c echo.Context) error {
-	_ = s.service.SendEmails(c.Request().Context())
+	r, err := s.rateService.Rate(c.Request().Context())
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	err = s.emailService.SendEmails(c.Request().Context(), s.subscribeService.EmailList(), models.NewMessage(r))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
 
 	return c.JSON(http.StatusOK, "Emails sent")
 }
