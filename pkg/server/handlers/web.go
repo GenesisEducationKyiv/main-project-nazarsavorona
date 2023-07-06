@@ -95,7 +95,7 @@ func (h *WebHandlers) SendEmails(c echo.Context) error {
 		return err
 	}
 
-	err = h.emailService.SendEmails(c.Request().Context(), h.subscribeService.EmailList(), models.NewMessage(r))
+	err = h.emailService.SendEmails(c.Request().Context(), h.subscribeService.EmailList(), models.NewMessageFromRate(r))
 	if err != nil {
 		http.Redirect(c.Response().Writer, c.Request(), "/", http.StatusBadRequest)
 		return err

@@ -7,7 +7,7 @@ type Message struct {
 	Body    string
 }
 
-func NewMessage(r *Rate) *Message {
+func NewMessageFromRate(r *Rate) *Message {
 	return &Message{
 		Subject: fmt.Sprintf("%s rate", r.From),
 		Body:    fmt.Sprintf("1 %s = %.2f %s", r.From, r.Rate, r.To),

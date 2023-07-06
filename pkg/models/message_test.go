@@ -33,7 +33,7 @@ func TestNewMessage(t *testing.T) {
 
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
-			require.Equal(t, tt.want, models.NewMessage(tt.r))
+			require.Equal(t, tt.want, models.NewMessageFromRate(tt.r))
 		})
 	}
 }

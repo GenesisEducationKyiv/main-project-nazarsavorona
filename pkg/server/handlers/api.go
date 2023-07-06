@@ -79,7 +79,7 @@ func (h *APIHandlers) SendEmails(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	err = h.emailService.SendEmails(c.Request().Context(), h.subscribeService.EmailList(), models.NewMessage(r))
+	err = h.emailService.SendEmails(c.Request().Context(), h.subscribeService.EmailList(), models.NewMessageFromRate(r))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
