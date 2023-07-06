@@ -41,7 +41,7 @@ func main() {
 
 	binanceURL := envValues["BINANCE_API_URL"]
 
-	file, err := prepareFile(dbFileFolder, dbFileName)
+	file, err := PrepareFile(dbFileFolder, dbFileName)
 	if err != nil {
 		log.Panicln(err.Error())
 	}
@@ -99,7 +99,7 @@ func getEnvironmentValues() (map[string]string, error) {
 	return envValues, nil
 }
 
-func prepareFile(dbFileFolder string, dbFileName string) (*os.File, error) {
+func PrepareFile(dbFileFolder string, dbFileName string) (*os.File, error) {
 	err := os.MkdirAll(dbFileFolder, 0666)
 	if err != nil {
 		log.Panicln(err.Error())
