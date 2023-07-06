@@ -1,6 +1,7 @@
 package funtional_test
 
 import (
+	"context"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -11,7 +12,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/clients"
+	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/models"
+
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/database"
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/email"
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/server"
@@ -59,8 +61,9 @@ func TestRate(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	_, err = strconv.ParseFloat(string(body[:len(body)-1]), 64)
+	rate, err := strconv.ParseFloat(string(body[:len(body)-1]), 64)
 	require.NoError(t, err)
+	require.Equal(t, float64(10000), rate)
 }
 
 func TestSubscribe(t *testing.T) {
@@ -113,17 +116,22 @@ func TestSubscribe(t *testing.T) {
 	require.Equal(t, http.StatusConflict, resp.StatusCode)
 }
 
+type mockRateService struct{}
+
+func (m *mockRateService) Rate(_ context.Context) (*models.Rate, error) {
+	return &models.Rate{
+		From: "BTC",
+		To:   "USDT",
+		Rate: 10000,
+	}, nil
+}
+
 func prepareServer(t *testing.T, file *os.File) *server.Server {
 	smtpHost := "smtp.gmail.com"
 	smtpPort := "587"
 
 	senderEmail := ""
 	senderPassword := ""
-
-	fromCurrency := "BTC"
-	toCurrency := "USDT"
-
-	binanceURL := "https://api.binance.com/api/v3/"
 
 	db := database.NewFileDatabase(file)
 	if db == nil {
@@ -135,7 +143,8 @@ func prepareServer(t *testing.T, file *os.File) *server.Server {
 		func(addr string, a smtp.Auth, from string, to []string, msg []byte) error {
 			return nil
 		})
-	rateGetter := clients.NewBinanceClient(fromCurrency, toCurrency, binanceURL, &http.Client{})
+
+	rateGetter := &mockRateService{}
 
 	subscribeService := services.NewSubscribeService(repository)
 	rateService := services.NewRateService(rateGetter)
