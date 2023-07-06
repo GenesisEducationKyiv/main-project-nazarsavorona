@@ -1,0 +1,31 @@
+name: Go
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**/*.md' # Ignore changes to markdown files
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      dind:
+        image: docker:23.0-rc-dind-rootless
+        ports:
+          - 2375:2375
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v4
+        with:
+          go-version: '1.20'
+          cache: false
+
+      - name: Run Short Tests
+        run: go test -short -v ./...
+
+      - name: Run Full Tests
+        if: ${{ github.event_name == 'pull_request' }}
+        run: go test -v ./...
