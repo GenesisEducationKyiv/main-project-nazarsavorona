@@ -6,7 +6,8 @@ import (
 	"net/smtp"
 	"os"
 
-	server "github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/http"
+	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/server"
+	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/server/handlers"
 
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/email"
 
@@ -57,7 +58,10 @@ func main() {
 	rateService := services.NewRateService(rateGetter)
 	emailService := services.NewEmailService(mailSender)
 
-	s := server.NewServer(emailService, rateService, subscribeService)
+	api := handlers.NewAPIHandlers(emailService, rateService, subscribeService)
+	web := handlers.NewWebHandlers(emailService, rateService, subscribeService)
+
+	s := server.NewServer(api, web)
 
 	log.Printf("Service listens port: %s", port)
 
