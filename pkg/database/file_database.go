@@ -26,6 +26,7 @@ func (f *FileDatabase) AddEmail(email string) error {
 	if err != nil {
 		return err
 	}
+
 	return nil
 }
 
@@ -42,5 +43,10 @@ func (f *FileDatabase) Emails() ([]string, error) {
 		lines = append(lines, scanner.Text())
 	}
 
-	return lines, scanner.Err()
+	err = scanner.Err()
+	if err != nil {
+		return nil, err
+	}
+
+	return lines, nil
 }
