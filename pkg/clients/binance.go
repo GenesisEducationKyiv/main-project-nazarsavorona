@@ -3,6 +3,7 @@ package clients
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -34,8 +35,8 @@ func NewBinanceClient(apiURL string, client HTTPClient) *BinanceClient {
 
 func (g *BinanceClient) Rate(ctx context.Context, from, to string) (*models.Rate, error) {
 	url := fmt.Sprintf("%sticker/price?symbol=%s%s", g.apiURL, from, to)
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -47,10 +48,12 @@ func (g *BinanceClient) Rate(ctx context.Context, from, to string) (*models.Rate
 
 	defer response.Body.Close()
 
+	if response.StatusCode != http.StatusOK {
+		return nil, errors.New("request failed with status: " + response.Status)
+	}
+
 	var r rateDTO
-
 	err = json.NewDecoder(response.Body).Decode(&r)
-
 	if err != nil {
 		return nil, err
 	}
