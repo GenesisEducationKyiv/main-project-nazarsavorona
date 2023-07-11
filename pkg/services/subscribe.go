@@ -2,6 +2,7 @@ package services
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/email"
 )
@@ -19,7 +20,7 @@ func NewSubscribeService(database EmailDatabase) *SubscribeService {
 	return &SubscribeService{database: database}
 }
 
-var ErrAlreadySubscribed = errors.New("email is already subscribed")
+var ErrAlreadySubscribed = fmt.Errorf("email is already subscribed")
 
 func (s *SubscribeService) Subscribe(candidateEmail string) error {
 	err := s.database.AddEmail(candidateEmail)

@@ -2,7 +2,7 @@ package services_test
 
 import (
 	"context"
-	"errors"
+	"fmt"
 	"testing"
 
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/models"
@@ -52,7 +52,7 @@ func TestRateService(t *testing.T) {
 		},
 		{
 			name:       "error",
-			rateGetter: newTestRateGetter(nil, errors.New("test error")),
+			rateGetter: newTestRateGetter(nil, fmt.Errorf("test error")),
 			want:       nil,
 			expectErr:  require.Error,
 		},
