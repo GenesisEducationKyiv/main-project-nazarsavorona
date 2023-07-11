@@ -1,4 +1,4 @@
-package funtional_test
+package functional_test
 
 import (
 	"context"
