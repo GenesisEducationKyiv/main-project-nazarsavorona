@@ -32,7 +32,7 @@ func TestRateService(t *testing.T) {
 
 	tests := []struct {
 		name       string
-		rateGetter services.RateGetter
+		rateGetter services.RateFetcher
 		want       *models.Rate
 		expectErr  require.ErrorAssertionFunc
 	}{

@@ -10,26 +10,27 @@ import (
 
 type (
 	EmailSender interface {
-		SendEmail(string, string, string) error
+		SendEmail(to, subject, body string) error
 	}
 
 	EmailService struct {
-		mailSender EmailSender
+		emailSender EmailSender
 	}
 )
 
-func NewEmailService(mailSender EmailSender) *EmailService {
-	return &EmailService{mailSender: mailSender}
+func NewEmailService(emailSender EmailSender) *EmailService {
+	return &EmailService{
+		emailSender: emailSender,
+	}
 }
 
 func (s *EmailService) SendEmails(ctx context.Context, emails []string, message *models.Message) error {
-	// since we want to try to send all emails, we don't want to stop on first error
 	group, _ := errgroup.WithContext(ctx)
 
-	for _, currentEmail := range emails {
-		currentEmail := currentEmail
+	for _, email := range emails {
+		email := email
 		group.Go(func() error {
-			return s.mailSender.SendEmail(currentEmail, message.Subject, message.Body)
+			return s.emailSender.SendEmail(email, message.Subject, message.Body)
 		})
 	}
 

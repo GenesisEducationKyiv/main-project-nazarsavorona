@@ -2,30 +2,27 @@ package services
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/email"
 )
 
-type (
-	EmailRepository interface {
-		AddEmail(string) error
-		EmailList() []string
-	}
-
-	SubscribeService struct {
-		repository EmailRepository
-	}
-)
-
-func NewSubscribeService(repository EmailRepository) *SubscribeService {
-	return &SubscribeService{repository: repository}
+type EmailDatabase interface {
+	AddEmail(string) error
+	EmailList() []string
 }
 
-var ErrAlreadySubscribed = fmt.Errorf("email is already subscribed")
+type SubscribeService struct {
+	database EmailDatabase
+}
+
+func NewSubscribeService(database EmailDatabase) *SubscribeService {
+	return &SubscribeService{database: database}
+}
+
+var ErrAlreadySubscribed = errors.New("email is already subscribed")
 
 func (s *SubscribeService) Subscribe(candidateEmail string) error {
-	err := s.repository.AddEmail(candidateEmail)
+	err := s.database.AddEmail(candidateEmail)
 	if err != nil {
 		if errors.Is(err, email.ErrAlreadyExists) {
 			return ErrAlreadySubscribed
@@ -37,5 +34,5 @@ func (s *SubscribeService) Subscribe(candidateEmail string) error {
 }
 
 func (s *SubscribeService) EmailList() []string {
-	return s.repository.EmailList()
+	return s.database.EmailList()
 }
