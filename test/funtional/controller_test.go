@@ -47,8 +47,8 @@ func TestRate(t *testing.T) {
 
 	defer testServer.Close()
 
-	url := testServer.URL + "/api/rate"
-	resp, err := http.Get(url)
+	serverURL := testServer.URL + "/api/rate"
+	resp, err := http.Get(serverURL)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -118,7 +118,7 @@ func TestSubscribe(t *testing.T) {
 
 type mockRateService struct{}
 
-func (m *mockRateService) Rate(_ context.Context) (*models.Rate, error) {
+func (m *mockRateService) Rate(_ context.Context, _, _ string) (*models.Rate, error) {
 	return &models.Rate{
 		From: "BTC",
 		To:   "USDT",
@@ -141,7 +141,7 @@ func prepareServer(t *testing.T, file *os.File) *server.Server {
 	rateGetter := &mockRateService{}
 
 	subscribeService := services.NewSubscribeService(repository)
-	rateService := services.NewRateService(rateGetter)
+	rateService := services.NewRateService("", "", rateGetter)
 	emailService := services.NewEmailService(mailSender)
 
 	api := handlers.NewAPIHandlers(emailService, rateService, subscribeService)

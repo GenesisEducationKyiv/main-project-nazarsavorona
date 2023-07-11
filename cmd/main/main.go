@@ -56,10 +56,10 @@ func main() {
 		fmt.Sprintf("%s:%s", smtpHost, smtpPort),
 		smtp.PlainAuth("", senderEmail, senderPassword, smtpHost),
 		smtp.SendMail)
-	rateGetter := clients.NewBinanceClient(fromCurrency, toCurrency, binanceURL, &http.Client{})
+	rateGetter := clients.NewBinanceClient(binanceURL, &http.Client{})
 
 	subscribeService := services.NewSubscribeService(repository)
-	rateService := services.NewRateService(rateGetter)
+	rateService := services.NewRateService(fromCurrency, toCurrency, rateGetter)
 	emailService := services.NewEmailService(mailSender)
 
 	api := handlers.NewAPIHandlers(emailService, rateService, subscribeService)

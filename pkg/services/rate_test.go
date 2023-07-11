@@ -23,7 +23,7 @@ func newTestRateGetter(rate *models.Rate, err error) *testRateGetter {
 	}
 }
 
-func (t *testRateGetter) Rate(_ context.Context) (*models.Rate, error) {
+func (t *testRateGetter) Rate(_ context.Context, _, _ string) (*models.Rate, error) {
 	return t.rate, t.err
 }
 
@@ -63,7 +63,7 @@ func TestRateService(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			s := services.NewRateService(tt.rateGetter)
+			s := services.NewRateService("", "", tt.rateGetter)
 			got, err := s.Rate(context.Background())
 			tt.expectErr(t, err)
 			require.Equal(t, tt.want, got)

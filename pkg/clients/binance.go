@@ -16,10 +16,8 @@ type (
 	}
 
 	BinanceClient struct {
-		apiURL       string
-		fromCurrency string
-		toCurrency   string
-		client       HTTPClient
+		apiURL string
+		client HTTPClient
 	}
 
 	rateDTO struct {
@@ -27,17 +25,15 @@ type (
 	}
 )
 
-func NewBinanceClient(from, to, apiURL string, client HTTPClient) *BinanceClient {
+func NewBinanceClient(apiURL string, client HTTPClient) *BinanceClient {
 	return &BinanceClient{
-		apiURL:       apiURL,
-		fromCurrency: from,
-		toCurrency:   to,
-		client:       client,
+		apiURL: apiURL,
+		client: client,
 	}
 }
 
-func (g *BinanceClient) Rate(ctx context.Context) (*models.Rate, error) {
-	url := fmt.Sprintf("%sticker/price?symbol=%s%s", g.apiURL, g.fromCurrency, g.toCurrency)
+func (g *BinanceClient) Rate(ctx context.Context, from, to string) (*models.Rate, error) {
+	url := fmt.Sprintf("%sticker/price?symbol=%s%s", g.apiURL, from, to)
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 
 	if err != nil {
@@ -65,8 +61,8 @@ func (g *BinanceClient) Rate(ctx context.Context) (*models.Rate, error) {
 	}
 
 	return &models.Rate{
-		From: g.fromCurrency,
-		To:   g.toCurrency,
+		From: from,
+		To:   to,
 		Rate: price,
 	}, nil
 }

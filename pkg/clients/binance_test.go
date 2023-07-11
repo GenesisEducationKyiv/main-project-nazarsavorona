@@ -63,9 +63,9 @@ func TestBinanceClient_Rate(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			binanceClient := clients.NewBinanceClient("", "", "", tt.client)
+			binanceClient := clients.NewBinanceClient("", tt.client)
 
-			got, err := binanceClient.Rate(context.Background())
+			got, err := binanceClient.Rate(context.Background(), "", "")
 
 			tt.wantErr(t, err)
 			require.Equal(t, tt.want, got)
