@@ -1,6 +1,7 @@
 package email
 
 import (
+	"fmt"
 	"log"
 	"sync"
 )
@@ -31,9 +32,15 @@ func NewRepository(db Database) *Repository {
 	return r
 }
 
+var ErrAlreadyExists = fmt.Errorf("email already exists")
+
 func (r *Repository) AddEmail(email string) error {
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
+
+	if _, ok := r.emails[email]; ok {
+		return ErrAlreadyExists
+	}
 
 	err := r.db.AddEmail(email)
 	if err != nil {

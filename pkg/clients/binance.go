@@ -6,52 +6,63 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+
+	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/models"
 )
 
 type (
-	BinanceClient struct {
-		apiURL       string
-		fromCurrency string
-		toCurrency   string
-		client       *http.Client
+	HTTPClient interface {
+		Do(*http.Request) (*http.Response, error)
 	}
 
-	rate struct {
+	BinanceClient struct {
+		apiURL string
+		client HTTPClient
+	}
+
+	rateDTO struct {
 		Price string `json:"price"`
 	}
 )
 
-func NewBinanceClient(from, to, apiURL string) *BinanceClient {
+func NewBinanceClient(apiURL string, client HTTPClient) *BinanceClient {
 	return &BinanceClient{
-		apiURL:       apiURL,
-		fromCurrency: from,
-		toCurrency:   to,
-		client:       &http.Client{},
+		apiURL: apiURL,
+		client: client,
 	}
 }
 
-func (g *BinanceClient) Rate(ctx context.Context) (float64, error) {
-	url := fmt.Sprintf("%sticker/price?symbol=%s%s", g.apiURL, g.fromCurrency, g.toCurrency)
+func (g *BinanceClient) Rate(ctx context.Context, from, to string) (*models.Rate, error) {
+	url := fmt.Sprintf("%sticker/price?symbol=%s%s", g.apiURL, from, to)
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 
 	response, err := g.client.Do(req)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 
 	defer response.Body.Close()
 
-	var r rate
+	var r rateDTO
 
 	err = json.NewDecoder(response.Body).Decode(&r)
 
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 
-	return strconv.ParseFloat(r.Price, 64)
+	price, err := strconv.ParseFloat(r.Price, 64)
+	if err != nil {
+		return nil, err
+	}
+
+	return &models.Rate{
+		From: from,
+		To:   to,
+		Rate: price,
+	}, nil
 }

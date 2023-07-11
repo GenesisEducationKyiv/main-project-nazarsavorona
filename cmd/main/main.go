@@ -1,43 +1,47 @@
 package main
 
 import (
+	"fmt"
 	"log"
+	"net/http"
+	"net/smtp"
 	"os"
+
+	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/server"
+	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/server/handlers"
 
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/email"
 
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/clients"
 
-	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/application"
-
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/database"
 
-	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/service"
+	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/services"
 )
 
 func main() {
-	port := os.Getenv("PORT")
-
-	smtpHost := os.Getenv("SMTP_HOST")
-	smtpPort := os.Getenv("SMTP_PORT")
-
-	senderEmail := os.Getenv("EMAIL")
-	senderPassword := os.Getenv("EMAIL_PASSWORD")
-
-	fromCurrency := os.Getenv("FROM_CURRENCY")
-	toCurrency := os.Getenv("TO_CURRENCY")
-
-	dbFileFolder := os.Getenv("DB_FILE_FOLDER")
-	dbFileName := os.Getenv("DB_FILE_NAME")
-
-	binanceURL := os.Getenv("BINANCE_API_URL")
-
-	err := os.MkdirAll(dbFileFolder, 0666)
+	envValues, err := getEnvironmentValues()
 	if err != nil {
-		log.Panicln(err.Error())
+		log.Panicf("Error fetching environment values: %v\n", err)
 	}
 
-	file, err := os.OpenFile(dbFileFolder+dbFileName, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	port := envValues["PORT"]
+
+	smtpHost := envValues["SMTP_HOST"]
+	smtpPort := envValues["SMTP_PORT"]
+
+	senderEmail := envValues["EMAIL"]
+	senderPassword := envValues["EMAIL_PASSWORD"]
+
+	fromCurrency := envValues["FROM_CURRENCY"]
+	toCurrency := envValues["TO_CURRENCY"]
+
+	dbFileFolder := envValues["DB_FILE_FOLDER"]
+	dbFileName := envValues["DB_FILE_NAME"]
+
+	binanceURL := envValues["BINANCE_API_URL"]
+
+	file, err := PrepareFile(dbFileFolder, dbFileName)
 	if err != nil {
 		log.Panicln(err.Error())
 	}
@@ -48,16 +52,65 @@ func main() {
 	}
 
 	repository := email.NewRepository(db)
-	mailSender := email.NewSender(smtpHost, smtpPort, senderEmail, senderPassword)
-	rateGetter := clients.NewBinanceClient(fromCurrency, toCurrency, binanceURL)
+	mailSender := email.NewSender(senderEmail,
+		fmt.Sprintf("%s:%s", smtpHost, smtpPort),
+		smtp.PlainAuth("", senderEmail, senderPassword, smtpHost),
+		smtp.SendMail)
+	rateGetter := clients.NewBinanceClient(binanceURL, &http.Client{})
 
-	s := service.NewService(fromCurrency, toCurrency, repository, mailSender, rateGetter)
-	app := application.NewApplication(s)
+	subscribeService := services.NewSubscribeService(repository)
+	rateService := services.NewRateService(fromCurrency, toCurrency, rateGetter)
+	emailService := services.NewEmailService(mailSender)
+
+	api := handlers.NewAPIHandlers(emailService, rateService, subscribeService)
+	web := handlers.NewWebHandlers(emailService, rateService, subscribeService)
+
+	s := server.NewServer(api, web)
 
 	log.Printf("Service listens port: %s", port)
 
-	err = app.Run(":" + port)
+	err = s.Start(":" + port)
 	if err != nil {
 		log.Panicln(err.Error())
 	}
+}
+
+func getEnvironmentValues() (map[string]string, error) {
+	requiredEnvVars := []string{
+		"PORT",
+		"SMTP_HOST",
+		"SMTP_PORT",
+		"EMAIL",
+		"EMAIL_PASSWORD",
+		"FROM_CURRENCY",
+		"TO_CURRENCY",
+		"DB_FILE_FOLDER",
+		"DB_FILE_NAME",
+		"BINANCE_API_URL",
+	}
+
+	envValues := make(map[string]string)
+
+	for _, envVar := range requiredEnvVars {
+		value := os.Getenv(envVar)
+		if value == "" {
+			return nil, fmt.Errorf("environment variable %s is not set", envVar)
+		}
+		envValues[envVar] = value
+	}
+
+	return envValues, nil
+}
+
+func PrepareFile(dbFileFolder string, dbFileName string) (*os.File, error) {
+	err := os.MkdirAll(dbFileFolder, 0666)
+	if err != nil {
+		log.Panicln(err.Error())
+	}
+
+	file, err := os.OpenFile(dbFileFolder+dbFileName, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	if err != nil {
+		log.Panicln(err.Error())
+	}
+	return file, err
 }
