@@ -11,15 +11,17 @@ type Database interface {
 	Emails() ([]string, error)
 }
 
+type emptyStruct struct{}
+
 type Repository struct {
-	emails map[string]bool
+	emails map[string]emptyStruct
 	db     Database
 	mutex  sync.RWMutex
 }
 
 func NewRepository(db Database) *Repository {
 	r := &Repository{
-		emails: map[string]bool{},
+		emails: map[string]emptyStruct{},
 		db:     db,
 	}
 
@@ -33,6 +35,7 @@ func NewRepository(db Database) *Repository {
 }
 
 var ErrAlreadyExists = fmt.Errorf("email already exists")
+var empty = struct{}{}
 
 func (r *Repository) AddEmail(email string) error {
 	r.mutex.Lock()
@@ -47,7 +50,7 @@ func (r *Repository) AddEmail(email string) error {
 		return err
 	}
 
-	r.emails[email] = true
+	r.emails[email] = empty
 
 	return nil
 }
@@ -77,7 +80,7 @@ func (r *Repository) fillEmailsFromDatabase() error {
 	}
 
 	for _, currentEmail := range emailList {
-		r.emails[currentEmail] = true
+		r.emails[currentEmail] = empty
 	}
 
 	return nil
