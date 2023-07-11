@@ -2,7 +2,6 @@ package email_test
 
 import (
 	"fmt"
-	"net/smtp"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -35,10 +34,8 @@ func TestSender_SendEmail(t *testing.T) {
 
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
-			s := email.NewSender("", "", nil,
-				func(addr string, a smtp.Auth, from string, to []string, msg []byte) error {
-					return tt.returnErr
-				})
+
+			s := email.NewSender("", "", nil, email.NewMockSender(tt.returnErr))
 
 			err := s.SendEmail("", "", "")
 			tt.expectErr(t, err)

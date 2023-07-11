@@ -55,7 +55,7 @@ func main() {
 	mailSender := email.NewSender(senderEmail,
 		fmt.Sprintf("%s:%s", smtpHost, smtpPort),
 		smtp.PlainAuth("", senderEmail, senderPassword, smtpHost),
-		smtp.SendMail)
+		&email.SMTPMailSender{})
 	rateGetter := clients.NewBinanceClient(binanceURL, &http.Client{})
 
 	subscribeService := services.NewSubscribeService(repository)

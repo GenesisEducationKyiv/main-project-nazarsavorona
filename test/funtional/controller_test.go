@@ -5,7 +5,6 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
-	"net/smtp"
 	"net/url"
 	"os"
 	"strconv"
@@ -133,10 +132,7 @@ func prepareServer(t *testing.T, file *os.File) *server.Server {
 	}
 
 	repository := email.NewRepository(db)
-	mailSender := email.NewSender("", "", nil,
-		func(addr string, a smtp.Auth, from string, to []string, msg []byte) error {
-			return nil
-		})
+	mailSender := email.NewSender("", "", nil, email.NewMockSender(nil))
 
 	rateGetter := &mockRateService{}
 
