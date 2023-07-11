@@ -28,13 +28,13 @@ func TestRepository_AddEmail(t *testing.T) {
 		name  string
 		db    email.Database
 		email string
-		err   require.ErrorAssertionFunc
+		err   error
 	}{
 		{
 			name:  "new email",
 			db:    &testDB{},
 			email: "test@ex.com",
-			err:   require.NoError,
+			err:   nil,
 		},
 		{
 			name: "existing email",
@@ -42,7 +42,7 @@ func TestRepository_AddEmail(t *testing.T) {
 				emails: []string{"test@ex.com"},
 			},
 			email: "test@ex.com",
-			err:   require.Error,
+			err:   email.ErrAlreadyExists,
 		},
 	}
 	for _, tt := range tests {
@@ -52,7 +52,7 @@ func TestRepository_AddEmail(t *testing.T) {
 
 			r := email.NewRepository(tt.db)
 			err := r.AddEmail(tt.email)
-			tt.err(t, err)
+			require.Equal(t, tt.err, err)
 		})
 	}
 }
