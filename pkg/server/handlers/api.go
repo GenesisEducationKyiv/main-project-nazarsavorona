@@ -12,29 +12,29 @@ import (
 )
 
 type (
-	emailService interface {
+	EmailService interface {
 		SendEmails(context.Context, []string, *models.Message) error
 	}
 
-	rateService interface {
+	RateService interface {
 		Rate(ctx context.Context) (*models.Rate, error)
 	}
 
-	subscribeService interface {
+	SubscribeService interface {
 		Subscribe(email string) error
 		EmailList() []string
 	}
 
 	APIHandlers struct {
-		emailService     emailService
-		rateService      rateService
-		subscribeService subscribeService
+		emailService     EmailService
+		rateService      RateService
+		subscribeService SubscribeService
 	}
 )
 
-func NewAPIHandlers(emailService emailService,
-	rateService rateService,
-	subscribeService subscribeService) *APIHandlers {
+func NewAPIHandlers(emailService EmailService,
+	rateService RateService,
+	subscribeService SubscribeService) *APIHandlers {
 	return &APIHandlers{
 		emailService:     emailService,
 		rateService:      rateService,
@@ -43,9 +43,10 @@ func NewAPIHandlers(emailService emailService,
 }
 
 func (h *APIHandlers) Rate(c echo.Context) error {
-	r, err := h.rateService.Rate(c.Request().Context())
+	ctx := c.Request().Context()
+	r, err := h.rateService.Rate(ctx)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
 	return c.JSON(http.StatusOK, r.Rate)
@@ -55,33 +56,34 @@ func (h *APIHandlers) Subscribe(c echo.Context) error {
 	email := strings.TrimSpace(c.FormValue("email"))
 
 	err := h.subscribeService.Subscribe(email)
-	if err != nil {
-		if errors.Is(err, services.ErrAlreadySubscribed) {
-			return c.JSON(http.StatusConflict, err.Error())
-		}
-		return c.JSON(http.StatusBadRequest, err.Error())
+	if errors.Is(err, services.ErrAlreadySubscribed) {
+		return c.JSON(http.StatusConflict, err.Error())
+	} else if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
-	err = h.emailService.SendEmails(c.Request().Context(), []string{email}, &models.Message{
+	ctx := c.Request().Context()
+	err = h.emailService.SendEmails(ctx, []string{email}, &models.Message{
 		Subject: "Subscription",
 		Body:    "You have successfully subscribed to the service",
 	})
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
 	return c.JSON(http.StatusOK, email)
 }
 
 func (h *APIHandlers) SendEmails(c echo.Context) error {
-	r, err := h.rateService.Rate(c.Request().Context())
+	ctx := c.Request().Context()
+	r, err := h.rateService.Rate(ctx)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
-	err = h.emailService.SendEmails(c.Request().Context(), h.subscribeService.EmailList(), models.NewMessageFromRate(r))
+	err = h.emailService.SendEmails(ctx, h.subscribeService.EmailList(), models.NewMessageFromRate(r))
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
 	return c.JSON(http.StatusOK, "Emails sent")
