@@ -1,24 +1,24 @@
 package email
 
 import (
-	"fmt"
 	"net/smtp"
 	"strings"
 )
+
+type sendMailFunc func(addr string, a smtp.Auth, from string, to []string, msg []byte) error
 
 type Sender struct {
 	auth     smtp.Auth
 	email    string
 	hostURI  string
-	sendMail func(addr string, a smtp.Auth, from string, to []string, msg []byte) error
+	sendMail sendMailFunc
 }
 
-func NewSender(smtpHost, smtpPort, email, password string,
-	sendMail func(addr string, a smtp.Auth, from string, to []string, msg []byte) error) *Sender {
+func NewSender(email, hostURI string, auth smtp.Auth, sendMail sendMailFunc) *Sender {
 	return &Sender{
-		auth:     smtp.PlainAuth("", email, password, smtpHost),
+		auth:     auth,
 		email:    email,
-		hostURI:  fmt.Sprintf("%s:%s", smtpHost, smtpPort),
+		hostURI:  hostURI,
 		sendMail: sendMail,
 	}
 }

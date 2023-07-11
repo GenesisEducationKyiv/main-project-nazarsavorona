@@ -127,19 +127,13 @@ func (m *mockRateService) Rate(_ context.Context) (*models.Rate, error) {
 }
 
 func prepareServer(t *testing.T, file *os.File) *server.Server {
-	smtpHost := "smtp.gmail.com"
-	smtpPort := "587"
-
-	senderEmail := ""
-	senderPassword := ""
-
 	db := database.NewFileDatabase(file)
 	if db == nil {
 		t.Fatal("Error creating database")
 	}
 
 	repository := email.NewRepository(db)
-	mailSender := email.NewSender(smtpHost, smtpPort, senderEmail, senderPassword,
+	mailSender := email.NewSender("", "", nil,
 		func(addr string, a smtp.Auth, from string, to []string, msg []byte) error {
 			return nil
 		})

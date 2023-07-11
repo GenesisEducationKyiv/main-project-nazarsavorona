@@ -52,7 +52,10 @@ func main() {
 	}
 
 	repository := email.NewRepository(db)
-	mailSender := email.NewSender(smtpHost, smtpPort, senderEmail, senderPassword, smtp.SendMail)
+	mailSender := email.NewSender(senderEmail,
+		fmt.Sprintf("%s:%s", smtpHost, smtpPort),
+		smtp.PlainAuth("", senderEmail, senderPassword, smtpHost),
+		smtp.SendMail)
 	rateGetter := clients.NewBinanceClient(fromCurrency, toCurrency, binanceURL, &http.Client{})
 
 	subscribeService := services.NewSubscribeService(repository)

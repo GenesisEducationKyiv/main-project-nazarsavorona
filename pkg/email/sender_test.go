@@ -13,17 +13,6 @@ import (
 func TestSender_SendEmail(t *testing.T) {
 	t.Parallel()
 
-	sender := "sender@example.com"
-	password := "password"
-
-	smtpHost := "localhost"
-	smtpPort := "1025"
-
-	toEmail := "reciever@example.com"
-
-	subject := "Test subject"
-	body := "Test body"
-
 	tests := []struct {
 		name      string
 		returnErr error
@@ -46,12 +35,12 @@ func TestSender_SendEmail(t *testing.T) {
 
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
-			s := email.NewSender(smtpHost, smtpPort, sender, password,
+			s := email.NewSender("", "", nil,
 				func(addr string, a smtp.Auth, from string, to []string, msg []byte) error {
 					return tt.returnErr
 				})
 
-			err := s.SendEmail(toEmail, subject, body)
+			err := s.SendEmail("", "", "")
 			tt.expectErr(t, err)
 		})
 	}
