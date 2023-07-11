@@ -35,7 +35,6 @@ func NewRepository(db Database) *Repository {
 }
 
 var ErrAlreadyExists = fmt.Errorf("email already exists")
-var empty = struct{}{}
 
 func (r *Repository) AddEmail(email string) error {
 	r.mutex.Lock()
@@ -50,7 +49,7 @@ func (r *Repository) AddEmail(email string) error {
 		return err
 	}
 
-	r.emails[email] = empty
+	r.emails[email] = emptyStruct{}
 
 	return nil
 }
@@ -80,7 +79,7 @@ func (r *Repository) fillEmailsFromDatabase() error {
 	}
 
 	for _, currentEmail := range emailList {
-		r.emails[currentEmail] = empty
+		r.emails[currentEmail] = emptyStruct{}
 	}
 
 	return nil
