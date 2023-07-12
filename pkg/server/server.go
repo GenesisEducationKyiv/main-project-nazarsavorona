@@ -13,7 +13,7 @@ type (
 		SendEmails(c echo.Context) error
 	}
 
-	WEBHandlers interface {
+	WebHandlers interface {
 		Index(c echo.Context) error
 		Subscribe(c echo.Context) error
 		SendEmails(c echo.Context) error
@@ -24,7 +24,7 @@ type (
 		router *echo.Echo
 
 		api APIHandlers
-		web WEBHandlers
+		web WebHandlers
 	}
 )
 
@@ -32,7 +32,7 @@ func (s *Server) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
 	s.router.ServeHTTP(writer, request)
 }
 
-func NewServer(api APIHandlers, web WEBHandlers) *Server {
+func NewServer(api APIHandlers, web WebHandlers) *Server {
 	e := echo.New()
 	e.HideBanner = true
 
