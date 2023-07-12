@@ -37,7 +37,7 @@ func TestSender_SendEmail(t *testing.T) {
 
 			s := email.NewSender("", "", nil, email.NewMockSender(tt.returnErr))
 
-			err := s.SendEmail("", "", "", &email.HTMLMessageBuilder{})
+			err := s.SendEmail("", []byte{})
 			tt.expectErr(t, err)
 		})
 	}

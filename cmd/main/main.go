@@ -1,11 +1,12 @@
 package main
 
 import (
+	"os"
+
 	"fmt"
 	"log"
 	"net/http"
 	"net/smtp"
-	"os"
 
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/server"
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/server/handlers"
@@ -57,7 +58,7 @@ func main() {
 
 	subscribeService := services.NewSubscribeService(repository)
 	rateService := services.NewRateService(fromCurrency, toCurrency, rateGetter)
-	emailService := services.NewEmailService(mailSender)
+	emailService := services.NewEmailService(mailSender, &email.HTMLMessageBuilder{})
 
 	api := handlers.NewAPIHandlers(emailService, rateService, subscribeService)
 	web := handlers.NewWebHandlers(emailService, rateService, subscribeService)

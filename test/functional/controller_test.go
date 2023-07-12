@@ -134,7 +134,7 @@ func prepareServer(t *testing.T, file *os.File) *server.Server {
 
 	subscribeService := services.NewSubscribeService(repository)
 	rateService := services.NewRateService("", "", rateGetter)
-	emailService := services.NewEmailService(mailSender)
+	emailService := services.NewEmailService(mailSender, &email.HTMLMessageBuilder{})
 
 	api := handlers.NewAPIHandlers(emailService, rateService, subscribeService)
 

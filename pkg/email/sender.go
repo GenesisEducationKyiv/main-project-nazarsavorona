@@ -2,6 +2,8 @@ package email
 
 import (
 	"net/smtp"
+
+	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/models"
 )
 
 type (
@@ -27,11 +29,9 @@ func NewSender(fromEmail, hostURI string, auth smtp.Auth, sender MailSender) *Se
 }
 
 type MessageConstructStrategy interface {
-	Construct(subject, body string) []byte
+	Construct(message *models.Message) []byte
 }
 
-func (s *Sender) SendEmail(toEmail, subject, body string, strategy MessageConstructStrategy) error {
-	message := strategy.Construct(subject, body)
-
+func (s *Sender) SendEmail(toEmail string, message []byte) error {
 	return s.sender.SendMail(s.hostURI, s.auth, s.fromEmail, []string{toEmail}, message)
 }

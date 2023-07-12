@@ -12,17 +12,19 @@ import (
 
 type (
 	EmailSender interface {
-		SendEmail(to, subject, body string, strategy email.MessageConstructStrategy) error
+		SendEmail(to string, message []byte) error
 	}
 
 	EmailService struct {
 		emailSender EmailSender
+		strategy    email.MessageConstructStrategy
 	}
 )
 
-func NewEmailService(emailSender EmailSender) *EmailService {
+func NewEmailService(emailSender EmailSender, strategy email.MessageConstructStrategy) *EmailService {
 	return &EmailService{
 		emailSender: emailSender,
+		strategy:    strategy,
 	}
 }
 
@@ -32,7 +34,8 @@ func (s *EmailService) SendEmails(ctx context.Context, emails []string, message 
 	for _, e := range emails {
 		e := e
 		group.Go(func() error {
-			return s.emailSender.SendEmail(e, message.Subject, message.Body, &email.HTMLMessageBuilder{})
+			messageBytes := s.strategy.Construct(message)
+			return s.emailSender.SendEmail(e, messageBytes)
 		})
 	}
 

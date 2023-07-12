@@ -22,7 +22,7 @@ func newTestEmailSender(failedRequestAttempt int) *testEmailSender {
 	return &testEmailSender{failedRequestAttempt: failedRequestAttempt}
 }
 
-func (t *testEmailSender) SendEmail(_, _, _ string, _ email.MessageConstructStrategy) error {
+func (t *testEmailSender) SendEmail(_ string, _ []byte) error {
 	t.count++
 	if t.count == t.failedRequestAttempt {
 		return fmt.Errorf("test error")
@@ -63,7 +63,7 @@ func TestEmailService(t *testing.T) {
 				emails[i] = "test"
 			}
 
-			s := services.NewEmailService(tt.mailSender)
+			s := services.NewEmailService(tt.mailSender, &email.HTMLMessageBuilder{})
 			err := s.SendEmails(context.Background(), emails, &models.Message{})
 			tt.expectErr(t, err)
 		})
