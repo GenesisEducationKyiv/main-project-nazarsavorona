@@ -3,6 +3,7 @@ package services_test
 import (
 	"context"
 	"fmt"
+	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/email"
 	"testing"
 
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/models"
@@ -20,7 +21,7 @@ func newTestEmailSender(failedRequestAttempt int) *testEmailSender {
 	return &testEmailSender{failedRequestAttempt: failedRequestAttempt}
 }
 
-func (t *testEmailSender) SendEmail(_, _, _ string) error {
+func (t *testEmailSender) SendEmail(_, _, _ string, _ email.MessageConstructStrategy) error {
 	t.count++
 	if t.count == t.failedRequestAttempt {
 		return fmt.Errorf("test error")
