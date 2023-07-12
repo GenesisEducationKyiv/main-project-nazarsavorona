@@ -3,8 +3,9 @@ package services_test
 import (
 	"context"
 	"fmt"
-	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/email"
 	"testing"
+
+	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/email"
 
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/models"
 	"github.com/stretchr/testify/require"

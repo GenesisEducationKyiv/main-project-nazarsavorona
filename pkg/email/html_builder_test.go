@@ -1,9 +1,10 @@
 package email_test
 
 import (
+	"testing"
+
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/email"
 	"github.com/stretchr/testify/require"
-	"testing"
 )
 
 func TestHTMLMessageBuilder_Construct(t *testing.T) {
