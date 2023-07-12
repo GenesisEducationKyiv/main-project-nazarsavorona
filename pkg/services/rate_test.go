@@ -37,18 +37,10 @@ func TestRateService(t *testing.T) {
 		expectErr  require.ErrorAssertionFunc
 	}{
 		{
-			name: "success",
-			rateGetter: newTestRateGetter(&models.Rate{
-				From: "USD",
-				To:   "UAH",
-				Rate: 2,
-			}, nil),
-			want: &models.Rate{
-				From: "USD",
-				To:   "UAH",
-				Rate: 2,
-			},
-			expectErr: require.NoError,
+			name:       "success",
+			rateGetter: newTestRateGetter(models.NewRate("USD", "UAH", 2), nil),
+			want:       models.NewRate("USD", "UAH", 2),
+			expectErr:  require.NoError,
 		},
 		{
 			name:       "error",

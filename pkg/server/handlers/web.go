@@ -49,7 +49,7 @@ func (h *WebHandlers) Index(c echo.Context) error {
 	indexData := struct {
 		Rate   string
 		Emails []string
-	}{fmt.Sprintf("%.2f", r.Rate), emails}
+	}{fmt.Sprintf("%.2f", r.Rate()), emails}
 
 	err = h.template.ExecuteTemplate(c.Response().Writer, "index.gohtml", indexData)
 	if err != nil {

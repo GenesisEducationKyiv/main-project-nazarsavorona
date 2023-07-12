@@ -60,9 +60,5 @@ func (b *BinanceClient) Rate(ctx context.Context, from, to string) (*models.Rate
 		return nil, fmt.Errorf("failed to parse rate price: %w", err)
 	}
 
-	return &models.Rate{
-		From: from,
-		To:   to,
-		Rate: price,
-	}, nil
+	return models.NewRate(from, to, price), nil
 }

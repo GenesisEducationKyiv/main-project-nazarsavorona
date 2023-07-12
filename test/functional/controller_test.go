@@ -118,11 +118,7 @@ func TestSubscribe(t *testing.T) {
 type mockRateService struct{}
 
 func (m *mockRateService) Rate(_ context.Context, _, _ string) (*models.Rate, error) {
-	return &models.Rate{
-		From: "BTC",
-		To:   "USDT",
-		Rate: 10000,
-	}, nil
+	return models.NewRate("BTC", "USDT", 10000), nil
 }
 
 func prepareServer(t *testing.T, file *os.File) *server.Server {

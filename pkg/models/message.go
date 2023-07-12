@@ -2,10 +2,18 @@ package models
 
 import "fmt"
 
-type Message struct {
-	Subject string
-	Body    string
-}
+type (
+	Message struct {
+		Subject string
+		Body    string
+	}
+
+	RateProvider interface {
+		From() string
+		To() string
+		Rate() float64
+	}
+)
 
 func NewMessageFromRate(r RateProvider) *Message {
 	subject := constructSubject(r)
@@ -16,16 +24,10 @@ func NewMessageFromRate(r RateProvider) *Message {
 	}
 }
 
-type RateProvider interface {
-	GetFrom() string
-	GetTo() string
-	GetRate() float64
-}
-
 func constructSubject(r RateProvider) string {
-	return fmt.Sprintf("%s rate", r.GetFrom())
+	return fmt.Sprintf("%s rate", r.From())
 }
 
 func constructBody(r RateProvider) string {
-	return fmt.Sprintf("1 %s = %.2f %s", r.GetFrom(), r.GetRate(), r.GetTo())
+	return fmt.Sprintf("1 %s = %.2f %s", r.From(), r.Rate(), r.To())
 }

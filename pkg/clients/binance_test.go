@@ -53,7 +53,7 @@ func TestBinanceClient_Rate(t *testing.T) {
 		{
 			name:    "success",
 			client:  &mockClient{},
-			want:    &models.Rate{Rate: testValue},
+			want:    models.NewRate("", "", testValue),
 			wantErr: require.NoError,
 		},
 	}

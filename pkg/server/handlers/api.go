@@ -49,7 +49,7 @@ func (h *APIHandlers) Rate(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
-	return c.JSON(http.StatusOK, r.Rate)
+	return c.JSON(http.StatusOK, r.Rate())
 }
 
 func (h *APIHandlers) Subscribe(c echo.Context) error {
