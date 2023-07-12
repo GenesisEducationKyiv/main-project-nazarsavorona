@@ -3,8 +3,6 @@ package services
 import (
 	"context"
 
-	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/email"
-
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/models"
 
 	"golang.org/x/sync/errgroup"
@@ -15,13 +13,17 @@ type (
 		SendEmail(to string, message []byte) error
 	}
 
+	MessageConstructStrategy interface {
+		Construct(message *models.Message) []byte
+	}
+
 	EmailService struct {
 		emailSender EmailSender
-		strategy    email.MessageConstructStrategy
+		strategy    MessageConstructStrategy
 	}
 )
 
-func NewEmailService(emailSender EmailSender, strategy email.MessageConstructStrategy) *EmailService {
+func NewEmailService(emailSender EmailSender, strategy MessageConstructStrategy) *EmailService {
 	return &EmailService{
 		emailSender: emailSender,
 		strategy:    strategy,

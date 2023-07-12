@@ -121,6 +121,12 @@ func (m *mockRateService) Rate(_ context.Context, _, _ string) (*models.Rate, er
 	return models.NewRate("BTC", "USDT", 10000), nil
 }
 
+type mockEmailSender struct{}
+
+func (m *mockEmailSender) SendEmail(_ string, _ []byte) error {
+	return nil
+}
+
 func prepareServer(t *testing.T, file *os.File) *server.Server {
 	db := database.NewFileDatabase(file)
 	if db == nil {
@@ -128,13 +134,11 @@ func prepareServer(t *testing.T, file *os.File) *server.Server {
 	}
 
 	repository := email.NewRepository(db)
-	mailSender := email.NewSender("", "", nil, email.NewMockSender(nil))
-
 	rateGetter := &mockRateService{}
 
 	subscribeService := services.NewSubscribeService(repository)
 	rateService := services.NewRateService("", "", rateGetter)
-	emailService := services.NewEmailService(mailSender, &email.HTMLMessageBuilder{})
+	emailService := services.NewEmailService(&mockEmailSender{}, &email.HTMLMessageBuilder{})
 
 	api := handlers.NewAPIHandlers(emailService, rateService, subscribeService)
 
