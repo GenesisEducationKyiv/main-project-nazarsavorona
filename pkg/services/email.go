@@ -10,26 +10,34 @@ import (
 
 type (
 	EmailSender interface {
-		SendEmail(string, string, string) error
+		SendEmail(to string, message []byte) error
+	}
+
+	MessageConstructStrategy interface {
+		Construct(message *models.Message) []byte
 	}
 
 	EmailService struct {
-		mailSender EmailSender
+		emailSender EmailSender
+		strategy    MessageConstructStrategy
 	}
 )
 
-func NewEmailService(mailSender EmailSender) *EmailService {
-	return &EmailService{mailSender: mailSender}
+func NewEmailService(emailSender EmailSender, strategy MessageConstructStrategy) *EmailService {
+	return &EmailService{
+		emailSender: emailSender,
+		strategy:    strategy,
+	}
 }
 
 func (s *EmailService) SendEmails(ctx context.Context, emails []string, message *models.Message) error {
-	// since we want to try to send all emails, we don't want to stop on first error
 	group, _ := errgroup.WithContext(ctx)
 
-	for _, currentEmail := range emails {
-		currentEmail := currentEmail
+	for _, e := range emails {
+		e := e
 		group.Go(func() error {
-			return s.mailSender.SendEmail(currentEmail, message.Subject, message.Body)
+			messageBytes := s.strategy.Construct(message)
+			return s.emailSender.SendEmail(e, messageBytes)
 		})
 	}
 

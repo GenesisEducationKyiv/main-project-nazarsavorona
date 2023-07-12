@@ -17,11 +17,7 @@ func TestNewMessage(t *testing.T) {
 	}{
 		{
 			name: "check message",
-			r: &models.Rate{
-				From: "USD",
-				To:   "UAH",
-				Rate: 27.5,
-			},
+			r:    models.NewRate("USD", "UAH", 27.5),
 			want: &models.Message{
 				Subject: "USD rate",
 				Body:    "1 USD = 27.50 UAH",

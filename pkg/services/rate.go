@@ -7,25 +7,25 @@ import (
 )
 
 type (
-	RateGetter interface {
+	RateFetcher interface {
 		Rate(ctx context.Context, from, to string) (*models.Rate, error)
 	}
 
 	RateService struct {
-		from       string
-		to         string
-		rateGetter RateGetter
+		from    string
+		to      string
+		fetcher RateFetcher
 	}
 )
 
-func NewRateService(from, to string, rateGetter RateGetter) *RateService {
+func NewRateService(from, to string, fetcher RateFetcher) *RateService {
 	return &RateService{
-		from:       from,
-		to:         to,
-		rateGetter: rateGetter,
+		from:    from,
+		to:      to,
+		fetcher: fetcher,
 	}
 }
 
 func (s *RateService) Rate(ctx context.Context) (*models.Rate, error) {
-	return s.rateGetter.Rate(ctx, s.from, s.to)
+	return s.fetcher.Rate(ctx, s.from, s.to)
 }

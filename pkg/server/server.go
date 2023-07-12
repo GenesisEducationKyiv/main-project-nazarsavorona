@@ -7,13 +7,13 @@ import (
 )
 
 type (
-	apiHandlers interface {
+	APIHandlers interface {
 		Rate(c echo.Context) error
 		Subscribe(c echo.Context) error
 		SendEmails(c echo.Context) error
 	}
 
-	webHandlers interface {
+	WebHandlers interface {
 		Index(c echo.Context) error
 		Subscribe(c echo.Context) error
 		SendEmails(c echo.Context) error
@@ -23,8 +23,8 @@ type (
 	Server struct {
 		router *echo.Echo
 
-		api apiHandlers
-		web webHandlers
+		api APIHandlers
+		web WebHandlers
 	}
 )
 
@@ -32,7 +32,7 @@ func (s *Server) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
 	s.router.ServeHTTP(writer, request)
 }
 
-func NewServer(api apiHandlers, web webHandlers) *Server {
+func NewServer(api APIHandlers, web WebHandlers) *Server {
 	e := echo.New()
 	e.HideBanner = true
 

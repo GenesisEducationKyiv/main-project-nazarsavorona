@@ -1,28 +1,26 @@
 package main
 
 import (
+	"os"
+
 	"fmt"
 	"log"
 	"net/http"
 	"net/smtp"
-	"os"
 
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/server"
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/server/handlers"
 
-	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/email"
-
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/clients"
-
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/database"
-
+	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/email"
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/services"
 )
 
 func main() {
 	envValues, err := getEnvironmentValues()
 	if err != nil {
-		log.Panicf("Error fetching environment values: %v\n", err)
+		log.Fatalf("Error fetching environment values: %v", err)
 	}
 
 	port := envValues["PORT"]
@@ -41,37 +39,36 @@ func main() {
 
 	binanceURL := envValues["BINANCE_API_URL"]
 
-	file, err := PrepareFile(dbFileFolder, dbFileName)
+	file, err := prepareFile(dbFileFolder, dbFileName)
 	if err != nil {
-		log.Panicln(err.Error())
+		log.Fatalf("Error preparing file: %v", err)
 	}
 
 	db := database.NewFileDatabase(file)
 	if db == nil {
-		log.Panicln("Error creating database")
+		log.Fatalf("Error creating database")
 	}
 
 	repository := email.NewRepository(db)
 	mailSender := email.NewSender(senderEmail,
 		fmt.Sprintf("%s:%s", smtpHost, smtpPort),
-		smtp.PlainAuth("", senderEmail, senderPassword, smtpHost),
-		smtp.SendMail)
+		smtp.PlainAuth("", senderEmail, senderPassword, smtpHost))
 	rateGetter := clients.NewBinanceClient(binanceURL, &http.Client{})
 
 	subscribeService := services.NewSubscribeService(repository)
 	rateService := services.NewRateService(fromCurrency, toCurrency, rateGetter)
-	emailService := services.NewEmailService(mailSender)
+	emailService := services.NewEmailService(mailSender, &email.HTMLMessageBuilder{})
 
 	api := handlers.NewAPIHandlers(emailService, rateService, subscribeService)
 	web := handlers.NewWebHandlers(emailService, rateService, subscribeService)
 
 	s := server.NewServer(api, web)
 
-	log.Printf("Service listens port: %s", port)
+	log.Printf("Service listens on port: %s", port)
 
 	err = s.Start(":" + port)
 	if err != nil {
-		log.Panicln(err.Error())
+		log.Fatalf("Error starting server: %v", err)
 	}
 }
 
@@ -92,8 +89,8 @@ func getEnvironmentValues() (map[string]string, error) {
 	envValues := make(map[string]string)
 
 	for _, envVar := range requiredEnvVars {
-		value := os.Getenv(envVar)
-		if value == "" {
+		value, exists := os.LookupEnv(envVar)
+		if !exists {
 			return nil, fmt.Errorf("environment variable %s is not set", envVar)
 		}
 		envValues[envVar] = value
@@ -102,15 +99,16 @@ func getEnvironmentValues() (map[string]string, error) {
 	return envValues, nil
 }
 
-func PrepareFile(dbFileFolder string, dbFileName string) (*os.File, error) {
-	err := os.MkdirAll(dbFileFolder, 0666)
+func prepareFile(dbFileFolder string, dbFileName string) (*os.File, error) {
+	err := os.MkdirAll(dbFileFolder, os.ModeDir)
 	if err != nil {
-		log.Panicln(err.Error())
+		return nil, fmt.Errorf("error creating directory: %w", err)
 	}
 
-	file, err := os.OpenFile(dbFileFolder+dbFileName, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	file, err := os.OpenFile(dbFileFolder+"/"+dbFileName, os.O_RDWR|os.O_CREATE|os.O_APPEND, os.ModePerm)
 	if err != nil {
-		log.Panicln(err.Error())
+		return nil, fmt.Errorf("error opening file: %w", err)
 	}
-	return file, err
+
+	return file, nil
 }

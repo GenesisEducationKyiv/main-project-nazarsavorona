@@ -1,7 +1,7 @@
 package services_test
 
 import (
-	"errors"
+	"fmt"
 	"testing"
 
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/email"
@@ -73,7 +73,7 @@ func TestSubscribeService_Subscribe(t *testing.T) {
 		},
 		{
 			name:      "with unknown error",
-			err:       errors.New("unknown error"),
+			err:       fmt.Errorf("unknown error"),
 			expectErr: require.Error,
 		},
 	}
