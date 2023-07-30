@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/smtp"
 
+	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/clients/chain"
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/server"
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/server/handlers"
 
@@ -38,6 +39,7 @@ func main() {
 	dbFileName := envValues["DB_FILE_NAME"]
 
 	binanceURL := envValues["BINANCE_API_URL"]
+	coingeckoURL := envValues["COINGECKO_API_URL"]
 
 	file, err := prepareFile(dbFileFolder, dbFileName)
 	if err != nil {
@@ -53,10 +55,16 @@ func main() {
 	mailSender := email.NewSender(senderEmail,
 		fmt.Sprintf("%s:%s", smtpHost, smtpPort),
 		smtp.PlainAuth("", senderEmail, senderPassword, smtpHost))
-	rateGetter := clients.NewBinanceClient(binanceURL, &http.Client{})
+
+	binanceRateGetter := clients.NewBinanceClient(binanceURL, &http.Client{})
+	coingeckoRateGetter := clients.NewCoingeckoClient(coingeckoURL, &http.Client{})
+
+	binanceChain := chain.NewBaseChain(binanceRateGetter)
+	coingeckoChain := chain.NewBaseChain(coingeckoRateGetter)
+	binanceChain.SetNext(coingeckoChain)
 
 	subscribeService := services.NewSubscribeService(repository)
-	rateService := services.NewRateService(fromCurrency, toCurrency, rateGetter)
+	rateService := services.NewRateService(fromCurrency, toCurrency, binanceChain)
 	emailService := services.NewEmailService(mailSender, &email.HTMLMessageBuilder{})
 
 	api := handlers.NewAPIHandlers(emailService, rateService, subscribeService)
@@ -84,6 +92,7 @@ func getEnvironmentValues() (map[string]string, error) {
 		"DB_FILE_FOLDER",
 		"DB_FILE_NAME",
 		"BINANCE_API_URL",
+		"COINGECKO_API_URL",
 	}
 
 	envValues := make(map[string]string)

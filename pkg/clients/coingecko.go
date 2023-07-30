@@ -44,7 +44,10 @@ func (c *CoingeckoClient) Rate(ctx context.Context, from, to string) (*models.Ra
 
 	defer response.Body.Close()
 
-	// get response body as map
+	if response.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("request failed with status: %s", response.Status)
+	}
+
 	var responseData map[string]map[string]float64
 	if err = json.NewDecoder(response.Body).Decode(&responseData); err != nil {
 		return nil, err

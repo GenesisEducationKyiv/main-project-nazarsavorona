@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/models"
 )
@@ -17,10 +18,6 @@ type (
 	BinanceClient struct {
 		apiURL string
 		client HTTPClient
-	}
-
-	rateDTO struct {
-		Price float64 `json:"price"`
 	}
 )
 
@@ -48,11 +45,12 @@ func (b *BinanceClient) Rate(ctx context.Context, from, to string) (*models.Rate
 		return nil, fmt.Errorf("request failed with status: %s", response.Status)
 	}
 
-	var r rateDTO
-	err = json.NewDecoder(response.Body).Decode(&r)
-	if err != nil {
-		return nil, fmt.Errorf("failed to decode response body: %w", err)
+	var responseData map[string]string
+	if err = json.NewDecoder(response.Body).Decode(&responseData); err != nil {
+		return nil, err
 	}
 
-	return models.NewRate(from, to, r.Price), nil
+	price, err := strconv.ParseFloat(responseData["price"], 64)
+
+	return models.NewRate(from, to, price), nil
 }

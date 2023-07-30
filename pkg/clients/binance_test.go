@@ -22,7 +22,7 @@ const testValue = 31415.926
 func (m *mockBinanceClient) Do(_ *http.Request) (*http.Response, error) {
 	response := &http.Response{
 		Body: io.NopCloser(bytes.NewReader(
-			[]byte(fmt.Sprintf(`{"price": %f}`, testValue)))),
+			[]byte(fmt.Sprintf(`{"price": "%f"}`, testValue)))),
 		StatusCode: http.StatusOK,
 	}
 
