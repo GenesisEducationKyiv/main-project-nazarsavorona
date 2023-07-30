@@ -56,8 +56,10 @@ func main() {
 		fmt.Sprintf("%s:%s", smtpHost, smtpPort),
 		smtp.PlainAuth("", senderEmail, senderPassword, smtpHost))
 
-	binanceRateGetter := clients.NewBinanceClient(binanceURL, &http.Client{})
-	coingeckoRateGetter := clients.NewCoingeckoClient(coingeckoURL, &http.Client{})
+	binanceRateGetter := clients.NewLoggingClient("binance",
+		clients.NewBinanceClient(binanceURL, &http.Client{}))
+	coingeckoRateGetter := clients.NewLoggingClient("coingecko",
+		clients.NewCoingeckoClient(coingeckoURL, &http.Client{}))
 
 	binanceChain := chain.NewBaseChain(binanceRateGetter)
 	coingeckoChain := chain.NewBaseChain(coingeckoRateGetter)
