@@ -4,10 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"net/http"
-	"strconv"
-
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/models"
+	"net/http"
 )
 
 type (
@@ -21,7 +19,7 @@ type (
 	}
 
 	rateDTO struct {
-		Price string `json:"price"`
+		Price float64 `json:"price"`
 	}
 )
 
@@ -55,10 +53,5 @@ func (b *BinanceClient) Rate(ctx context.Context, from, to string) (*models.Rate
 		return nil, fmt.Errorf("failed to decode response body: %w", err)
 	}
 
-	price, err := strconv.ParseFloat(r.Price, 64)
-	if err != nil {
-		return nil, fmt.Errorf("failed to parse rate price: %w", err)
-	}
-
-	return models.NewRate(from, to, price), nil
+	return models.NewRate(from, to, r.Price), nil
 }

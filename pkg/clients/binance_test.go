@@ -3,7 +3,6 @@ package clients_test
 import (
 	"bytes"
 	"context"
-	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -16,25 +15,15 @@ import (
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/models"
 )
 
-type mockClient struct{}
+type mockBinanceClient struct{}
 
 const testValue = 31415.926
 
-func (m *mockClient) Do(_ *http.Request) (*http.Response, error) {
-	responseData := struct {
-		Price string `json:"price"`
-	}{
-		Price: fmt.Sprintf("%f", testValue),
-	}
-
-	responseBody, err := json.Marshal(responseData)
-	if err != nil {
-		return nil, err
-	}
-
+func (m *mockBinanceClient) Do(_ *http.Request) (*http.Response, error) {
 	response := &http.Response{
+		Body: io.NopCloser(bytes.NewReader(
+			[]byte(fmt.Sprintf(`{"price": %f}`, testValue)))),
 		StatusCode: http.StatusOK,
-		Body:       io.NopCloser(bytes.NewBuffer(responseBody)),
 	}
 
 	return response, nil
@@ -52,7 +41,7 @@ func TestBinanceClient_Rate(t *testing.T) {
 	}{
 		{
 			name:    "success",
-			client:  &mockClient{},
+			client:  &mockBinanceClient{},
 			want:    models.NewRate("", "", testValue),
 			wantErr: require.NoError,
 		},
@@ -63,9 +52,9 @@ func TestBinanceClient_Rate(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			binanceClient := clients.NewBinanceClient("", tt.client)
+			client := clients.NewBinanceClient("", tt.client)
 
-			got, err := binanceClient.Rate(context.Background(), "", "")
+			got, err := client.Rate(context.Background(), "", "")
 
 			tt.wantErr(t, err)
 			require.Equal(t, tt.want, got)

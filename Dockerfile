@@ -33,5 +33,6 @@ ENV DB_FILE_FOLDER ./resources
 ENV DB_FILE_NAME emails.dat
 
 ENV BINANCE_API_URL https://api.binance.com/api/v3/
+ENV COINGECKO_API_URL https://api.coingecko.com/api/v3/
 
 CMD ["./service"]
