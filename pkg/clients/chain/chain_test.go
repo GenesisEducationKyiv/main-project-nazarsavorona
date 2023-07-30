@@ -2,7 +2,7 @@ package chain_test
 
 import (
 	"context"
-	"errors"
+	"fmt"
 	"testing"
 
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/clients/chain"
@@ -28,7 +28,7 @@ func TestBaseChain(t *testing.T) {
 	}
 
 	fail := func(ctx context.Context, from, to string) (*models.Rate, error) {
-		return nil, errors.New("fail")
+		return nil, fmt.Errorf("fail")
 	}
 
 	tests := []struct {

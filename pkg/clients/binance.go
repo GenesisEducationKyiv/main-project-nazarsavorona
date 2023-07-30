@@ -51,6 +51,9 @@ func (b *BinanceClient) Rate(ctx context.Context, from, to string) (*models.Rate
 	}
 
 	price, err := strconv.ParseFloat(responseData["price"], 64)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse price: %w", err)
+	}
 
 	return models.NewRate(from, to, price), nil
 }
