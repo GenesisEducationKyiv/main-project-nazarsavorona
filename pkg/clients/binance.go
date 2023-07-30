@@ -4,8 +4,9 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/models"
 	"net/http"
+
+	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/models"
 )
 
 type (

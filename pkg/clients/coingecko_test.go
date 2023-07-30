@@ -4,12 +4,13 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/clients"
-	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/models"
-	"github.com/stretchr/testify/require"
 	"io"
 	"net/http"
 	"testing"
+
+	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/clients"
+	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/models"
+	"github.com/stretchr/testify/require"
 )
 
 type mockCoingeckoClient struct{}
