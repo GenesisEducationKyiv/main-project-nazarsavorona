@@ -8,41 +8,42 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/clients"
-
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/models"
+	"github.com/stretchr/testify/require"
 )
 
-type mockBinanceClient struct{}
+type mockCoingeckoClient struct{}
 
-const testValue = 31415.926
-
-func (m *mockBinanceClient) Do(_ *http.Request) (*http.Response, error) {
+func (m *mockCoingeckoClient) Do(_ *http.Request) (*http.Response, error) {
 	response := &http.Response{
 		Body: io.NopCloser(bytes.NewReader(
-			[]byte(fmt.Sprintf(`{"price": "%f"}`, testValue)))),
+			[]byte(fmt.Sprintf(` {
+										  "bitcoin": { 
+											"uah": %f
+										  }
+										}`, testValue)))),
 		StatusCode: http.StatusOK,
 	}
 
 	return response, nil
 }
 
-func TestBinanceClient_Rate(t *testing.T) {
+func TestCoingeckoClient_Rate(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
 		name    string
-		input   string
+		from    string
+		to      string
 		client  clients.HTTPClient
-		want    *models.Rate
 		wantErr require.ErrorAssertionFunc
 	}{
 		{
 			name:    "success",
-			client:  &mockBinanceClient{},
-			want:    models.NewRate("", "", testValue),
+			from:    "BTC",
+			to:      "UAH",
+			client:  &mockCoingeckoClient{},
 			wantErr: require.NoError,
 		},
 	}
@@ -51,13 +52,13 @@ func TestBinanceClient_Rate(t *testing.T) {
 
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			want := models.NewRate(tt.from, tt.to, testValue)
 
-			client := clients.NewBinanceClient("", tt.client)
-
-			got, err := client.Rate(context.Background(), "", "")
+			client := clients.NewCoingeckoClient("", tt.client)
+			got, err := client.Rate(context.Background(), tt.from, tt.to)
 
 			tt.wantErr(t, err)
-			require.Equal(t, tt.want, got)
+			require.Equal(t, want, got)
 		})
 	}
 }

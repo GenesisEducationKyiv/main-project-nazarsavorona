@@ -19,10 +19,6 @@ type (
 		apiURL string
 		client HTTPClient
 	}
-
-	rateDTO struct {
-		Price string `json:"price"`
-	}
 )
 
 func NewBinanceClient(apiURL string, client HTTPClient) *BinanceClient {
@@ -49,15 +45,14 @@ func (b *BinanceClient) Rate(ctx context.Context, from, to string) (*models.Rate
 		return nil, fmt.Errorf("request failed with status: %s", response.Status)
 	}
 
-	var r rateDTO
-	err = json.NewDecoder(response.Body).Decode(&r)
-	if err != nil {
-		return nil, fmt.Errorf("failed to decode response body: %w", err)
+	var responseData map[string]string
+	if err = json.NewDecoder(response.Body).Decode(&responseData); err != nil {
+		return nil, err
 	}
 
-	price, err := strconv.ParseFloat(r.Price, 64)
+	price, err := strconv.ParseFloat(responseData["price"], 64)
 	if err != nil {
-		return nil, fmt.Errorf("failed to parse rate price: %w", err)
+		return nil, fmt.Errorf("failed to parse price: %w", err)
 	}
 
 	return models.NewRate(from, to, price), nil
