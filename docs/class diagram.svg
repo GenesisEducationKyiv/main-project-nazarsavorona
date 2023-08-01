@@ -1,0 +1,654 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 3391 831" style="width:3391px;height:831px;" xmlns="http://www.w3.org/2000/svg">
+    <g transform="matrix(1, 0, 0, 1, 0, 5.684341886080802e-14)">
+        <polygon fill="#FFFFFF"
+                 points="14,361.4531,62,361.4531,69,383.75,452,383.75,452,597.9531,14,597.9531,14,361.4531"
+                 style="stroke: #000000; stroke-width: 1.5;"/>
+        <line style="stroke: #000000; stroke-width: 1.5;" x1="14" x2="69" y1="383.75" y2="383.75"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs"
+              textLength="42" x="18" y="376.4482" style="white-space: pre;">chain
+        </text>
+        <polygon fill="#FFFFFF"
+                 points="540,354.9531,613,354.9531,620,377.25,2943,377.25,2943,463.9531,540,463.9531,540,354.9531"
+                 style="stroke: #000000; stroke-width: 1.5;"/>
+        <line style="stroke: #000000; stroke-width: 1.5;" x1="540" x2="620" y1="377.25" y2="377.25"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs"
+              textLength="67" x="544" y="369.9482" style="white-space: pre;">services
+        </text>
+        <polygon fill="#FFFFFF"
+                 points="470,495.4531,528,495.4531,535,517.75,2124,517.75,2124,591.4531,470,591.4531,470,495.4531"
+                 style="stroke: #000000; stroke-width: 1.5;"/>
+        <line style="stroke: #000000; stroke-width: 1.5;" x1="470" x2="535" y1="517.75" y2="517.75"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs"
+              textLength="52" x="474" y="510.4482" style="white-space: pre;">clients
+        </text>
+        <polygon fill="#FFFFFF"
+                 points="3167,622.9531,3245,622.9531,3252,645.25,3369,645.25,3369,731.9531,3167,731.9531,3167,622.9531"
+                 style="stroke: #000000; stroke-width: 1.5;"/>
+        <line style="stroke: #000000; stroke-width: 1.5;" x1="3167" x2="3252" y1="645.25" y2="645.25"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs"
+              textLength="72" x="3171" y="637.9482" style="white-space: pre;">database
+        </text>
+        <polygon fill="#FFFFFF"
+                 points="2143,488.9531,2190,488.9531,2197,511.25,3369,511.25,3369,597.9531,2143,597.9531,2143,488.9531"
+                 style="stroke: #000000; stroke-width: 1.5;"/>
+        <line style="stroke: #000000; stroke-width: 1.5;" x1="2143" x2="2197" y1="511.25" y2="511.25"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs"
+              textLength="41" x="2147" y="503.9482" style="white-space: pre;">email
+        </text>
+        <polygon fill="#FFFFFF"
+                 points="340,195.9531,415,195.9531,422,218.25,1812,218.25,1812,329.9531,340,329.9531,340,195.9531"
+                 style="stroke: #000000; stroke-width: 1.5;"/>
+        <line style="stroke: #000000; stroke-width: 1.5;" x1="340" x2="422" y1="218.25" y2="218.25"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs"
+              textLength="69" x="344" y="210.9482" style="white-space: pre;">handlers
+        </text>
+        <polygon fill="#FFFFFF"
+                 points="438,36.9531,496,36.9531,503,59.25,1342,59.25,1342,170.9531,438,170.9531,438,36.9531"
+                 style="stroke: #000000; stroke-width: 1.5;"/>
+        <line style="stroke: #000000; stroke-width: 1.5;" x1="438" x2="503" y1="59.25" y2="59.25"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs"
+              textLength="52" x="442" y="51.9482" style="white-space: pre;">server
+        </text>
+        <polygon fill="#FFFFFF"
+                 points="2464,43.4531,2527,43.4531,2534,65.75,2731,65.75,2731,323.4531,2464,323.4531,2464,43.4531"
+                 style="stroke: #000000; stroke-width: 1.5;"/>
+        <line style="stroke: #000000; stroke-width: 1.5;" x1="2464" x2="2534" y1="65.75" y2="65.75"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs"
+              textLength="57" x="2468" y="58.4482" style="white-space: pre;">models
+        </text>
+        <rect fill="#FEFECE" height="73.6094" id="chain.BaseChain" rx="5" ry="5"
+              style="stroke: #A80036; stroke-width: 1.5;" width="421" x="22.5" y="515.9531"/>
+        <ellipse cx="195.75" cy="531.9531" fill="#7FFFD4" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <path d="M195.2344,532.5156 Q193.375,531.8125 192.7188,531.0469 Q192.0781,530.2656 192.0781,528.9531 Q192.0781,527.2656 193.1563,526.2969 Q194.2344,525.3281 196.1094,525.3281 Q196.9688,525.3281 197.8125,525.5313 Q198.6719,525.7188 199.5156,526.1094 L199.5156,528.5 Q198.7344,527.9375 197.9063,527.6563 Q197.0938,527.3594 196.2969,527.3594 Q195.4219,527.3594 194.9375,527.7188 Q194.4688,528.0781 194.4688,528.7344 Q194.4688,529.25 194.8125,529.5938 Q195.1563,529.9219 196.25,530.3281 L197.3125,530.7344 Q198.7969,531.2813 199.5,532.1875 Q200.2188,533.0938 200.2188,534.4688 Q200.2188,536.3438 199.1094,537.2656 Q198,538.1875 195.75,538.1875 Q194.8281,538.1875 193.9063,537.9688 Q192.9844,537.75 192.125,537.3281 L192.125,534.7969 Q193.0938,535.4844 194.0156,535.8281 Q194.9375,536.1719 195.8281,536.1719 Q196.7344,536.1719 197.2344,535.7656 Q197.7344,535.3438 197.7344,534.6094 Q197.7344,534.0469 197.3906,533.6406 Q197.0625,533.2188 196.4375,532.9688 L195.2344,532.5156 Z "/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="66"
+              x="216.25" y="536.1074" style="white-space: pre;">BaseChain
+        </text>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="23.5" x2="442.5" y1="547.9531" y2="547.9531"/>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="23.5" x2="442.5" y1="555.9531" y2="555.9531"/>
+        <ellipse cx="33.5" cy="566.9531" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="112"
+              x="42.5" y="570.1636" style="white-space: pre;">SetNext(next Chain)
+        </text>
+        <ellipse cx="33.5" cy="579.7578" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="395"
+              x="42.5" y="582.9683" style="white-space: pre;">Rate(ctx context.Context, from string, to string)
+            (*models.Rate, error)
+        </text>
+        <rect fill="#FEFECE" height="60.8047" id="chain.Chain" rx="5" ry="5" style="stroke: #A80036; stroke-width: 1.5;"
+              width="114" x="176" y="388.4531"/>
+        <ellipse cx="212.15" cy="404.4531" fill="#B4A7E5" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <path d="M208.0719,400.2188 L208.0719,398.0625 L215.4625,398.0625 L215.4625,400.2188 L212.9938,400.2188 L212.9938,408.2969 L215.4625,408.2969 L215.4625,410.4531 L208.0719,410.4531 L208.0719,408.2969 L210.5406,408.2969 L210.5406,400.2188 L208.0719,400.2188 Z "/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs"
+              textLength="35" x="230.85" y="408.6074" style="white-space: pre;">Chain
+        </text>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="177" x2="289" y1="420.4531" y2="420.4531"/>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="177" x2="289" y1="428.4531" y2="428.4531"/>
+        <ellipse cx="187" cy="439.4531" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="88"
+              x="196" y="442.6636" style="white-space: pre;">SetNext(Chain)
+        </text>
+        <rect fill="#FEFECE" height="60.8047" id="services.RateFetcher" rx="5" ry="5"
+              style="stroke: #A80036; stroke-width: 1.5;" width="421" x="1694.5" y="388.4531"/>
+        <ellipse cx="1862.25" cy="404.4531" fill="#B4A7E5" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <path d="M1858.1719,400.2188 L1858.1719,398.0625 L1865.5625,398.0625 L1865.5625,400.2188 L1863.0938,400.2188 L1863.0938,408.2969 L1865.5625,408.2969 L1865.5625,410.4531 L1858.1719,410.4531 L1858.1719,408.2969 L1860.6406,408.2969 L1860.6406,400.2188 L1858.1719,400.2188 Z "/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs"
+              textLength="77" x="1882.75" y="408.6074" style="white-space: pre;">RateFetcher
+        </text>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="1695.5" x2="2114.5" y1="420.4531" y2="420.4531"/>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="1695.5" x2="2114.5" y1="428.4531" y2="428.4531"/>
+        <ellipse cx="1705.5" cy="439.4531" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="395"
+              x="1714.5" y="442.6636" style="white-space: pre;">Rate(ctx context.Context, from string, to string)
+            (*models.Rate, error)
+        </text>
+        <rect fill="#FEFECE" height="60.8047" id="services.MessageConstructStrategy" rx="5" ry="5"
+              style="stroke: #A80036; stroke-width: 1.5;" width="285" x="2342.5" y="388.4531"/>
+        <ellipse cx="2396.75" cy="404.4531" fill="#B4A7E5" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <path d="M2392.6719,400.2188 L2392.6719,398.0625 L2400.0625,398.0625 L2400.0625,400.2188 L2397.5938,400.2188 L2397.5938,408.2969 L2400.0625,408.2969 L2400.0625,410.4531 L2392.6719,410.4531 L2392.6719,408.2969 L2395.1406,408.2969 L2395.1406,400.2188 L2392.6719,400.2188 Z "/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs"
+              textLength="168" x="2417.25" y="408.6074" style="white-space: pre;">MessageConstructStrategy
+        </text>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="2343.5" x2="2626.5" y1="420.4531" y2="420.4531"/>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="2343.5" x2="2626.5" y1="428.4531" y2="428.4531"/>
+        <ellipse cx="2353.5" cy="439.4531" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="259"
+              x="2362.5" y="442.6636" style="white-space: pre;">Construct(message *models.Message) []byte
+        </text>
+        <rect fill="#FEFECE" height="73.6094" id="services.EmailDatabase" rx="5" ry="5"
+              style="stroke: #A80036; stroke-width: 1.5;" width="156" x="2151" y="381.9531"/>
+        <ellipse cx="2179.95" cy="397.9531" fill="#B4A7E5" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <path d="M2175.8719,393.7188 L2175.8719,391.5625 L2183.2625,391.5625 L2183.2625,393.7188 L2180.7938,393.7188 L2180.7938,401.7969 L2183.2625,401.7969 L2183.2625,403.9531 L2175.8719,403.9531 L2175.8719,401.7969 L2178.3406,401.7969 L2178.3406,393.7188 L2175.8719,393.7188 Z "/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs"
+              textLength="93" x="2197.05" y="402.1074" style="white-space: pre;">EmailDatabase
+        </text>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="2152" x2="2306" y1="413.9531" y2="413.9531"/>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="2152" x2="2306" y1="421.9531" y2="421.9531"/>
+        <ellipse cx="2162" cy="432.9531" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="130"
+              x="2171" y="436.1636" style="white-space: pre;">AddEmail( string) error
+        </text>
+        <ellipse cx="2162" cy="445.7578" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="104"
+              x="2171" y="448.9683" style="white-space: pre;">EmailList() []string
+        </text>
+        <rect fill="#FEFECE" height="60.8047" id="services.EmailSender" rx="5" ry="5"
+              style="stroke: #A80036; stroke-width: 1.5;" width="272" x="2663" y="388.4531"/>
+        <ellipse cx="2755.75" cy="404.4531" fill="#B4A7E5" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <path d="M2751.6719,400.2188 L2751.6719,398.0625 L2759.0625,398.0625 L2759.0625,400.2188 L2756.5938,400.2188 L2756.5938,408.2969 L2759.0625,408.2969 L2759.0625,410.4531 L2751.6719,410.4531 L2751.6719,408.2969 L2754.1406,408.2969 L2754.1406,400.2188 L2751.6719,400.2188 Z "/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs"
+              textLength="78" x="2776.25" y="408.6074" style="white-space: pre;">EmailSender
+        </text>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="2664" x2="2934" y1="420.4531" y2="420.4531"/>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="2664" x2="2934" y1="428.4531" y2="428.4531"/>
+        <ellipse cx="2674" cy="439.4531" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="246"
+              x="2683" y="442.6636" style="white-space: pre;">SendEmail(to string, message []byte) error
+        </text>
+        <rect fill="#FEFECE" height="60.8047" id="services.EmailService" rx="5" ry="5"
+              style="stroke: #A80036; stroke-width: 1.5;" width="501" x="876.5" y="388.4531"/>
+        <ellipse cx="1083.75" cy="404.4531" fill="#7FFFD4" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <path d="M1083.2344,405.0156 Q1081.375,404.3125 1080.7188,403.5469 Q1080.0781,402.7656 1080.0781,401.4531 Q1080.0781,399.7656 1081.1563,398.7969 Q1082.2344,397.8281 1084.1094,397.8281 Q1084.9688,397.8281 1085.8125,398.0313 Q1086.6719,398.2188 1087.5156,398.6094 L1087.5156,401 Q1086.7344,400.4375 1085.9063,400.1563 Q1085.0938,399.8594 1084.2969,399.8594 Q1083.4219,399.8594 1082.9375,400.2188 Q1082.4688,400.5781 1082.4688,401.2344 Q1082.4688,401.75 1082.8125,402.0938 Q1083.1563,402.4219 1084.25,402.8281 L1085.3125,403.2344 Q1086.7969,403.7813 1087.5,404.6875 Q1088.2188,405.5938 1088.2188,406.9688 Q1088.2188,408.8438 1087.1094,409.7656 Q1086,410.6875 1083.75,410.6875 Q1082.8281,410.6875 1081.9063,410.4688 Q1080.9844,410.25 1080.125,409.8281 L1080.125,407.2969 Q1081.0938,407.9844 1082.0156,408.3281 Q1082.9375,408.6719 1083.8281,408.6719 Q1084.7344,408.6719 1085.2344,408.2656 Q1085.7344,407.8438 1085.7344,407.1094 Q1085.7344,406.5469 1085.3906,406.1406 Q1085.0625,405.7188 1084.4375,405.4688 L1083.2344,405.0156 Z "/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="78"
+              x="1104.25" y="408.6074" style="white-space: pre;">EmailService
+        </text>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="877.5" x2="1376.5" y1="420.4531" y2="420.4531"/>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="877.5" x2="1376.5" y1="428.4531" y2="428.4531"/>
+        <ellipse cx="887.5" cy="439.4531" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="475"
+              x="896.5" y="442.6636" style="white-space: pre;">SendEmails(ctx context.Context, emails []string, message
+            *models.Message) error
+        </text>
+        <rect fill="#FEFECE" height="60.8047" id="services.RateService" rx="5" ry="5"
+              style="stroke: #A80036; stroke-width: 1.5;" width="293" x="548.5" y="388.4531"/>
+        <ellipse cx="653.75" cy="404.4531" fill="#7FFFD4" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <path d="M653.2344,405.0156 Q651.375,404.3125 650.7188,403.5469 Q650.0781,402.7656 650.0781,401.4531 Q650.0781,399.7656 651.1563,398.7969 Q652.2344,397.8281 654.1094,397.8281 Q654.9688,397.8281 655.8125,398.0313 Q656.6719,398.2188 657.5156,398.6094 L657.5156,401 Q656.7344,400.4375 655.9063,400.1563 Q655.0938,399.8594 654.2969,399.8594 Q653.4219,399.8594 652.9375,400.2188 Q652.4688,400.5781 652.4688,401.2344 Q652.4688,401.75 652.8125,402.0938 Q653.1563,402.4219 654.25,402.8281 L655.3125,403.2344 Q656.7969,403.7813 657.5,404.6875 Q658.2188,405.5938 658.2188,406.9688 Q658.2188,408.8438 657.1094,409.7656 Q656,410.6875 653.75,410.6875 Q652.8281,410.6875 651.9063,410.4688 Q650.9844,410.25 650.125,409.8281 L650.125,407.2969 Q651.0938,407.9844 652.0156,408.3281 Q652.9375,408.6719 653.8281,408.6719 Q654.7344,408.6719 655.2344,408.2656 Q655.7344,407.8438 655.7344,407.1094 Q655.7344,406.5469 655.3906,406.1406 Q655.0625,405.7188 654.4375,405.4688 L653.2344,405.0156 Z "/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="74"
+              x="674.25" y="408.6074" style="white-space: pre;">RateService
+        </text>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="549.5" x2="840.5" y1="420.4531" y2="420.4531"/>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="549.5" x2="840.5" y1="428.4531" y2="428.4531"/>
+        <ellipse cx="559.5" cy="439.4531" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="267"
+              x="568.5" y="442.6636" style="white-space: pre;">Rate(ctx context.Context) (*models.Rate, error)
+        </text>
+        <rect fill="#FEFECE" height="73.6094" id="services.SubscribeService" rx="5" ry="5"
+              style="stroke: #A80036; stroke-width: 1.5;" width="247" x="1412.5" y="381.9531"/>
+        <ellipse cx="1478.25" cy="397.9531" fill="#7FFFD4" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <path d="M1477.7344,398.5156 Q1475.875,397.8125 1475.2188,397.0469 Q1474.5781,396.2656 1474.5781,394.9531 Q1474.5781,393.2656 1475.6563,392.2969 Q1476.7344,391.3281 1478.6094,391.3281 Q1479.4688,391.3281 1480.3125,391.5313 Q1481.1719,391.7188 1482.0156,392.1094 L1482.0156,394.5 Q1481.2344,393.9375 1480.4063,393.6563 Q1479.5938,393.3594 1478.7969,393.3594 Q1477.9219,393.3594 1477.4375,393.7188 Q1476.9688,394.0781 1476.9688,394.7344 Q1476.9688,395.25 1477.3125,395.5938 Q1477.6563,395.9219 1478.75,396.3281 L1479.8125,396.7344 Q1481.2969,397.2813 1482,398.1875 Q1482.7188,399.0938 1482.7188,400.4688 Q1482.7188,402.3438 1481.6094,403.2656 Q1480.5,404.1875 1478.25,404.1875 Q1477.3281,404.1875 1476.4063,403.9688 Q1475.4844,403.75 1474.625,403.3281 L1474.625,400.7969 Q1475.5938,401.4844 1476.5156,401.8281 Q1477.4375,402.1719 1478.3281,402.1719 Q1479.2344,402.1719 1479.7344,401.7656 Q1480.2344,401.3438 1480.2344,400.6094 Q1480.2344,400.0469 1479.8906,399.6406 Q1479.5625,399.2188 1478.9375,398.9688 L1477.7344,398.5156 Z "/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="107"
+              x="1498.75" y="402.1074" style="white-space: pre;">SubscribeService
+        </text>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="1413.5" x2="1658.5" y1="413.9531" y2="413.9531"/>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="1413.5" x2="1658.5" y1="421.9531" y2="421.9531"/>
+        <ellipse cx="1423.5" cy="432.9531" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="221"
+              x="1432.5" y="436.1636" style="white-space: pre;">Subscribe(candidateEmail string) error
+        </text>
+        <ellipse cx="1423.5" cy="445.7578" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="104"
+              x="1432.5" y="448.9683" style="white-space: pre;">EmailList() []string
+        </text>
+        <rect fill="#FEFECE" height="60.8047" id="clients.BinanceClient" rx="5" ry="5"
+              style="stroke: #A80036; stroke-width: 1.5;" width="421" x="1694.5" y="522.4531"/>
+        <ellipse cx="1858.25" cy="538.4531" fill="#7FFFD4" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <path d="M1857.7344,539.0156 Q1855.875,538.3125 1855.2188,537.5469 Q1854.5781,536.7656 1854.5781,535.4531 Q1854.5781,533.7656 1855.6563,532.7969 Q1856.7344,531.8281 1858.6094,531.8281 Q1859.4688,531.8281 1860.3125,532.0313 Q1861.1719,532.2188 1862.0156,532.6094 L1862.0156,535 Q1861.2344,534.4375 1860.4063,534.1563 Q1859.5938,533.8594 1858.7969,533.8594 Q1857.9219,533.8594 1857.4375,534.2188 Q1856.9688,534.5781 1856.9688,535.2344 Q1856.9688,535.75 1857.3125,536.0938 Q1857.6563,536.4219 1858.75,536.8281 L1859.8125,537.2344 Q1861.2969,537.7813 1862,538.6875 Q1862.7188,539.5938 1862.7188,540.9688 Q1862.7188,542.8438 1861.6094,543.7656 Q1860.5,544.6875 1858.25,544.6875 Q1857.3281,544.6875 1856.4063,544.4688 Q1855.4844,544.25 1854.625,543.8281 L1854.625,541.2969 Q1855.5938,541.9844 1856.5156,542.3281 Q1857.4375,542.6719 1858.3281,542.6719 Q1859.2344,542.6719 1859.7344,542.2656 Q1860.2344,541.8438 1860.2344,541.1094 Q1860.2344,540.5469 1859.8906,540.1406 Q1859.5625,539.7188 1858.9375,539.4688 L1857.7344,539.0156 Z "/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="85"
+              x="1878.75" y="542.6074" style="white-space: pre;">BinanceClient
+        </text>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="1695.5" x2="2114.5" y1="554.4531" y2="554.4531"/>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="1695.5" x2="2114.5" y1="562.4531" y2="562.4531"/>
+        <ellipse cx="1705.5" cy="573.4531" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="395"
+              x="1714.5" y="576.6636" style="white-space: pre;">Rate(ctx context.Context, from string, to string)
+            (*models.Rate, error)
+        </text>
+        <rect fill="#FEFECE" height="60.8047" id="clients.CoingeckoClient" rx="5" ry="5"
+              style="stroke: #A80036; stroke-width: 1.5;" width="421" x="1238.5" y="522.4531"/>
+        <ellipse cx="1394.75" cy="538.4531" fill="#7FFFD4" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <path d="M1394.2344,539.0156 Q1392.375,538.3125 1391.7188,537.5469 Q1391.0781,536.7656 1391.0781,535.4531 Q1391.0781,533.7656 1392.1563,532.7969 Q1393.2344,531.8281 1395.1094,531.8281 Q1395.9688,531.8281 1396.8125,532.0313 Q1397.6719,532.2188 1398.5156,532.6094 L1398.5156,535 Q1397.7344,534.4375 1396.9063,534.1563 Q1396.0938,533.8594 1395.2969,533.8594 Q1394.4219,533.8594 1393.9375,534.2188 Q1393.4688,534.5781 1393.4688,535.2344 Q1393.4688,535.75 1393.8125,536.0938 Q1394.1563,536.4219 1395.25,536.8281 L1396.3125,537.2344 Q1397.7969,537.7813 1398.5,538.6875 Q1399.2188,539.5938 1399.2188,540.9688 Q1399.2188,542.8438 1398.1094,543.7656 Q1397,544.6875 1394.75,544.6875 Q1393.8281,544.6875 1392.9063,544.4688 Q1391.9844,544.25 1391.125,543.8281 L1391.125,541.2969 Q1392.0938,541.9844 1393.0156,542.3281 Q1393.9375,542.6719 1394.8281,542.6719 Q1395.7344,542.6719 1396.2344,542.2656 Q1396.7344,541.8438 1396.7344,541.1094 Q1396.7344,540.5469 1396.3906,540.1406 Q1396.0625,539.7188 1395.4375,539.4688 L1394.2344,539.0156 Z "/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="100"
+              x="1415.25" y="542.6074" style="white-space: pre;">CoingeckoClient
+        </text>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="1239.5" x2="1658.5" y1="554.4531" y2="554.4531"/>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="1239.5" x2="1658.5" y1="562.4531" y2="562.4531"/>
+        <ellipse cx="1249.5" cy="573.4531" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="395"
+              x="1258.5" y="576.6636" style="white-space: pre;">Rate(ctx context.Context, from string, to string)
+            (*models.Rate, error)
+        </text>
+        <rect fill="#FEFECE" height="60.8047" id="clients.HTTPClient" rx="5" ry="5"
+              style="stroke: #A80036; stroke-width: 1.5;" width="268" x="935" y="522.4531"/>
+        <ellipse cx="1032.25" cy="538.4531" fill="#B4A7E5" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <path d="M1028.1719,534.2188 L1028.1719,532.0625 L1035.5625,532.0625 L1035.5625,534.2188 L1033.0938,534.2188 L1033.0938,542.2969 L1035.5625,542.2969 L1035.5625,544.4531 L1028.1719,544.4531 L1028.1719,542.2969 L1030.6406,542.2969 L1030.6406,534.2188 L1028.1719,534.2188 Z "/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs"
+              textLength="65" x="1052.75" y="542.6074" style="white-space: pre;">HTTPClient
+        </text>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="936" x2="1202" y1="554.4531" y2="554.4531"/>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="936" x2="1202" y1="562.4531" y2="562.4531"/>
+        <ellipse cx="946" cy="573.4531" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="242"
+              x="955" y="576.6636" style="white-space: pre;">Do( *http.Request) (*http.Response, error)
+        </text>
+        <rect fill="#FEFECE" height="60.8047" id="clients.LoggingClient" rx="5" ry="5"
+              style="stroke: #A80036; stroke-width: 1.5;" width="421" x="478.5" y="522.4531"/>
+        <ellipse cx="642.75" cy="538.4531" fill="#7FFFD4" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <path d="M642.2344,539.0156 Q640.375,538.3125 639.7188,537.5469 Q639.0781,536.7656 639.0781,535.4531 Q639.0781,533.7656 640.1563,532.7969 Q641.2344,531.8281 643.1094,531.8281 Q643.9688,531.8281 644.8125,532.0313 Q645.6719,532.2188 646.5156,532.6094 L646.5156,535 Q645.7344,534.4375 644.9063,534.1563 Q644.0938,533.8594 643.2969,533.8594 Q642.4219,533.8594 641.9375,534.2188 Q641.4688,534.5781 641.4688,535.2344 Q641.4688,535.75 641.8125,536.0938 Q642.1563,536.4219 643.25,536.8281 L644.3125,537.2344 Q645.7969,537.7813 646.5,538.6875 Q647.2188,539.5938 647.2188,540.9688 Q647.2188,542.8438 646.1094,543.7656 Q645,544.6875 642.75,544.6875 Q641.8281,544.6875 640.9063,544.4688 Q639.9844,544.25 639.125,543.8281 L639.125,541.2969 Q640.0938,541.9844 641.0156,542.3281 Q641.9375,542.6719 642.8281,542.6719 Q643.7344,542.6719 644.2344,542.2656 Q644.7344,541.8438 644.7344,541.1094 Q644.7344,540.5469 644.3906,540.1406 Q644.0625,539.7188 643.4375,539.4688 L642.2344,539.0156 Z "/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="84"
+              x="663.25" y="542.6074" style="white-space: pre;">LoggingClient
+        </text>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="479.5" x2="898.5" y1="554.4531" y2="554.4531"/>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="479.5" x2="898.5" y1="562.4531" y2="562.4531"/>
+        <ellipse cx="489.5" cy="573.4531" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="395"
+              x="498.5" y="576.6636" style="white-space: pre;">Rate(ctx context.Context, from string, to string)
+            (*models.Rate, error)
+        </text>
+        <rect fill="#FEFECE" height="73.6094" id="database.FileDatabase" rx="5" ry="5"
+              style="stroke: #A80036; stroke-width: 1.5;" width="187" x="3174.5" y="649.9531"/>
+        <ellipse cx="3222.75" cy="665.9531" fill="#7FFFD4" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <path d="M3222.2344,666.5156 Q3220.375,665.8125 3219.7188,665.0469 Q3219.0781,664.2656 3219.0781,662.9531 Q3219.0781,661.2656 3220.1563,660.2969 Q3221.2344,659.3281 3223.1094,659.3281 Q3223.9688,659.3281 3224.8125,659.5313 Q3225.6719,659.7188 3226.5156,660.1094 L3226.5156,662.5 Q3225.7344,661.9375 3224.9063,661.6563 Q3224.0938,661.3594 3223.2969,661.3594 Q3222.4219,661.3594 3221.9375,661.7188 Q3221.4688,662.0781 3221.4688,662.7344 Q3221.4688,663.25 3221.8125,663.5938 Q3222.1563,663.9219 3223.25,664.3281 L3224.3125,664.7344 Q3225.7969,665.2813 3226.5,666.1875 Q3227.2188,667.0938 3227.2188,668.4688 Q3227.2188,670.3438 3226.1094,671.2656 Q3225,672.1875 3222.75,672.1875 Q3221.8281,672.1875 3220.9063,671.9688 Q3219.9844,671.75 3219.125,671.3281 L3219.125,668.7969 Q3220.0938,669.4844 3221.0156,669.8281 Q3221.9375,670.1719 3222.8281,670.1719 Q3223.7344,670.1719 3224.2344,669.7656 Q3224.7344,669.3438 3224.7344,668.6094 Q3224.7344,668.0469 3224.3906,667.6406 Q3224.0625,667.2188 3223.4375,666.9688 L3222.2344,666.5156 Z "/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="82"
+              x="3243.25" y="670.1074" style="white-space: pre;">FileDatabase
+        </text>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="3175.5" x2="3360.5" y1="681.9531" y2="681.9531"/>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="3175.5" x2="3360.5" y1="689.9531" y2="689.9531"/>
+        <ellipse cx="3185.5" cy="700.9531" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="161"
+              x="3194.5" y="704.1636" style="white-space: pre;">AddEmail(email string) error
+        </text>
+        <ellipse cx="3185.5" cy="713.7578" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="136"
+              x="3194.5" y="716.9683" style="white-space: pre;">Emails() ([]string, error)
+        </text>
+        <rect fill="#FEFECE" height="73.6094" id="email.Database" rx="5" ry="5"
+              style="stroke: #A80036; stroke-width: 1.5;" width="187" x="3174.5" y="515.9531"/>
+        <ellipse cx="3233.75" cy="531.9531" fill="#B4A7E5" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <path d="M3229.6719,527.7188 L3229.6719,525.5625 L3237.0625,525.5625 L3237.0625,527.7188 L3234.5938,527.7188 L3234.5938,535.7969 L3237.0625,535.7969 L3237.0625,537.9531 L3229.6719,537.9531 L3229.6719,535.7969 L3232.1406,535.7969 L3232.1406,527.7188 L3229.6719,527.7188 Z "/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs"
+              textLength="60" x="3254.25" y="536.1074" style="white-space: pre;">Database
+        </text>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="3175.5" x2="3360.5" y1="547.9531" y2="547.9531"/>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="3175.5" x2="3360.5" y1="555.9531" y2="555.9531"/>
+        <ellipse cx="3185.5" cy="566.9531" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="161"
+              x="3194.5" y="570.1636" style="white-space: pre;">AddEmail(email string) error
+        </text>
+        <ellipse cx="3185.5" cy="579.7578" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="136"
+              x="3194.5" y="582.9683" style="white-space: pre;">Emails() ([]string, error)
+        </text>
+        <rect fill="#FEFECE" height="60.8047" id="email.HTMLMessageBuilder" rx="5" ry="5"
+              style="stroke: #A80036; stroke-width: 1.5;" width="285" x="2516.5" y="522.4531"/>
+        <ellipse cx="2589.25" cy="538.4531" fill="#7FFFD4" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <path d="M2588.7344,539.0156 Q2586.875,538.3125 2586.2188,537.5469 Q2585.5781,536.7656 2585.5781,535.4531 Q2585.5781,533.7656 2586.6563,532.7969 Q2587.7344,531.8281 2589.6094,531.8281 Q2590.4688,531.8281 2591.3125,532.0313 Q2592.1719,532.2188 2593.0156,532.6094 L2593.0156,535 Q2592.2344,534.4375 2591.4063,534.1563 Q2590.5938,533.8594 2589.7969,533.8594 Q2588.9219,533.8594 2588.4375,534.2188 Q2587.9688,534.5781 2587.9688,535.2344 Q2587.9688,535.75 2588.3125,536.0938 Q2588.6563,536.4219 2589.75,536.8281 L2590.8125,537.2344 Q2592.2969,537.7813 2593,538.6875 Q2593.7188,539.5938 2593.7188,540.9688 Q2593.7188,542.8438 2592.6094,543.7656 Q2591.5,544.6875 2589.25,544.6875 Q2588.3281,544.6875 2587.4063,544.4688 Q2586.4844,544.25 2585.625,543.8281 L2585.625,541.2969 Q2586.5938,541.9844 2587.5156,542.3281 Q2588.4375,542.6719 2589.3281,542.6719 Q2590.2344,542.6719 2590.7344,542.2656 Q2591.2344,541.8438 2591.2344,541.1094 Q2591.2344,540.5469 2590.8906,540.1406 Q2590.5625,539.7188 2589.9375,539.4688 L2588.7344,539.0156 Z "/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="131"
+              x="2609.75" y="542.6074" style="white-space: pre;">HTMLMessageBuilder
+        </text>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="2517.5" x2="2800.5" y1="554.4531" y2="554.4531"/>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="2517.5" x2="2800.5" y1="562.4531" y2="562.4531"/>
+        <ellipse cx="2527.5" cy="573.4531" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="259"
+              x="2536.5" y="576.6636" style="white-space: pre;">Construct(message *models.Message) []byte
+        </text>
+        <rect fill="#FEFECE" height="73.6094" id="email.Repository" rx="5" ry="5"
+              style="stroke: #A80036; stroke-width: 1.5;" width="187" x="2294.5" y="515.9531"/>
+        <ellipse cx="2350.75" cy="531.9531" fill="#7FFFD4" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <path d="M2350.2344,532.5156 Q2348.375,531.8125 2347.7188,531.0469 Q2347.0781,530.2656 2347.0781,528.9531 Q2347.0781,527.2656 2348.1563,526.2969 Q2349.2344,525.3281 2351.1094,525.3281 Q2351.9688,525.3281 2352.8125,525.5313 Q2353.6719,525.7188 2354.5156,526.1094 L2354.5156,528.5 Q2353.7344,527.9375 2352.9063,527.6563 Q2352.0938,527.3594 2351.2969,527.3594 Q2350.4219,527.3594 2349.9375,527.7188 Q2349.4688,528.0781 2349.4688,528.7344 Q2349.4688,529.25 2349.8125,529.5938 Q2350.1563,529.9219 2351.25,530.3281 L2352.3125,530.7344 Q2353.7969,531.2813 2354.5,532.1875 Q2355.2188,533.0938 2355.2188,534.4688 Q2355.2188,536.3438 2354.1094,537.2656 Q2353,538.1875 2350.75,538.1875 Q2349.8281,538.1875 2348.9063,537.9688 Q2347.9844,537.75 2347.125,537.3281 L2347.125,534.7969 Q2348.0938,535.4844 2349.0156,535.8281 Q2349.9375,536.1719 2350.8281,536.1719 Q2351.7344,536.1719 2352.2344,535.7656 Q2352.7344,535.3438 2352.7344,534.6094 Q2352.7344,534.0469 2352.3906,533.6406 Q2352.0625,533.2188 2351.4375,532.9688 L2350.2344,532.5156 Z "/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="66"
+              x="2371.25" y="536.1074" style="white-space: pre;">Repository
+        </text>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="2295.5" x2="2480.5" y1="547.9531" y2="547.9531"/>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="2295.5" x2="2480.5" y1="555.9531" y2="555.9531"/>
+        <ellipse cx="2305.5" cy="566.9531" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="161"
+              x="2314.5" y="570.1636" style="white-space: pre;">AddEmail(email string) error
+        </text>
+        <ellipse cx="2305.5" cy="579.7578" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="104"
+              x="2314.5" y="582.9683" style="white-space: pre;">EmailList() []string
+        </text>
+        <rect fill="#FEFECE" height="60.8047" id="email.Sender" rx="5" ry="5"
+              style="stroke: #A80036; stroke-width: 1.5;" width="303" x="2836.5" y="522.4531"/>
+        <ellipse cx="2961.25" cy="538.4531" fill="#7FFFD4" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <path d="M2960.7344,539.0156 Q2958.875,538.3125 2958.2188,537.5469 Q2957.5781,536.7656 2957.5781,535.4531 Q2957.5781,533.7656 2958.6563,532.7969 Q2959.7344,531.8281 2961.6094,531.8281 Q2962.4688,531.8281 2963.3125,532.0313 Q2964.1719,532.2188 2965.0156,532.6094 L2965.0156,535 Q2964.2344,534.4375 2963.4063,534.1563 Q2962.5938,533.8594 2961.7969,533.8594 Q2960.9219,533.8594 2960.4375,534.2188 Q2959.9688,534.5781 2959.9688,535.2344 Q2959.9688,535.75 2960.3125,536.0938 Q2960.6563,536.4219 2961.75,536.8281 L2962.8125,537.2344 Q2964.2969,537.7813 2965,538.6875 Q2965.7188,539.5938 2965.7188,540.9688 Q2965.7188,542.8438 2964.6094,543.7656 Q2963.5,544.6875 2961.25,544.6875 Q2960.3281,544.6875 2959.4063,544.4688 Q2958.4844,544.25 2957.625,543.8281 L2957.625,541.2969 Q2958.5938,541.9844 2959.5156,542.3281 Q2960.4375,542.6719 2961.3281,542.6719 Q2962.2344,542.6719 2962.7344,542.2656 Q2963.2344,541.8438 2963.2344,541.1094 Q2963.2344,540.5469 2962.8906,540.1406 Q2962.5625,539.7188 2961.9375,539.4688 L2960.7344,539.0156 Z "/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="45"
+              x="2981.75" y="542.6074" style="white-space: pre;">Sender
+        </text>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="2837.5" x2="3138.5" y1="554.4531" y2="554.4531"/>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="2837.5" x2="3138.5" y1="562.4531" y2="562.4531"/>
+        <ellipse cx="2847.5" cy="573.4531" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="277"
+              x="2856.5" y="576.6636" style="white-space: pre;">SendEmail(toEmail string, message []byte) error
+        </text>
+        <rect fill="#FEFECE" height="48" id="email.emptyStruct" rx="5" ry="5"
+              style="stroke: #A80036; stroke-width: 1.5;" width="108" x="2151" y="528.9531"/>
+        <ellipse cx="2166" cy="544.9531" fill="#7FFFD4" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <path d="M2165.4844,545.5156 Q2163.625,544.8125 2162.9688,544.0469 Q2162.3281,543.2656 2162.3281,541.9531 Q2162.3281,540.2656 2163.4063,539.2969 Q2164.4844,538.3281 2166.3594,538.3281 Q2167.2188,538.3281 2168.0625,538.5313 Q2168.9219,538.7188 2169.7656,539.1094 L2169.7656,541.5 Q2168.9844,540.9375 2168.1563,540.6563 Q2167.3438,540.3594 2166.5469,540.3594 Q2165.6719,540.3594 2165.1875,540.7188 Q2164.7188,541.0781 2164.7188,541.7344 Q2164.7188,542.25 2165.0625,542.5938 Q2165.4063,542.9219 2166.5,543.3281 L2167.5625,543.7344 Q2169.0469,544.2813 2169.75,545.1875 Q2170.4688,546.0938 2170.4688,547.4688 Q2170.4688,549.3438 2169.3594,550.2656 Q2168.25,551.1875 2166,551.1875 Q2165.0781,551.1875 2164.1563,550.9688 Q2163.2344,550.75 2162.375,550.3281 L2162.375,547.7969 Q2163.3438,548.4844 2164.2656,548.8281 Q2165.1875,549.1719 2166.0781,549.1719 Q2166.9844,549.1719 2167.4844,548.7656 Q2167.9844,548.3438 2167.9844,547.6094 Q2167.9844,547.0469 2167.6406,546.6406 Q2167.3125,546.2188 2166.6875,545.9688 L2165.4844,545.5156 Z "/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="76"
+              x="2180" y="549.1074" style="white-space: pre;">emptyStruct
+        </text>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="2152" x2="2258" y1="560.9531" y2="560.9531"/>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="2152" x2="2258" y1="568.9531" y2="568.9531"/>
+        <rect fill="#FEFECE" height="86.4141" id="handlers.APIHandlers" rx="5" ry="5"
+              style="stroke: #A80036; stroke-width: 1.5;" width="218" x="348" y="229.4531"/>
+        <ellipse cx="415.25" cy="245.4531" fill="#7FFFD4" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <path d="M414.7344,246.0156 Q412.875,245.3125 412.2188,244.5469 Q411.5781,243.7656 411.5781,242.4531 Q411.5781,240.7656 412.6563,239.7969 Q413.7344,238.8281 415.6094,238.8281 Q416.4688,238.8281 417.3125,239.0313 Q418.1719,239.2188 419.0156,239.6094 L419.0156,242 Q418.2344,241.4375 417.4063,241.1563 Q416.5938,240.8594 415.7969,240.8594 Q414.9219,240.8594 414.4375,241.2188 Q413.9688,241.5781 413.9688,242.2344 Q413.9688,242.75 414.3125,243.0938 Q414.6563,243.4219 415.75,243.8281 L416.8125,244.2344 Q418.2969,244.7813 419,245.6875 Q419.7188,246.5938 419.7188,247.9688 Q419.7188,249.8438 418.6094,250.7656 Q417.5,251.6875 415.25,251.6875 Q414.3281,251.6875 413.4063,251.4688 Q412.4844,251.25 411.625,250.8281 L411.625,248.2969 Q412.5938,248.9844 413.5156,249.3281 Q414.4375,249.6719 415.3281,249.6719 Q416.2344,249.6719 416.7344,249.2656 Q417.2344,248.8438 417.2344,248.1094 Q417.2344,247.5469 416.8906,247.1406 Q416.5625,246.7188 415.9375,246.4688 L414.7344,246.0156 Z "/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="75"
+              x="435.75" y="249.6074" style="white-space: pre;">APIHandlers
+        </text>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="349" x2="565" y1="261.4531" y2="261.4531"/>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="349" x2="565" y1="269.4531" y2="269.4531"/>
+        <ellipse cx="359" cy="280.4531" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="150"
+              x="368" y="283.6636" style="white-space: pre;">Rate(c echo.Context) error
+        </text>
+        <ellipse cx="359" cy="293.2578" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="182"
+              x="368" y="296.4683" style="white-space: pre;">Subscribe(c echo.Context) error
+        </text>
+        <ellipse cx="359" cy="306.0625" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="192"
+              x="368" y="309.2729" style="white-space: pre;">SendEmails(c echo.Context) error
+        </text>
+        <rect fill="#FEFECE" height="60.8047" id="handlers.EmailService" rx="5" ry="5"
+              style="stroke: #A80036; stroke-width: 1.5;" width="394" x="930" y="241.9531"/>
+        <ellipse cx="1083.75" cy="257.9531" fill="#B4A7E5" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <path d="M1079.6719,253.7188 L1079.6719,251.5625 L1087.0625,251.5625 L1087.0625,253.7188 L1084.5938,253.7188 L1084.5938,261.7969 L1087.0625,261.7969 L1087.0625,263.9531 L1079.6719,263.9531 L1079.6719,261.7969 L1082.1406,261.7969 L1082.1406,253.7188 L1079.6719,253.7188 Z "/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs"
+              textLength="78" x="1104.25" y="262.1074" style="white-space: pre;">EmailService
+        </text>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="931" x2="1323" y1="273.9531" y2="273.9531"/>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="931" x2="1323" y1="281.9531" y2="281.9531"/>
+        <ellipse cx="941" cy="292.9531" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="368"
+              x="950" y="296.1636" style="white-space: pre;">SendEmails( context.Context, []string, *models.Message)
+            error
+        </text>
+        <rect fill="#FEFECE" height="60.8047" id="handlers.RateService" rx="5" ry="5"
+              style="stroke: #A80036; stroke-width: 1.5;" width="293" x="601.5" y="241.9531"/>
+        <ellipse cx="706.75" cy="257.9531" fill="#B4A7E5" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <path d="M702.6719,253.7188 L702.6719,251.5625 L710.0625,251.5625 L710.0625,253.7188 L707.5938,253.7188 L707.5938,261.7969 L710.0625,261.7969 L710.0625,263.9531 L702.6719,263.9531 L702.6719,261.7969 L705.1406,261.7969 L705.1406,253.7188 L702.6719,253.7188 Z "/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs"
+              textLength="74" x="727.25" y="262.1074" style="white-space: pre;">RateService
+        </text>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="602.5" x2="893.5" y1="273.9531" y2="273.9531"/>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="602.5" x2="893.5" y1="281.9531" y2="281.9531"/>
+        <ellipse cx="612.5" cy="292.9531" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="267"
+              x="621.5" y="296.1636" style="white-space: pre;">Rate(ctx context.Context) (*models.Rate, error)
+        </text>
+        <rect fill="#FEFECE" height="73.6094" id="handlers.SubscribeService" rx="5" ry="5"
+              style="stroke: #A80036; stroke-width: 1.5;" width="192" x="1359" y="235.4531"/>
+        <ellipse cx="1398.3" cy="251.4531" fill="#B4A7E5" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <path d="M1394.2219,247.2188 L1394.2219,245.0625 L1401.6125,245.0625 L1401.6125,247.2188 L1399.1438,247.2188 L1399.1438,255.2969 L1401.6125,255.2969 L1401.6125,257.4531 L1394.2219,257.4531 L1394.2219,255.2969 L1396.6906,255.2969 L1396.6906,247.2188 L1394.2219,247.2188 Z "/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs"
+              textLength="106" x="1417.7" y="255.6074" style="white-space: pre;">SubscribeService
+        </text>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="1360" x2="1550" y1="267.4531" y2="267.4531"/>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="1360" x2="1550" y1="275.4531" y2="275.4531"/>
+        <ellipse cx="1370" cy="286.4531" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="166"
+              x="1379" y="289.6636" style="white-space: pre;">Subscribe(email string) error
+        </text>
+        <ellipse cx="1370" cy="299.2578" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="104"
+              x="1379" y="302.4683" style="white-space: pre;">EmailList() []string
+        </text>
+        <rect fill="#FEFECE" height="99.2188" id="handlers.WebHandlers" rx="5" ry="5"
+              style="stroke: #A80036; stroke-width: 1.5;" width="218" x="1586" y="222.9531"/>
+        <ellipse cx="1649.25" cy="238.9531" fill="#7FFFD4" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <path d="M1648.7344,239.5156 Q1646.875,238.8125 1646.2188,238.0469 Q1645.5781,237.2656 1645.5781,235.9531 Q1645.5781,234.2656 1646.6563,233.2969 Q1647.7344,232.3281 1649.6094,232.3281 Q1650.4688,232.3281 1651.3125,232.5313 Q1652.1719,232.7188 1653.0156,233.1094 L1653.0156,235.5 Q1652.2344,234.9375 1651.4063,234.6563 Q1650.5938,234.3594 1649.7969,234.3594 Q1648.9219,234.3594 1648.4375,234.7188 Q1647.9688,235.0781 1647.9688,235.7344 Q1647.9688,236.25 1648.3125,236.5938 Q1648.6563,236.9219 1649.75,237.3281 L1650.8125,237.7344 Q1652.2969,238.2813 1653,239.1875 Q1653.7188,240.0938 1653.7188,241.4688 Q1653.7188,243.3438 1652.6094,244.2656 Q1651.5,245.1875 1649.25,245.1875 Q1648.3281,245.1875 1647.4063,244.9688 Q1646.4844,244.75 1645.625,244.3281 L1645.625,241.7969 Q1646.5938,242.4844 1647.5156,242.8281 Q1648.4375,243.1719 1649.3281,243.1719 Q1650.2344,243.1719 1650.7344,242.7656 Q1651.2344,242.3438 1651.2344,241.6094 Q1651.2344,241.0469 1650.8906,240.6406 Q1650.5625,240.2188 1649.9375,239.9688 L1648.7344,239.5156 Z "/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="83"
+              x="1669.75" y="243.1074" style="white-space: pre;">WebHandlers
+        </text>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="1587" x2="1803" y1="254.9531" y2="254.9531"/>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="1587" x2="1803" y1="262.9531" y2="262.9531"/>
+        <ellipse cx="1597" cy="273.9531" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="155"
+              x="1606" y="277.1636" style="white-space: pre;">Index(c echo.Context) error
+        </text>
+        <ellipse cx="1597" cy="286.7578" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="167"
+              x="1606" y="289.9683" style="white-space: pre;">Conflict(c echo.Context) error
+        </text>
+        <ellipse cx="1597" cy="299.5625" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="182"
+              x="1606" y="302.7729" style="white-space: pre;">Subscribe(c echo.Context) error
+        </text>
+        <ellipse cx="1597" cy="312.3672" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="192"
+              x="1606" y="315.5776" style="white-space: pre;">SendEmails(c echo.Context) error
+        </text>
+        <rect fill="#FEFECE" height="86.4141" id="server.APIHandlers" rx="5" ry="5"
+              style="stroke: #A80036; stroke-width: 1.5;" width="218" x="863" y="70.4531"/>
+        <ellipse cx="930.75" cy="86.4531" fill="#B4A7E5" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <path d="M926.6719,82.2188 L926.6719,80.0625 L934.0625,80.0625 L934.0625,82.2188 L931.5938,82.2188 L931.5938,90.2969 L934.0625,90.2969 L934.0625,92.4531 L926.6719,92.4531 L926.6719,90.2969 L929.1406,90.2969 L929.1406,82.2188 L926.6719,82.2188 Z "/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs"
+              textLength="74" x="951.25" y="90.6074" style="white-space: pre;">APIHandlers
+        </text>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="864" x2="1080" y1="102.4531" y2="102.4531"/>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="864" x2="1080" y1="110.4531" y2="110.4531"/>
+        <ellipse cx="874" cy="121.4531" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="150"
+              x="883" y="124.6636" style="white-space: pre;">Rate(c echo.Context) error
+        </text>
+        <ellipse cx="874" cy="134.2578" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="182"
+              x="883" y="137.4683" style="white-space: pre;">Subscribe(c echo.Context) error
+        </text>
+        <ellipse cx="874" cy="147.0625" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="192"
+              x="883" y="150.2729" style="white-space: pre;">SendEmails(c echo.Context) error
+        </text>
+        <rect fill="#FEFECE" height="99.2188" id="server.WebHandlers" rx="5" ry="5"
+              style="stroke: #A80036; stroke-width: 1.5;" width="218" x="1116" y="63.9531"/>
+        <ellipse cx="1179.25" cy="79.9531" fill="#B4A7E5" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <path d="M1175.1719,75.7188 L1175.1719,73.5625 L1182.5625,73.5625 L1182.5625,75.7188 L1180.0938,75.7188 L1180.0938,83.7969 L1182.5625,83.7969 L1182.5625,85.9531 L1175.1719,85.9531 L1175.1719,83.7969 L1177.6406,83.7969 L1177.6406,75.7188 L1175.1719,75.7188 Z "/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs"
+              textLength="83" x="1199.75" y="84.1074" style="white-space: pre;">WebHandlers
+        </text>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="1117" x2="1333" y1="95.9531" y2="95.9531"/>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="1117" x2="1333" y1="103.9531" y2="103.9531"/>
+        <ellipse cx="1127" cy="114.9531" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="155"
+              x="1136" y="118.1636" style="white-space: pre;">Index(c echo.Context) error
+        </text>
+        <ellipse cx="1127" cy="127.7578" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="182"
+              x="1136" y="130.9683" style="white-space: pre;">Subscribe(c echo.Context) error
+        </text>
+        <ellipse cx="1127" cy="140.5625" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="192"
+              x="1136" y="143.7729" style="white-space: pre;">SendEmails(c echo.Context) error
+        </text>
+        <ellipse cx="1127" cy="153.3672" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="167"
+              x="1136" y="156.5776" style="white-space: pre;">Conflict(c echo.Context) error
+        </text>
+        <rect fill="#FEFECE" height="73.6094" id="server.Server" rx="5" ry="5"
+              style="stroke: #A80036; stroke-width: 1.5;" width="382" x="446" y="76.4531"/>
+        <ellipse cx="612.75" cy="92.4531" fill="#7FFFD4" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <path d="M612.2344,93.0156 Q610.375,92.3125 609.7188,91.5469 Q609.0781,90.7656 609.0781,89.4531 Q609.0781,87.7656 610.1563,86.7969 Q611.2344,85.8281 613.1094,85.8281 Q613.9688,85.8281 614.8125,86.0313 Q615.6719,86.2188 616.5156,86.6094 L616.5156,89 Q615.7344,88.4375 614.9063,88.1563 Q614.0938,87.8594 613.2969,87.8594 Q612.4219,87.8594 611.9375,88.2188 Q611.4688,88.5781 611.4688,89.2344 Q611.4688,89.75 611.8125,90.0938 Q612.1563,90.4219 613.25,90.8281 L614.3125,91.2344 Q615.7969,91.7813 616.5,92.6875 Q617.2188,93.5938 617.2188,94.9688 Q617.2188,96.8438 616.1094,97.7656 Q615,98.6875 612.75,98.6875 Q611.8281,98.6875 610.9063,98.4688 Q609.9844,98.25 609.125,97.8281 L609.125,95.2969 Q610.0938,95.9844 611.0156,96.3281 Q611.9375,96.6719 612.8281,96.6719 Q613.7344,96.6719 614.2344,96.2656 Q614.7344,95.8438 614.7344,95.1094 Q614.7344,94.5469 614.3906,94.1406 Q614.0625,93.7188 613.4375,93.4688 L612.2344,93.0156 Z "/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="40"
+              x="633.25" y="96.6074" style="white-space: pre;">Server
+        </text>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="447" x2="827" y1="108.4531" y2="108.4531"/>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="447" x2="827" y1="116.4531" y2="116.4531"/>
+        <ellipse cx="457" cy="127.4531" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="356"
+              x="466" y="130.6636" style="white-space: pre;">ServeHTTP(writer http.ResponseWriter, request
+            *http.Request)
+        </text>
+        <ellipse cx="457" cy="140.2578" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="153"
+              x="466" y="143.4683" style="white-space: pre;">Start(address string) error
+        </text>
+        <rect fill="#FEFECE" height="73.6094" id="models.Message" rx="5" ry="5"
+              style="stroke: #A80036; stroke-width: 1.5;" width="105" x="2617.5" y="76.4531"/>
+        <ellipse cx="2640.15" cy="92.4531" fill="#7FFFD4" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <path d="M2639.6344,93.0156 Q2637.775,92.3125 2637.1188,91.5469 Q2636.4781,90.7656 2636.4781,89.4531 Q2636.4781,87.7656 2637.5563,86.7969 Q2638.6344,85.8281 2640.5094,85.8281 Q2641.3688,85.8281 2642.2125,86.0313 Q2643.0719,86.2188 2643.9156,86.6094 L2643.9156,89 Q2643.1344,88.4375 2642.3063,88.1563 Q2641.4938,87.8594 2640.6969,87.8594 Q2639.8219,87.8594 2639.3375,88.2188 Q2638.8688,88.5781 2638.8688,89.2344 Q2638.8688,89.75 2639.2125,90.0938 Q2639.5563,90.4219 2640.65,90.8281 L2641.7125,91.2344 Q2643.1969,91.7813 2643.9,92.6875 Q2644.6188,93.5938 2644.6188,94.9688 Q2644.6188,96.8438 2643.5094,97.7656 Q2642.4,98.6875 2640.15,98.6875 Q2639.2281,98.6875 2638.3063,98.4688 Q2637.3844,98.25 2636.525,97.8281 L2636.525,95.2969 Q2637.4938,95.9844 2638.4156,96.3281 Q2639.3375,96.6719 2640.2281,96.6719 Q2641.1344,96.6719 2641.6344,96.2656 Q2642.1344,95.8438 2642.1344,95.1094 Q2642.1344,94.5469 2641.7906,94.1406 Q2641.4625,93.7188 2640.8375,93.4688 L2639.6344,93.0156 Z "/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="56"
+              x="2655.85" y="96.6074" style="white-space: pre;">Message
+        </text>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="2618.5" x2="2721.5" y1="108.4531" y2="108.4531"/>
+        <ellipse cx="2628.5" cy="119.4531" fill="none" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="79"
+              x="2637.5" y="122.6636" style="white-space: pre;">Subject string
+        </text>
+        <ellipse cx="2628.5" cy="132.2578" fill="none" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="65"
+              x="2637.5" y="135.4683" style="white-space: pre;">Body string
+        </text>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="2618.5" x2="2721.5" y1="142.0625" y2="142.0625"/>
+        <rect fill="#FEFECE" height="86.4141" id="models.Rate" rx="5" ry="5" style="stroke: #A80036; stroke-width: 1.5;"
+              width="102" x="2476" y="229.4531"/>
+        <ellipse cx="2509.45" cy="245.4531" fill="#7FFFD4" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <path d="M2508.9344,246.0156 Q2507.075,245.3125 2506.4188,244.5469 Q2505.7781,243.7656 2505.7781,242.4531 Q2505.7781,240.7656 2506.8563,239.7969 Q2507.9344,238.8281 2509.8094,238.8281 Q2510.6688,238.8281 2511.5125,239.0313 Q2512.3719,239.2188 2513.2156,239.6094 L2513.2156,242 Q2512.4344,241.4375 2511.6063,241.1563 Q2510.7938,240.8594 2509.9969,240.8594 Q2509.1219,240.8594 2508.6375,241.2188 Q2508.1688,241.5781 2508.1688,242.2344 Q2508.1688,242.75 2508.5125,243.0938 Q2508.8563,243.4219 2509.95,243.8281 L2511.0125,244.2344 Q2512.4969,244.7813 2513.2,245.6875 Q2513.9188,246.5938 2513.9188,247.9688 Q2513.9188,249.8438 2512.8094,250.7656 Q2511.7,251.6875 2509.45,251.6875 Q2508.5281,251.6875 2507.6063,251.4688 Q2506.6844,251.25 2505.825,250.8281 L2505.825,248.2969 Q2506.7938,248.9844 2507.7156,249.3281 Q2508.6375,249.6719 2509.5281,249.6719 Q2510.4344,249.6719 2510.9344,249.2656 Q2511.4344,248.8438 2511.4344,248.1094 Q2511.4344,247.5469 2511.0906,247.1406 Q2510.7625,246.7188 2510.1375,246.4688 L2508.9344,246.0156 Z "/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="29"
+              x="2527.55" y="249.6074" style="white-space: pre;">Rate
+        </text>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="2477" x2="2577" y1="261.4531" y2="261.4531"/>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="2477" x2="2577" y1="269.4531" y2="269.4531"/>
+        <ellipse cx="2487" cy="280.4531" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="74"
+              x="2496" y="283.6636" style="white-space: pre;">From() string
+        </text>
+        <ellipse cx="2487" cy="293.2578" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="59"
+              x="2496" y="296.4683" style="white-space: pre;">To() string
+        </text>
+        <ellipse cx="2487" cy="306.0625" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="76"
+              x="2496" y="309.2729" style="white-space: pre;">Rate() float64
+        </text>
+        <rect fill="#FEFECE" height="86.4141" id="models.RateProvider" rx="5" ry="5"
+              style="stroke: #A80036; stroke-width: 1.5;" width="111" x="2471.5" y="70.4531"/>
+        <ellipse cx="2486.5" cy="86.4531" fill="#B4A7E5" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <path d="M2482.4219,82.2188 L2482.4219,80.0625 L2489.8125,80.0625 L2489.8125,82.2188 L2487.3438,82.2188 L2487.3438,90.2969 L2489.8125,90.2969 L2489.8125,92.4531 L2482.4219,92.4531 L2482.4219,90.2969 L2484.8906,90.2969 L2484.8906,82.2188 L2482.4219,82.2188 Z "/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs"
+              textLength="79" x="2500.5" y="90.6074" style="white-space: pre;">RateProvider
+        </text>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="2472.5" x2="2581.5" y1="102.4531" y2="102.4531"/>
+        <line style="stroke: #A80036; stroke-width: 1.5;" x1="2472.5" x2="2581.5" y1="110.4531" y2="110.4531"/>
+        <ellipse cx="2482.5" cy="121.4531" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="74"
+              x="2491.5" y="124.6636" style="white-space: pre;">From() string
+        </text>
+        <ellipse cx="2482.5" cy="134.2578" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="59"
+              x="2491.5" y="137.4683" style="white-space: pre;">To() string
+        </text>
+        <ellipse cx="2482.5" cy="147.0625" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="76"
+              x="2491.5" y="150.2729" style="white-space: pre;">Rate() float64
+        </text>
+        <path d="M233,469.7692 C233,485.0211 233,501.4632 233,515.6697 " fill="none"
+              id="chain.Chain&lt;-chain.BaseChain" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <polygon fill="none" points="226.0001,469.6954,233,449.6954,240.0001,469.6954,226.0001,469.6954"
+                 style="stroke: #A80036; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="76"
+              x="150.2313" y="504.8062" style="white-space: pre;">implements
+        </text>
+        <path d="M1750.8643,453.148 C1726.2671,457.5128 1701.015,461.3562 1677,463.9531 C1408.5081,492.987 729.1624,449.5183 462,488.9531 C422.8977,494.7248 381.0101,505.1322 343.891,515.9002 "
+              fill="none" id="services.RateFetcher&lt;-chain.BaseChain" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <polygon fill="none" points="1749.933,446.2019,1770.8702,449.4627,1752.4693,459.9702,1749.933,446.2019"
+                 style="stroke: #A80036; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="76"
+              x="555.413" y="493.992" style="white-space: pre; font-size: 13px;">implements
+        </text>
+        <path d="M1905,469.7815 C1905,487.4896 1905,506.8006 1905,522.3538 " fill="none"
+              id="services.RateFetcher&lt;-clients.BinanceClient" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <polygon fill="none" points="1898.0001,469.6954,1905,449.6954,1912.0001,469.6954,1898.0001,469.6954"
+                 style="stroke: #A80036; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="76"
+              x="1911.901" y="495.584" style="white-space: pre; font-size: 13px;">implements
+        </text>
+        <path d="M1781.7431,455.1733 C1710.1697,476.2059 1621.0013,502.4089 1552.9911,522.3943 " fill="none"
+              id="services.RateFetcher&lt;-clients.CoingeckoClient" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <polygon fill="none" points="1779.7937,448.4503,1800.956,449.5274,1783.7409,461.8823,1779.7937,448.4503"
+                 style="stroke: #A80036; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="76"
+              x="1701.199" y="496.147" style="white-space: pre; font-size: 13px;">implements
+        </text>
+        <path d="M1749.6253,453.1029 C1725.4145,457.4139 1700.6051,461.2529 1677,463.9531 C1341.6705,502.3115 1251.5877,437.6063 918,488.9531 C871.3861,496.1281 820.7679,509.6459 779.0039,522.4161 "
+              fill="none" id="services.RateFetcher&lt;-clients.LoggingClient"
+              style="stroke: #A80036; stroke-width: 1.0;"/>
+        <polygon fill="none" points="1748.3908,446.2126,1769.3283,449.4716,1750.9283,459.9807,1748.3908,446.2126"
+                 style="stroke: #A80036; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="76"
+              x="954.302" y="498.675" style="white-space: pre; font-size: 13px;">implements
+        </text>
+        <path d="M3268,610.4882 C3268,623.8132 3268,637.648 3268,649.8268 " fill="none"
+              id="email.Database&lt;-database.FileDatabase" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <polygon fill="none" points="3261.0001,610.2796,3268,590.2796,3275.0001,610.2795,3261.0001,610.2796"
+                 style="stroke: #A80036; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="76"
+              x="3271.454" y="633.243" style="white-space: pre; font-size: 13px;">implements
+        </text>
+        <path d="M2540.9817,462.0654 C2566.4896,481.7095 2596.0909,504.5059 2619.2666,522.3538 " fill="none"
+              id="services.MessageConstructStrategy&lt;-email.HTMLMessageBuilder"
+              style="stroke: #A80036; stroke-width: 1.0;"/>
+        <polygon fill="none" points="2536.4938,467.4445,2524.9191,449.6954,2545.0359,456.3525,2536.4938,467.4445"
+                 style="stroke: #A80036; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="76"
+              x="2586.769" y="490.657" style="white-space: pre; font-size: 13px;">implements
+        </text>
+        <path d="M2288.5946,469.1774 C2306.9551,484.6511 2326.8296,501.4007 2343.9472,515.8268 " fill="none"
+              id="services.EmailDatabase&lt;-email.Repository" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <polygon fill="none" points="2284.0726,474.5209,2273.2904,456.2796,2293.0947,463.8156,2284.0726,474.5209"
+                 style="stroke: #A80036; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="76"
+              x="2323.541" y="494.316" style="white-space: pre; font-size: 13px;">implements
+        </text>
+        <path d="M2859.0173,461.5051 C2886.9015,481.2748 2919.428,504.3359 2944.8413,522.3538 " fill="none"
+              id="services.EmailSender&lt;-email.Sender" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <polygon fill="none" points="2854.6272,466.9734,2842.3604,449.6954,2862.7245,455.5526,2854.6272,466.9734"
+                 style="stroke: #A80036; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="76"
+              x="2901.783" y="487.783" style="white-space: pre; font-size: 13px;">implements
+        </text>
+        <path d="M868.8653,163.7765 C861.23,166.4912 853.5578,168.9294 846,170.9531 C733.0072,201.2085 695.0851,159.3079 584,195.9531 C560.4115,203.7346 536.5607,216.5197 515.997,229.4305 "
+              fill="none" id="server.APIHandlers&lt;-handlers.APIHandlers" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <polygon fill="none" points="866.5031,157.1852,887.6828,156.5378,871.5295,170.2518,866.5031,157.1852"
+                 style="stroke: #A80036; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="76"
+              x="593.121" y="203.896" style="white-space: pre; font-size: 13px;">implements
+        </text>
+        <path d="M1354.1615,134.5625 C1419.9955,147.7667 1500.4194,167.7212 1569,195.9531 C1586.7483,203.2594 1604.9119,212.8507 1621.7241,222.761 "
+              fill="none" id="server.WebHandlers&lt;-handlers.WebHandlers" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <polygon fill="none" points="1352.5205,141.3745,1334.2279,130.6797,1355.1973,127.6328,1352.5205,141.3745"
+                 style="stroke: #A80036; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="76"
+              x="1610.642" y="200.721" style="white-space: pre; font-size: 13px;">implements
+        </text>
+        <path d="M2527,176.5405 C2527,194.2643 2527,213.126 2527,229.391 " fill="none"
+              id="models.RateProvider&lt;-models.Rate" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <polygon fill="none" points="2520.0001,176.4808,2527,156.4808,2534.0001,176.4808,2520.0001,176.4808"
+                 style="stroke: #A80036; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="76"
+              x="2533.715" y="207.647" style="white-space: pre; font-size: 13px;">implements
+        </text>
+        <path d="M1127,323.4977 C1127,345.0956 1127,369.5381 1127,388.2823 " fill="none"
+              id="handlers.EmailService&lt;-services.EmailService" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <polygon fill="none" points="1120.0001,323.1643,1127,303.1643,1134.0001,323.1643,1120.0001,323.1643"
+                 style="stroke: #A80036; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="76"
+              x="1132.669" y="360.266" style="white-space: pre; font-size: 13px;">implements
+        </text>
+        <path d="M730.0203,322.1516 C722.0891,344.0747 713.0184,369.1476 706.0959,388.2823 " fill="none"
+              id="handlers.RateService&lt;-services.RateService" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <polygon fill="none" points="723.503,319.59,736.8895,303.1643,736.668,324.3528,723.503,319.59"
+                 style="stroke: #A80036; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="76"
+              x="724.318" y="356.571" style="white-space: pre; font-size: 13px;">implements
+        </text>
+        <path d="M1485.4831,327.5861 C1495.5164,345.7328 1506.4249,365.4623 1515.5288,381.928 " fill="none"
+              id="handlers.SubscribeService&lt;-services.SubscribeService" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <polygon fill="none" points="1479.2007,330.6902,1475.6493,309.8003,1491.4527,323.9161,1479.2007,330.6902"
+                 style="stroke: #A80036; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="76"
+              x="1510.865" y="358.106" style="white-space: pre; font-size: 13px;">implements
+        </text>
+    </g>
+</svg>
