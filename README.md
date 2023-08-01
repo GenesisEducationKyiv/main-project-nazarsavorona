@@ -76,3 +76,7 @@ version [`http://localhost:8081`](http://localhost:8081).
 ![Class Diagram](.\docs\class%20diagram.svg)
 
 *Generated using [Dumels](https://www.dumels.com/)*
+
+## Architecture
+
+![Architecture](.\docs\explicit%20architecture.jpg)
