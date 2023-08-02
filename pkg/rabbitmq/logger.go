@@ -9,10 +9,7 @@ import (
 	"time"
 )
 
-const (
-	ExchangeName = "rate-app"
-	QueueName    = "logs"
-)
+const ExchangeName = "rate-app"
 
 type Logger struct {
 	ch *amqp.Channel
@@ -38,9 +35,9 @@ func (l *Logger) Log(level models.Level, message string) {
 	if err := l.ch.PublishWithContext(
 		ctx,
 		ExchangeName, // exchange
-		QueueName,    // routing key
-		false,        // mandatory
-		false,        // immediate
+		fmt.Sprintf("%s.%s", ExchangeName, level), // routing key
+		false, // mandatory
+		false, // immediate
 		amqp.Publishing{
 			ContentType: "text/plain",
 			Body:        []byte(message),

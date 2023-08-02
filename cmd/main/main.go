@@ -1,9 +1,12 @@
 package main
 
 import (
+	"context"
+	"flag"
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/rabbitmq"
 	amqp "github.com/rabbitmq/amqp091-go"
 	"os"
+	"time"
 
 	"fmt"
 	"log"
@@ -21,6 +24,54 @@ import (
 )
 
 func main() {
+	mode := flag.String("mode", "server", "mode to run the app or fetch logs")
+	filter := flag.String("filter", "#", "filter to apply to the logs")
+	timeout := flag.Int64("timeout", 15, "timeout in seconds for the logs fetching")
+	flag.Parse()
+
+	switch *mode {
+	case "server":
+		startRateServer()
+	case "logs":
+		fetchLogs(*filter, *timeout)
+	default:
+		log.Fatalf("Unknown mode: %s", *mode)
+	}
+}
+
+func fetchLogs(filter string, timeout int64) {
+	envValues, err := getEnvironmentValues()
+
+	rabbitmqHost := envValues["RABBITMQ_HOST"]
+	rabbitmqPort := envValues["RABBITMQ_PORT"]
+	rabbitmqUsername := envValues["RABBITMQ_USERNAME"]
+	rabbitmqPassword := envValues["RABBITMQ_PASSWORD"]
+
+	rabbitConn, err := amqp.Dial(fmt.Sprintf("amqp://%s:%s@%s:%s/",
+		rabbitmqUsername, rabbitmqPassword, rabbitmqHost, rabbitmqPort))
+	if err != nil {
+		log.Fatalf("Error connecting to rabbitmq: %v", err)
+	}
+
+	defer rabbitConn.Close()
+
+	rabbitChannel, err := rabbitConn.Channel()
+	if err != nil {
+		log.Fatalf("Error opening channel: %v", err)
+	}
+
+	defer rabbitChannel.Close()
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(timeout)*time.Second)
+	defer cancel()
+
+	consumer := rabbitmq.NewConsumer(rabbitChannel)
+	consumer.ConsumeErrorLevelMsgs(ctx, filter, func(message string) {
+		log.Printf("Received message: %s", message)
+	})
+}
+
+func startRateServer() {
 	envValues, err := getEnvironmentValues()
 	if err != nil {
 		log.Fatalf("Error fetching environment values: %v", err)
@@ -63,7 +114,6 @@ func main() {
 		fmt.Sprintf("%s:%s", smtpHost, smtpPort),
 		smtp.PlainAuth("", senderEmail, senderPassword, smtpHost))
 
-	// connect to rabbitmq
 	rabbitConn, err := amqp.Dial(fmt.Sprintf("amqp://%s:%s@%s:%s/",
 		rabbitmqUsername, rabbitmqPassword, rabbitmqHost, rabbitmqPort))
 	if err != nil {
