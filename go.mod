@@ -4,6 +4,7 @@ go 1.20
 
 require (
 	github.com/labstack/echo/v4 v4.10.2
+	github.com/rabbitmq/amqp091-go v1.8.1
 	github.com/stretchr/testify v1.8.1
 	golang.org/x/sync v0.3.0
 )

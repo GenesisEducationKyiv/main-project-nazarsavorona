@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./app:/go/src/app
+    depends_on:
+      - rabbitmq
+    env_file:
+      - .env
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+    ports:
+      - "8081:8081"
+
+  rabbitmq:
+    image: rabbitmq:3.9-management
+    hostname: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"

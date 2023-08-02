@@ -1,6 +1,8 @@
 package main
 
 import (
+	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/rabbitmq"
+	amqp "github.com/rabbitmq/amqp091-go"
 	"os"
 
 	"fmt"
@@ -41,6 +43,11 @@ func main() {
 	binanceURL := envValues["BINANCE_API_URL"]
 	coingeckoURL := envValues["COINGECKO_API_URL"]
 
+	rabbitmqHost := envValues["RABBITMQ_HOST"]
+	rabbitmqPort := envValues["RABBITMQ_PORT"]
+	rabbitmqUsername := envValues["RABBITMQ_USERNAME"]
+	rabbitmqPassword := envValues["RABBITMQ_PASSWORD"]
+
 	file, err := prepareFile(dbFileFolder, dbFileName)
 	if err != nil {
 		log.Fatalf("Error preparing file: %v", err)
@@ -56,10 +63,28 @@ func main() {
 		fmt.Sprintf("%s:%s", smtpHost, smtpPort),
 		smtp.PlainAuth("", senderEmail, senderPassword, smtpHost))
 
+	// connect to rabbitmq
+	rabbitConn, err := amqp.Dial(fmt.Sprintf("amqp://%s:%s@%s:%s/",
+		rabbitmqUsername, rabbitmqPassword, rabbitmqHost, rabbitmqPort))
+	if err != nil {
+		log.Fatalf("Error connecting to rabbitmq: %v", err)
+	}
+
+	defer rabbitConn.Close()
+
+	rabbitChannel, err := rabbitConn.Channel()
+	if err != nil {
+		log.Fatalf("Error opening channel: %v", err)
+	}
+
+	defer rabbitChannel.Close()
+
+	logger := rabbitmq.NewLogger(rabbitChannel)
+
 	binanceRateGetter := clients.NewLoggingClient("binance",
-		clients.NewBinanceClient(binanceURL, &http.Client{}))
+		clients.NewBinanceClient(binanceURL, &http.Client{}), logger)
 	coingeckoRateGetter := clients.NewLoggingClient("coingecko",
-		clients.NewCoingeckoClient(coingeckoURL, &http.Client{}))
+		clients.NewCoingeckoClient(coingeckoURL, &http.Client{}), logger)
 
 	binanceChain := chain.NewBaseChain(binanceRateGetter)
 	coingeckoChain := chain.NewBaseChain(coingeckoRateGetter)
@@ -95,6 +120,10 @@ func getEnvironmentValues() (map[string]string, error) {
 		"DB_FILE_NAME",
 		"BINANCE_API_URL",
 		"COINGECKO_API_URL",
+		"RABBITMQ_HOST",
+		"RABBITMQ_PORT",
+		"RABBITMQ_USERNAME",
+		"RABBITMQ_PASSWORD",
 	}
 
 	envValues := make(map[string]string)
