@@ -22,7 +22,31 @@ func declareRabbitMQResources(ch *amqp091.Channel) error {
 		return err
 	}
 
-	// get every log level list
+	general := "general"
+	_, err = ch.QueueDeclare(
+		general, // name
+		true,    // durable
+		false,   // delete when unused
+		false,   // exclusive
+		false,   // no-wait
+		nil,     // args
+	)
+	if err != nil {
+		return err
+	}
+
+	// bind the queue to the exchange
+	err = ch.QueueBind(
+		general,                           // queue name
+		fmt.Sprintf("%s.#", ExchangeName), // routing key
+		ExchangeName,                      // exchange
+		false,                             // no-wait
+		nil,                               // args
+	)
+	if err != nil {
+		return err
+	}
+
 	for _, level := range []logger.Level{logger.Debug, logger.Info, logger.Error} {
 		_, err = ch.QueueDeclare(
 			level.String(), // name

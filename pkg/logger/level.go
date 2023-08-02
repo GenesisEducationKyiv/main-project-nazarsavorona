@@ -11,12 +11,12 @@ const (
 func (l Level) String() string {
 	switch l {
 	case Debug:
-		return "Debug"
+		return "debug"
 	case Info:
-		return "Info"
+		return "info"
 	case Error:
-		return "Error"
+		return "error"
 	default:
-		return "Unknown"
+		return "unknown"
 	}
 }

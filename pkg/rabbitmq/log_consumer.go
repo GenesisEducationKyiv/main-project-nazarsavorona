@@ -19,19 +19,9 @@ func NewConsumer(ch *amqp091.Channel) *Consumer {
 
 const ConsumerName = "rate-app-consumer"
 
-func (c *Consumer) ConsumeErrorLevelMsgs(context context.Context, topic string, handler func(message string)) {
-	q, err := c.ch.QueueDeclare("", false, false, true, false, nil)
-	if err != nil {
-		log.Fatalf("failed to declare a queue: %s", err)
-	}
-
-	err = c.ch.QueueBind(q.Name, topic, ExchangeName, false, nil)
-	if err != nil {
-		log.Fatalf("failed to bind a queue: %s", err)
-	}
-
+func (c *Consumer) ConsumeMessages(context context.Context, queue string, handler func(message string)) {
 	msgs, err := c.ch.Consume(
-		q.Name,       // queue
+		queue,        // queue
 		ConsumerName, // consumer
 		true,         // auto-ack
 		false,        // exclusive

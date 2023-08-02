@@ -12,12 +12,12 @@ import (
 )
 
 const (
-	defaultFilter  = "#" // all logs
-	defaultTimeout = 15  // seconds
+	defaultQueue   = "general" // all logs
+	defaultTimeout = 15        // seconds
 )
 
 func main() {
-	filter := flag.String("filter", defaultFilter, "filter to apply to the logs")
+	queue := flag.String("queue", defaultQueue, "queue to fetch logs from")
 	timeout := flag.Int64("timeout", defaultTimeout, "timeout in seconds for the logs fetching")
 	flag.Parse()
 
@@ -47,7 +47,7 @@ func main() {
 	defer cancel()
 
 	consumer := rabbitmq.NewConsumer(rabbitChannel)
-	consumer.ConsumeErrorLevelMsgs(ctx, *filter, func(message string) {
+	consumer.ConsumeMessages(ctx, *queue, func(message string) {
 		log.Printf("Received message: %s", message)
 	})
 }
