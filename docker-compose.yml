@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  server:
+    build:
+      dockerfile: docker/server/Dockerfile
+    volumes:
+      - ./resources:/app/resources
+    depends_on:
+      - rabbitmq
+    env_file:
+      - .env
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+    ports:
+      - "8081:8081"
+    command: [ "./server" ]
+
+  logs:
+    build:
+      dockerfile: docker/logs/Dockerfile
+    depends_on:
+      - rabbitmq
+    env_file:
+      - .env
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+    ports:
+      - "8082:8082"
+    command: [ "./logs", "--queue=error", "--timeout=30" ]
+
+  rabbitmq:
+    image: rabbitmq:3.9-management
+    hostname: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
