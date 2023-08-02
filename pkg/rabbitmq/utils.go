@@ -2,8 +2,9 @@ package rabbitmq
 
 import (
 	"fmt"
+	"net"
 
-	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/models"
+	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/logger"
 	"github.com/rabbitmq/amqp091-go"
 )
 
@@ -22,7 +23,7 @@ func declareRabbitMQResources(ch *amqp091.Channel) error {
 	}
 
 	// get every log level list
-	for _, level := range []models.Level{models.Debug, models.Info, models.Error} {
+	for _, level := range []logger.Level{logger.Debug, logger.Info, logger.Error} {
 		_, err = ch.QueueDeclare(
 			level.String(), // name
 			true,           // durable
@@ -49,4 +50,12 @@ func declareRabbitMQResources(ch *amqp091.Channel) error {
 	}
 
 	return nil
+}
+
+func ConstructRabbitMQURL(rabbitmqHost, rabbitmqPort,
+	rabbitmqUsername, rabbitmqPassword string) string {
+	rabbitHostPort := net.JoinHostPort(rabbitmqHost, rabbitmqPort)
+
+	return fmt.Sprintf("amqp://%s:%s@%s/",
+		rabbitmqUsername, rabbitmqPassword, rabbitHostPort)
 }

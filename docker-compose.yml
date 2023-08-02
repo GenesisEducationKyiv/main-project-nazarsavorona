@@ -1,12 +1,11 @@
 version: '3.8'
 
 services:
-  app:
+  server:
     build:
-      context: .
-      dockerfile: Dockerfile
+      dockerfile: docker/server/Dockerfile
     volumes:
-      - ./app:/go/src/app
+      - ./resources:/app/resources
     depends_on:
       - rabbitmq
     env_file:
@@ -16,10 +15,11 @@ services:
       - RABBITMQ_PORT=5672
     ports:
       - "8081:8081"
+    command: [ "./server" ]
+
   logs:
     build:
-      context: .
-      dockerfile: Dockerfile
+      dockerfile: docker/logs/Dockerfile
     depends_on:
       - rabbitmq
     env_file:
@@ -29,7 +29,7 @@ services:
       - RABBITMQ_PORT=5672
     ports:
       - "8082:8082"
-    command: [ "./service", "-mode=logs", "-filter=rate-app.Error", "-timeout=30" ]
+    command: [ "./logs", "-filter=rate-app.Error", "-timeout=30" ]
 
   rabbitmq:
     image: rabbitmq:3.9-management

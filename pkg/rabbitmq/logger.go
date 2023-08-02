@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/models"
+	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/logger"
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
@@ -26,7 +26,7 @@ func NewLogger(ch *amqp.Channel) *Logger {
 	}
 }
 
-func (l *Logger) Log(level models.Level, message string) {
+func (l *Logger) Log(level logger.Level, message string) {
 	message = fmt.Sprintf("[%s]: %s", level, message)
 
 	if err := l.ch.PublishWithContext(
