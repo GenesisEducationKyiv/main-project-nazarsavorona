@@ -2,6 +2,7 @@ package rabbitmq
 
 import (
 	"fmt"
+
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/models"
 	"github.com/rabbitmq/amqp091-go"
 )

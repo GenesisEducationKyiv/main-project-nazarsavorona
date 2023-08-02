@@ -3,10 +3,10 @@ package rabbitmq
 import (
 	"context"
 	"fmt"
+	"log"
+
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/models"
 	amqp "github.com/rabbitmq/amqp091-go"
-	"log"
-	"time"
 )
 
 const ExchangeName = "rate-app"
@@ -29,11 +29,8 @@ func NewLogger(ch *amqp.Channel) *Logger {
 func (l *Logger) Log(level models.Level, message string) {
 	message = fmt.Sprintf("[%s]: %s", level, message)
 
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-
 	if err := l.ch.PublishWithContext(
-		ctx,
+		context.Background(),
 		ExchangeName, // exchange
 		fmt.Sprintf("%s.%s", ExchangeName, level), // routing key
 		false, // mandatory

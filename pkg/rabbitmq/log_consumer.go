@@ -2,8 +2,9 @@ package rabbitmq
 
 import (
 	"context"
-	"github.com/rabbitmq/amqp091-go"
 	"log"
+
+	"github.com/rabbitmq/amqp091-go"
 )
 
 type Consumer struct {

@@ -3,15 +3,16 @@ package main
 import (
 	"context"
 	"flag"
-	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/rabbitmq"
-	amqp "github.com/rabbitmq/amqp091-go"
+	"fmt"
+	"log"
+	"net"
+	"net/http"
+	"net/smtp"
 	"os"
 	"time"
 
-	"fmt"
-	"log"
-	"net/http"
-	"net/smtp"
+	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/rabbitmq"
+	amqp "github.com/rabbitmq/amqp091-go"
 
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/clients/chain"
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/server"
@@ -23,41 +24,47 @@ import (
 	"github.com/GenesisEducationKyiv/main-project-nazarsavorona/pkg/services"
 )
 
+const defaultTimeout = 15
+
 func main() {
 	mode := flag.String("mode", "server", "mode to run the app or fetch logs")
 	filter := flag.String("filter", "#", "filter to apply to the logs")
-	timeout := flag.Int64("timeout", 15, "timeout in seconds for the logs fetching")
+	timeout := flag.Int64("timeout", defaultTimeout, "timeout in seconds for the logs fetching")
 	flag.Parse()
 
 	switch *mode {
 	case "server":
-		startRateServer()
+		err := startRateServer()
+		if err != nil {
+			log.Fatalf("Error starting rate server: %v", err)
+		}
 	case "logs":
-		fetchLogs(*filter, *timeout)
+		err := fetchLogs(*filter, *timeout)
+		if err != nil {
+			log.Fatalf("Error fetching logs: %v", err)
+		}
 	default:
 		log.Fatalf("Unknown mode: %s", *mode)
 	}
 }
 
-func fetchLogs(filter string, timeout int64) {
+func fetchLogs(filter string, timeout int64) error {
 	envValues, err := getEnvironmentValues()
-
-	rabbitmqHost := envValues["RABBITMQ_HOST"]
-	rabbitmqPort := envValues["RABBITMQ_PORT"]
-	rabbitmqUsername := envValues["RABBITMQ_USERNAME"]
-	rabbitmqPassword := envValues["RABBITMQ_PASSWORD"]
-
-	rabbitConn, err := amqp.Dial(fmt.Sprintf("amqp://%s:%s@%s:%s/",
-		rabbitmqUsername, rabbitmqPassword, rabbitmqHost, rabbitmqPort))
 	if err != nil {
-		log.Fatalf("Error connecting to rabbitmq: %v", err)
+		return fmt.Errorf("error fetching environment values: %w", err)
+	}
+
+	url := constructRabbitMQURL(envValues)
+	rabbitConn, err := amqp.Dial(url)
+	if err != nil {
+		return fmt.Errorf("error connecting to rabbitmq: %w", err)
 	}
 
 	defer rabbitConn.Close()
 
 	rabbitChannel, err := rabbitConn.Channel()
 	if err != nil {
-		log.Fatalf("Error opening channel: %v", err)
+		return fmt.Errorf("error opening rabbitmq channel: %w", err)
 	}
 
 	defer rabbitChannel.Close()
@@ -69,12 +76,14 @@ func fetchLogs(filter string, timeout int64) {
 	consumer.ConsumeErrorLevelMsgs(ctx, filter, func(message string) {
 		log.Printf("Received message: %s", message)
 	})
+
+	return nil
 }
 
-func startRateServer() {
+func startRateServer() error {
 	envValues, err := getEnvironmentValues()
 	if err != nil {
-		log.Fatalf("Error fetching environment values: %v", err)
+		return fmt.Errorf("error fetching environment values: %w", err)
 	}
 
 	port := envValues["PORT"]
@@ -94,47 +103,31 @@ func startRateServer() {
 	binanceURL := envValues["BINANCE_API_URL"]
 	coingeckoURL := envValues["COINGECKO_API_URL"]
 
-	rabbitmqHost := envValues["RABBITMQ_HOST"]
-	rabbitmqPort := envValues["RABBITMQ_PORT"]
-	rabbitmqUsername := envValues["RABBITMQ_USERNAME"]
-	rabbitmqPassword := envValues["RABBITMQ_PASSWORD"]
-
-	file, err := prepareFile(dbFileFolder, dbFileName)
+	repository, err := prepareRepository(dbFileFolder, dbFileName)
 	if err != nil {
-		log.Fatalf("Error preparing file: %v", err)
+		return err
 	}
 
-	db := database.NewFileDatabase(file)
-	if db == nil {
-		log.Fatalf("Error creating database")
-	}
-
-	repository := email.NewRepository(db)
 	mailSender := email.NewSender(senderEmail,
 		fmt.Sprintf("%s:%s", smtpHost, smtpPort),
 		smtp.PlainAuth("", senderEmail, senderPassword, smtpHost))
 
-	rabbitConn, err := amqp.Dial(fmt.Sprintf("amqp://%s:%s@%s:%s/",
-		rabbitmqUsername, rabbitmqPassword, rabbitmqHost, rabbitmqPort))
+	url := constructRabbitMQURL(envValues)
+	rabbitConn, err := amqp.Dial(url)
 	if err != nil {
-		log.Fatalf("Error connecting to rabbitmq: %v", err)
+		return fmt.Errorf("error connecting to rabbitmq: %w", err)
 	}
 
 	defer rabbitConn.Close()
 
 	rabbitChannel, err := rabbitConn.Channel()
 	if err != nil {
-		log.Fatalf("Error opening channel: %v", err)
+		return fmt.Errorf("error opening channel: %w", err)
 	}
 
 	defer rabbitChannel.Close()
 
-	logger := rabbitmq.NewLogger(rabbitChannel)
-
-	binanceRateGetter := clients.NewLoggingClient("binance",
-		clients.NewBinanceClient(binanceURL, &http.Client{}), logger)
-	coingeckoRateGetter := clients.NewLoggingClient("coingecko",
-		clients.NewCoingeckoClient(coingeckoURL, &http.Client{}), logger)
+	binanceRateGetter, coingeckoRateGetter := prepareClients(rabbitChannel, binanceURL, coingeckoURL)
 
 	binanceChain := chain.NewBaseChain(binanceRateGetter)
 	coingeckoChain := chain.NewBaseChain(coingeckoRateGetter)
@@ -153,8 +146,49 @@ func startRateServer() {
 
 	err = s.Start(":" + port)
 	if err != nil {
-		log.Fatalf("Error starting server: %v", err)
+		return fmt.Errorf("error starting server: %w", err)
 	}
+
+	return nil
+}
+
+func constructRabbitMQURL(envValues map[string]string) string {
+	rabbitmqHost := envValues["RABBITMQ_HOST"]
+	rabbitmqPort := envValues["RABBITMQ_PORT"]
+	rabbitmqUsername := envValues["RABBITMQ_USERNAME"]
+	rabbitmqPassword := envValues["RABBITMQ_PASSWORD"]
+
+	rabbitHostPort := net.JoinHostPort(rabbitmqHost, rabbitmqPort)
+
+	url := fmt.Sprintf("amqp://%s:%s@%s/",
+		rabbitmqUsername, rabbitmqPassword, rabbitHostPort)
+	return url
+}
+
+func prepareClients(rabbitChannel *amqp.Channel, binanceURL string,
+	coingeckoURL string) (*clients.LoggingClient, *clients.LoggingClient) {
+	logger := rabbitmq.NewLogger(rabbitChannel)
+
+	binanceRateGetter := clients.NewLoggingClient("binance",
+		clients.NewBinanceClient(binanceURL, &http.Client{}), logger)
+	coingeckoRateGetter := clients.NewLoggingClient("coingecko",
+		clients.NewCoingeckoClient(coingeckoURL, &http.Client{}), logger)
+	return binanceRateGetter, coingeckoRateGetter
+}
+
+func prepareRepository(dbFileFolder string, dbFileName string) (*email.Repository, error) {
+	file, err := prepareFile(dbFileFolder, dbFileName)
+	if err != nil {
+		return nil, fmt.Errorf("error preparing file: %w", err)
+	}
+
+	db := database.NewFileDatabase(file)
+	if db == nil {
+		return nil, fmt.Errorf("error creating database: %w", err)
+	}
+
+	repository := email.NewRepository(db)
+	return repository, nil
 }
 
 func getEnvironmentValues() (map[string]string, error) {
